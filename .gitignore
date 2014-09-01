@@ -25,3 +25,6 @@ planningalerts-app.sublime-workspace
 *.iml
 .generators
 .rakeTasks
+
+#Vagrant
+.vagrant
