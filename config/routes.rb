@@ -113,7 +113,7 @@ PlanningalertsApp::Application.routes.draw do
   match 'donate/thanks' => 'static#donate_thanks'
   match 'donate/cancel' => 'static#donate_cancel'
 
-  match '/' => 'applications#address', :as => :address_applications
+  match '/' => 'applications#search', :as => :address_applications
 
   match 'layar/getpoi' => 'layar#getpoi'
 
