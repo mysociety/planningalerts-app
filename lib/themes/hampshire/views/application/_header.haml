@@ -1,0 +1,13 @@
+#header-wrapper
+  #header.container
+    %h1= link_to "Hampshire Planning Applications", root_path
+    %h2
+      Explore planning applications
+      %em near you
+
+    .hide= link_to "Skip navigation", "#content"
+    #menu
+      = image_tag "menu.png", size: "30x30", class: "toggle"
+      %ul.collapse.hidden
+        = li_selected(:controller => "/applications", :action => "address") do
+          = link_to 'Search', address_applications_path

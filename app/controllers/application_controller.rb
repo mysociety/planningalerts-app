@@ -26,6 +26,9 @@ class ApplicationController < ActionController::Base
     if @theme == "nsw"
       self.prepend_view_path "lib/themes/nsw/views"
     end
+    if @theme == "hampshire"
+      self.prepend_view_path "lib/themes/hampshire/views"
+    end
   end
 
 end

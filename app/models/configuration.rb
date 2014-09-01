@@ -50,5 +50,14 @@ module Configuration
 
   THEME_NSW_GOOGLE_ANALYTICS_KEY = "UA-3107958-12"
 
+  THEME_HAMPSHIRE_HOST = "hampshire.10.11.12.13.xip.io:3000"
+  THEME_HAMPSHIRE_EMAIL_FROM_ADDRESS = "contact@hampshire.10.11.12.13.xip.io"
+  THEME_HAMPSHIRE_EMAIL_FROM_NAME = "Application Tracking"
+
+  THEME_HAMPSHIRE_CUTTLEFISH_USER_NAME = "xxxxxxxxxxxxxxxxx"
+  THEME_HAMPSHIRE_CUTTLEFISH_PASSWORD = "xxxxxxxxxxxxxxxxxxxx"
+
+  THEME_HAMPSHIRE_GOOGLE_ANALYTICS_KEY = ""
+
   HONEYBADGER_API_KEY = 'xxxxxxxx'
 end
