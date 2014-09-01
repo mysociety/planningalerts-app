@@ -46,6 +46,10 @@ class Application < ActiveRecord::Base
 
   define_index do
     indexes description
+    indexes address
+    indexes suburb
+    indexes postcode
+    indexes authority(:full_name), :as => :authority
     has date_scraped
   end
 
