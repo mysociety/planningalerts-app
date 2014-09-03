@@ -1,332 +1,352 @@
---- 
-http_interactions: 
-- request: 
+---
+http_interactions:
+- request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=au&sensor=false
-    body: 
+    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=gb&sensor=false
+    body:
       string: ""
-    headers: 
-      Accept: 
+    headers:
+      Accept:
       - "*/*"
-  response: 
-    status: 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      X-Frame-Options: 
+    headers:
+      X-Frame-Options:
       - SAMEORIGIN
-      Expires: 
+      Expires:
       - Mon, 23 Sep 2013 19:09:07 GMT
-      Cache-Control: 
+      Cache-Control:
       - public, max-age=86400
-      Content-Type: 
+      Content-Type:
       - application/json; charset=UTF-8
-      Server: 
+      Server:
       - mafe
-      X-Xss-Protection: 
+      X-Xss-Protection:
       - 1; mode=block
-      Access-Control-Allow-Origin: 
+      Access-Control-Allow-Origin:
       - "*"
-      Transfer-Encoding: 
+      Transfer-Encoding:
       - chunked
-      Date: 
+      Date:
       - Sun, 22 Sep 2013 19:09:07 GMT
-      Alternate-Protocol: 
+      Alternate-Protocol:
       - 80:quic
-      Vary: 
+      Vary:
       - Accept-Language
-    body: 
+    body:
       string: |
         {
            "results" : [],
            "status" : "ZERO_RESULTS"
         }
 
-    http_version: 
+    http_version:
   recorded_at: Sun, 22 Sep 2013 19:09:07 GMT
-- request: 
+- request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=24%20Bruce%20Road%20Glenbrook&region=au&sensor=false
-    body: 
+    uri: http://maps.google.com/maps/api/geocode/json?address=Station%20Road,%20Liss&region=gb&sensor=false
+    body:
       string: ""
-    headers: 
-      Accept: 
+    headers:
+      Accept:
       - "*/*"
-  response: 
-    status: 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      X-Frame-Options: 
+    headers:
+      X-Frame-Options:
       - SAMEORIGIN
-      Expires: 
+      Expires:
       - Mon, 23 Sep 2013 19:29:53 GMT
-      Cache-Control: 
+      Cache-Control:
       - public, max-age=86400
-      Content-Type: 
+      Content-Type:
       - application/json; charset=UTF-8
-      Server: 
+      Server:
       - mafe
-      X-Xss-Protection: 
+      X-Xss-Protection:
       - 1; mode=block
-      Access-Control-Allow-Origin: 
+      Access-Control-Allow-Origin:
       - "*"
-      Transfer-Encoding: 
+      Transfer-Encoding:
       - chunked
-      Date: 
+      Date:
       - Sun, 22 Sep 2013 19:29:53 GMT
-      Alternate-Protocol: 
+      Alternate-Protocol:
       - 80:quic
-      Vary: 
+      Vary:
       - Accept-Language
-    body: 
+    body:
       string: |
         {
            "results" : [
               {
                  "address_components" : [
                     {
-                       "long_name" : "24",
-                       "short_name" : "24",
-                       "types" : [ "street_number" ]
-                    },
-                    {
-                       "long_name" : "Bruce Road",
-                       "short_name" : "Bruce Rd",
+                       "long_name" : "Station Road",
+                       "short_name" : "Station Rd",
                        "types" : [ "route" ]
                     },
                     {
-                       "long_name" : "Glenbrook",
-                       "short_name" : "Glenbrook",
+                       "long_name" : "Liss",
+                       "short_name" : "Liss",
                        "types" : [ "locality", "political" ]
                     },
                     {
-                       "long_name" : "New South Wales",
-                       "short_name" : "NSW",
-                       "types" : [ "administrative_area_level_1", "political" ]
+                       "long_name" : "Liss",
+                       "short_name" : "Liss",
+                       "types" : [ "postal_town" ]
                     },
                     {
-                       "long_name" : "Australia",
-                       "short_name" : "AU",
+                       "long_name" : "Hampshire",
+                       "short_name" : "Hants",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "United Kingdom",
+                       "short_name" : "GB",
                        "types" : [ "country", "political" ]
                     },
                     {
-                       "long_name" : "2773",
-                       "short_name" : "2773",
-                       "types" : [ "postal_code" ]
+                       "long_name" : "GU33",
+                       "short_name" : "GU33",
+                       "types" : [ "postal_code_prefix", "postal_code" ]
                     }
                  ],
-                 "formatted_address" : "24 Bruce Road, Glenbrook NSW 2773, Australia",
+                 "formatted_address" : "Station Road, Liss, Liss, Hampshire GU33, UK",
                  "geometry" : {
-                    "location" : {
-                       "lat" : -33.772607,
-                       "lng" : 150.624245
-                    },
-                    "location_type" : "ROOFTOP",
-                    "viewport" : {
+                    "bounds" : {
                        "northeast" : {
-                          "lat" : -33.7712580197085,
-                          "lng" : 150.6255939802915
+                          "lat" : 51.0485918,
+                          "lng" : -0.8907345999999999
                        },
                        "southwest" : {
-                          "lat" : -33.7739559802915,
-                          "lng" : 150.6228960197085
+                          "lat" : 51.0427732,
+                          "lng" : -0.8986900999999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 51.0453693,
+                       "lng" : -0.8951038
+                    },
+                    "location_type" : "GEOMETRIC_CENTER",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 51.0485918,
+                          "lng" : -0.8907345999999999
+                       },
+                       "southwest" : {
+                          "lat" : 51.0427732,
+                          "lng" : -0.8986900999999999
                        }
                     }
                  },
-                 "types" : [ "street_address" ]
+                 "types" : [ "route" ]
               }
            ],
            "status" : "OK"
         }
 
-    http_version: 
+    http_version:
   recorded_at: Sun, 22 Sep 2013 19:29:53 GMT
-- request: 
+- request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=24%20Bruce%20Road,%20Glenbrook&region=au&sensor=false
-    body: 
+    uri: http://maps.google.com/maps/api/geocode/json?address=Station%20Road,%20Liss&region=gb&sensor=false
+    body:
       string: ""
-    headers: 
-      Accept: 
+    headers:
+      Accept:
       - "*/*"
-  response: 
-    status: 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      X-Frame-Options: 
+    headers:
+      X-Frame-Options:
       - SAMEORIGIN
-      Expires: 
+      Expires:
       - Mon, 23 Sep 2013 19:39:37 GMT
-      Cache-Control: 
+      Cache-Control:
       - public, max-age=86400
-      Content-Type: 
+      Content-Type:
       - application/json; charset=UTF-8
-      Server: 
+      Server:
       - mafe
-      X-Xss-Protection: 
+      X-Xss-Protection:
       - 1; mode=block
-      Access-Control-Allow-Origin: 
+      Access-Control-Allow-Origin:
       - "*"
-      Transfer-Encoding: 
+      Transfer-Encoding:
       - chunked
-      Date: 
+      Date:
       - Sun, 22 Sep 2013 19:39:37 GMT
-      Alternate-Protocol: 
+      Alternate-Protocol:
       - 80:quic
-      Vary: 
+      Vary:
       - Accept-Language
-    body: 
+    body:
       string: |
         {
            "results" : [
               {
                  "address_components" : [
                     {
-                       "long_name" : "24",
-                       "short_name" : "24",
-                       "types" : [ "street_number" ]
-                    },
-                    {
-                       "long_name" : "Bruce Road",
-                       "short_name" : "Bruce Rd",
+                       "long_name" : "Station Road",
+                       "short_name" : "Station Rd",
                        "types" : [ "route" ]
                     },
                     {
-                       "long_name" : "Glenbrook",
-                       "short_name" : "Glenbrook",
+                       "long_name" : "Liss",
+                       "short_name" : "Liss",
                        "types" : [ "locality", "political" ]
                     },
                     {
-                       "long_name" : "New South Wales",
-                       "short_name" : "NSW",
-                       "types" : [ "administrative_area_level_1", "political" ]
+                       "long_name" : "Liss",
+                       "short_name" : "Liss",
+                       "types" : [ "postal_town" ]
                     },
                     {
-                       "long_name" : "Australia",
-                       "short_name" : "AU",
+                       "long_name" : "Hampshire",
+                       "short_name" : "Hants",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "United Kingdom",
+                       "short_name" : "GB",
                        "types" : [ "country", "political" ]
                     },
                     {
-                       "long_name" : "2773",
-                       "short_name" : "2773",
-                       "types" : [ "postal_code" ]
+                       "long_name" : "GU33",
+                       "short_name" : "GU33",
+                       "types" : [ "postal_code_prefix", "postal_code" ]
                     }
                  ],
-                 "formatted_address" : "24 Bruce Road, Glenbrook NSW 2773, Australia",
+                 "formatted_address" : "Station Road, Liss, Liss, Hampshire GU33, UK",
                  "geometry" : {
-                    "location" : {
-                       "lat" : -33.772607,
-                       "lng" : 150.624245
-                    },
-                    "location_type" : "ROOFTOP",
-                    "viewport" : {
+                    "bounds" : {
                        "northeast" : {
-                          "lat" : -33.7712580197085,
-                          "lng" : 150.6255939802915
+                          "lat" : 51.0485918,
+                          "lng" : -0.8907345999999999
                        },
                        "southwest" : {
-                          "lat" : -33.7739559802915,
-                          "lng" : 150.6228960197085
+                          "lat" : 51.0427732,
+                          "lng" : -0.8986900999999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 51.0453693,
+                       "lng" : -0.8951038
+                    },
+                    "location_type" : "GEOMETRIC_CENTER",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 51.0485918,
+                          "lng" : -0.8907345999999999
+                       },
+                       "southwest" : {
+                          "lat" : 51.0427732,
+                          "lng" : -0.8986900999999999
                        }
                     }
                  },
-                 "types" : [ "street_address" ]
+                 "types" : [ "route" ]
               }
            ],
            "status" : "OK"
         }
 
-    http_version: 
+    http_version:
   recorded_at: Sun, 22 Sep 2013 19:39:36 GMT
-- request: 
+- request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=au&sensor=false
-    body: 
+    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=gb&sensor=false
+    body:
       string: ""
-    headers: 
-      Accept: 
+    headers:
+      Accept:
       - "*/*"
-  response: 
-    status: 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      X-Frame-Options: 
+    headers:
+      X-Frame-Options:
       - SAMEORIGIN
-      Expires: 
+      Expires:
       - Mon, 23 Sep 2013 19:41:08 GMT
-      Cache-Control: 
+      Cache-Control:
       - public, max-age=86400
-      Content-Type: 
+      Content-Type:
       - application/json; charset=UTF-8
-      Server: 
+      Server:
       - mafe
-      X-Xss-Protection: 
+      X-Xss-Protection:
       - 1; mode=block
-      Access-Control-Allow-Origin: 
+      Access-Control-Allow-Origin:
       - "*"
-      Transfer-Encoding: 
+      Transfer-Encoding:
       - chunked
-      Date: 
+      Date:
       - Sun, 22 Sep 2013 19:41:08 GMT
-      Alternate-Protocol: 
+      Alternate-Protocol:
       - 80:quic
-      Vary: 
+      Vary:
       - Accept-Language
-    body: 
+    body:
       string: |
         {
            "results" : [],
            "status" : "ZERO_RESULTS"
         }
 
-    http_version: 
+    http_version:
   recorded_at: Sun, 22 Sep 2013 19:41:08 GMT
-- request: 
+- request:
     method: get
     uri: https://www.openaustraliafoundation.org.au/category/projects/planningalerts-org-au/feed/
-    body: 
+    body:
       string: ""
     headers: {}
 
-  response: 
-    status: 
+  response:
+    status:
       code: 200
       message: OK
-    headers: 
-      Cache-Control: 
+    headers:
+      Cache-Control:
       - no-store, no-cache, must-revalidate, post-check=0, pre-check=0
-      Expires: 
+      Expires:
       - Thu, 19 Nov 1981 08:52:00 GMT
-      Set-Cookie: 
+      Set-Cookie:
       - PHPSESSID=mg3ebhi60ono7ft5plie93nau7; path=/
-      Etag: 
+      Etag:
       - "\"6efa4820af1a9ba70cdf119829823c70\""
-      X-Powered-By: 
+      X-Powered-By:
       - PHP/5.3.10-1ubuntu3.8
-      Content-Type: 
+      Content-Type:
       - text/xml; charset=UTF-8
-      Server: 
+      Server:
       - Apache/2.2.22 (Ubuntu)
-      Connection: 
+      Connection:
       - close
-      Pragma: 
+      Pragma:
       - no-cache
-      Last-Modified: 
+      Last-Modified:
       - Thu, 12 Sep 2013 03:34:05 GMT
-      Via: 
+      Via:
       - 1.1 www.openaustraliafoundation.org.au
-      Transfer-Encoding: 
+      Transfer-Encoding:
       - chunked
-      X-Pingback: 
+      X-Pingback:
       - https://www.openaustraliafoundation.org.au/xmlrpc.php
-      Date: 
+      Date:
       - Sun, 22 Sep 2013 19:42:36 GMT
-      Vary: 
+      Vary:
       - Accept-Encoding
-    body: 
+    body:
       string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
         <rss version=\"2.0\"\n\
         \txmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n\
@@ -788,39 +808,39 @@ http_interactions:
         \t\t</item>\n\
         \t</channel>\n\
         </rss>\n"
-    http_version: 
+    http_version:
   recorded_at: Sun, 22 Sep 2013 19:43:32 GMT
-- request: 
+- request:
     method: get
     uri: https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=PlanningAlerts
-    body: 
+    body:
       string: ""
-    headers: 
-      Authorization: 
+    headers:
+      Authorization:
       - OAuth oauth_consumer_key="xxxxxxxxxxx", oauth_nonce="9b86caa361d67bb607b2985e8a11d6f5", oauth_signature="TDiNYVK1mxCbUvK9iQbGECGllzE%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1379879012", oauth_token="xxxxxxxxxxx", oauth_version="1.0"
-      Accept: 
+      Accept:
       - application/json
-      User-Agent: 
+      User-Agent:
       - Twitter Ruby Gem 4.8.1
-  response: 
-    status: 
+  response:
+    status:
       code: 401
       message: Unauthorized
-    headers: 
-      Set-Cookie: 
+    headers:
+      Set-Cookie:
       - guest_id=v1%3A137987901396271865; Domain=.twitter.com; Path=/; Expires=Tue, 22-Sep-2015 19:43:33 UTC
-      Content-Type: 
+      Content-Type:
       - application/json; charset=utf-8
-      Server: 
+      Server:
       - tfe
-      Content-Length: 
+      Content-Length:
       - "61"
-      Date: 
+      Date:
       - Sun, 22 Sep 2013 19:43:33 UTC
-      Strict-Transport-Security: 
+      Strict-Transport-Security:
       - max-age=631138519
-    body: 
+    body:
       string: "{\"errors\":[{\"message\":\"Invalid or expired token\",\"code\":89}]}"
-    http_version: 
+    http_version:
   recorded_at: Sun, 22 Sep 2013 19:43:33 GMT
 recorded_with: VCR 2.5.0

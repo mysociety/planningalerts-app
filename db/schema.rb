@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140703052312) do
+ActiveRecord::Schema.define(:version => 20140903232243) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -77,22 +77,22 @@ ActiveRecord::Schema.define(:version => 20140703052312) do
   add_index "application_redirects", ["application_id"], :name => "index_application_redirects_on_application_id"
 
   create_table "applications", :force => true do |t|
-    t.string    "council_reference", :limit => 50,   :null => false
-    t.text      "address",                           :null => false
-    t.text      "description"
-    t.string    "info_url",          :limit => 1024
-    t.string    "comment_url",       :limit => 1024
-    t.integer   "authority_id",                      :null => false
-    t.float     "lat"
-    t.float     "lng"
-    t.timestamp "date_scraped",                      :null => false
-    t.date      "date_received"
-    t.string    "suburb",            :limit => 50
-    t.string    "state",             :limit => 10
-    t.string    "postcode",          :limit => 4
-    t.date      "on_notice_from"
-    t.date      "on_notice_to"
-    t.integer   "no_alerted"
+    t.string   "council_reference", :limit => 50,   :null => false
+    t.text     "address",                           :null => false
+    t.text     "description"
+    t.string   "info_url",          :limit => 1024
+    t.string   "comment_url",       :limit => 1024
+    t.integer  "authority_id",                      :null => false
+    t.float    "lat"
+    t.float    "lng"
+    t.datetime "date_scraped",                      :null => false
+    t.date     "date_received"
+    t.string   "suburb",            :limit => 50
+    t.string   "state",             :limit => 10
+    t.string   "postcode",          :limit => 10
+    t.date     "on_notice_from"
+    t.date     "on_notice_to"
+    t.integer  "no_alerted"
   end
 
   add_index "applications", ["authority_id", "date_scraped"], :name => "index_applications_on_authority_id_and_date_scraped"

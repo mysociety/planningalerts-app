@@ -60,4 +60,8 @@ module Configuration
   THEME_HAMPSHIRE_GOOGLE_ANALYTICS_KEY = ""
 
   HONEYBADGER_API_KEY = 'xxxxxxxx'
+
+  COUNTRY_NAME = 'the UK'
+  COUNTRY_CODE = 'GB'
+  MINIMUM_ACCURACY = 4
 end
