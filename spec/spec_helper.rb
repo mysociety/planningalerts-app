@@ -8,6 +8,7 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 ]
 SimpleCov.start('rails') do
   add_filter 'app/admin'
+  add_group 'Sweepers', 'sweepers'
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
