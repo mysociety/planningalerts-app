@@ -1,6 +1,8 @@
 class ApiStatistic < ActiveRecord::Base
   belongs_to :api_key
 
+  default_scope order('id')
+
   def self.log(request)
     # Lookup the api key if there is one
     key = ApiKey.find_by_key(request.query_parameters["key"])

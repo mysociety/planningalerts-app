@@ -6,6 +6,8 @@ class Alert < ActiveRecord::Base
   before_create :remove_other_alerts_for_this_address
   acts_as_email_confirmable
 
+  default_scope order('id')
+
   scope :active, :conditions => {:confirmed => true, :unsubscribed => false}
   scope :in_past_week, where("created_at > ?", 7.days.ago)
 
@@ -24,8 +26,8 @@ class Alert < ActiveRecord::Base
     multiplier = GeoKit::Mappable::EARTH_RADIUS_IN_KMS
     command =
       %|
-        SELECT * FROM `alerts` WHERE NOT EXISTS (
-          SELECT * FROM `applications` WHERE (
+        SELECT * FROM alerts WHERE NOT EXISTS (
+          SELECT * FROM applications WHERE (
             lat > DEGREES(ASIN(SIN(RADIANS(alerts.lat))*#{c} - COS(RADIANS(alerts.lat))*#{s}))
             AND lat < DEGREES(ASIN(SIN(RADIANS(alerts.lat))*#{c} + COS(RADIANS(alerts.lat))*#{s}))
             AND lng > alerts.lng - DEGREES(ATAN2(#{s}, #{c} * COS(RADIANS(alerts.lat))))
@@ -77,7 +79,7 @@ class Alert < ActiveRecord::Base
     multiplier = GeoKit::Mappable::EARTH_RADIUS_IN_KMS
     Application.find_by_sql(
       %|
-        SELECT * FROM `applications` WHERE (
+        SELECT * FROM applications WHERE (
           lat IS NOT NULL AND lng IS NOT NULL
           AND lat > DEGREES(ASIN(SIN(RADIANS(#{lat}))*#{c} - COS(RADIANS(#{lat}))*#{s}))
           AND lat < DEGREES(ASIN(SIN(RADIANS(#{lat}))*#{c} + COS(RADIANS(#{lat}))*#{s}))

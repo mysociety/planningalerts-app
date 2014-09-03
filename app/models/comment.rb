@@ -4,6 +4,9 @@ class Comment < ActiveRecord::Base
   validates_presence_of :name, :text, :address
 
   acts_as_email_confirmable
+
+  default_scope order('id')
+
   scope :visible, :conditions => {:confirmed => true, :hidden => false}
   scope :in_past_week, where("created_at > ?", 7.days.ago)
 
