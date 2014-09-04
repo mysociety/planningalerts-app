@@ -6,6 +6,9 @@ class Application < ActiveRecord::Base
   before_save :geocode
   geocoded_by :address, :latitude  => :lat, :longitude => :lng
 
+  # enable elasticsearch
+  searchkick highlight: [:description], autocomplete: [:description, :address]
+
   validates :date_scraped, :council_reference, :address, :description, :presence => true
   validates :info_url, :url => true
   validates :comment_url, :url => {:allow_blank => true, :schemes => ["http", "https", "mailto"]}
@@ -44,14 +47,15 @@ class Application < ActiveRecord::Base
   cattr_reader :per_page
   @@per_page = 100
 
-  define_index do
-    indexes description
-    indexes address
-    indexes suburb
-    indexes postcode
-    indexes authority(:full_name), :as => :authority
-    has date_scraped
-  end
+  # Sphinx config
+  # define_index do
+  #   indexes description
+  #   indexes address
+  #   indexes suburb
+  #   indexes postcode
+  #   indexes authority(:full_name), :as => :authority
+  #   has date_scraped
+  # end
 
   # TODO: factor out common location accessor between Application and Alert
   def location

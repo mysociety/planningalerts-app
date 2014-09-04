@@ -72,6 +72,7 @@ PlanningalertsApp::Application.routes.draw do
     end
     collection do
       get :search
+      get :search_autocomplete
     end
     resources :comments, :only => [:create, :show]
   end

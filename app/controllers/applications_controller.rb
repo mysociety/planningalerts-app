@@ -77,14 +77,24 @@ class ApplicationsController < ApplicationController
     end
 
     @q = params[:q]
-    @applications = Application.search @q, :order => :date_scraped, :sort_mode => :desc, :page => params[:page], :per_page => per_page if @q
-    @rss = search_applications_path(:format => "rss", :q => @q, :page => nil) if @q
+    if @q
+      @applications = Application.search @q, :fields => [:description],
+                                                 :order => {:date_scraped => :desc},
+                                                 :page => params[:page], :limit => per_page,
+                                                 :highlight => {:tag => '<span class="match">'}
+      @rss = search_applications_path(:format => "rss", :q => @q, :page => nil)
+    end
     @description = @q ? "Search: #{@q}" : "Search"
 
     respond_to do |format|
       format.html
       format.rss { render "index", :format => :rss, :layout => false, :content_type => Mime::XML }
     end
+  end
+
+  # not currently used by anything
+  def search_autocomplete
+    render json: Application.search(params[:q], fields: [:address], autocomplete: true, limit: 10).map(&:address).uniq
   end
 
   def show

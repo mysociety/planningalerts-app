@@ -29,7 +29,9 @@ gem 'httparty'
 gem "will_paginate"
 # For minifying javascript and css
 #gem 'smurf'
-gem 'thinking-sphinx', "~> 2.0", :require => 'thinking_sphinx'
+#gem 'thinking-sphinx', "~> 2.0", :require => 'thinking_sphinx'
+gem "searchkick"
+
 gem "formtastic"
 gem 'validates_email_format_of'
 gem "geocoder", :require => "geocoder"
