@@ -53,6 +53,12 @@ gem "oj"
 gem "redcarpet", "2.3.0"
 gem 'honeybadger'
 
+# For projection conversions
+gem "global_convert"
+# For Bayesian Classification
+gem "stuff-classifier", :git => 'https://github.com/alexandru/stuff-classifier.git'
+gem "redis"
+
 group :test do
   # Apparently capybara 2 only works with Ruby 1.9
   gem 'capybara', '< 2.0'

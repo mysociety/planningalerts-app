@@ -8,6 +8,7 @@ coverage
 log/searchd.development.pid
 config/database.yml
 config/development.sphinx.conf
+config/publishmydata.yml
 db/sphinx/development/*
 rerun.txt
 public/about.html
