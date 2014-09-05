@@ -130,7 +130,7 @@ class HampshireTheme < Theme
 
   # TODO Put this in the config
   def default_meta_description
-    "Discover what's happening in your local area in NSW. Find out about new building work. Get alerted by email."
+    "Browse and explore planning applications in Hampshire."
   end
 end
 
