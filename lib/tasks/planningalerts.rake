@@ -70,8 +70,6 @@ namespace :planningalerts do
 
     desc "Load planning applications from a PublishMyData dataset"
     task :load_from_publishmydata, [:authority_id, :dataset] => :environment do |t, args|
-      data_access = YAML.load_file("#{Rails.root}/config/publishmydata.yml")
-
       require 'rest-client'
       require 'json'
       require 'global_convert'
@@ -97,8 +95,8 @@ namespace :planningalerts do
               :type_uri => 'http://data.hampshirehub.net/def/planning/PlanningApplication'
             }
           },
-          :user => data_access[:username],
-          :password => data_access[:password],
+          :user => MySociety::Config::get('PUBLISHMYDATA_USER'),
+          :password => MySociety::Config::get('PUBLISHMYDATA_PASSWORD'),
         )
         response = request.execute
 
@@ -138,8 +136,8 @@ namespace :planningalerts do
                   :uri => application['http://schema.org/location'][0]['@id']
               },
             },
-            :user => data_access[:username],
-            :password => data_access[:password],
+            :user => MySociety::Config::get('PUBLISHMYDATA_USER'),
+            :password => MySociety::Config::get('PUBLISHMYDATA_PASSWORD'),
           ).execute
           # the "resource" endpoint returns an array despite not being plural
           place = JSON.parse(place_json)[0]

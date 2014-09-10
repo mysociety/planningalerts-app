@@ -9,19 +9,19 @@ describe ReportNotifier do
       :details => "It's very rude!")
     @notifier = ReportNotifier.notify(@report)
   end
-  
+
   it "should come from the reporter's email address" do
     @notifier.from.should == ["reporter@foo.com"]
   end
-  
+
   it "should go to the moderator email address" do
-    @notifier.to.should == ["contact@planningalerts.org.au"]
+    @notifier.to.should == ["moderator@planningalerts.org.au"]
   end
-  
+
   it "should tell the moderator what the email is about" do
     @notifier.subject.should == "PlanningAlerts: Abuse report"
   end
-  
+
   it "should tell the moderator everything they need to know to decide on what to do with the report" do
     @notifier.body.to_s.should == <<-EOF
 The abuse report was completed by Joe Reporter (reporter@foo.com) who said:

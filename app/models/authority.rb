@@ -93,7 +93,7 @@ class Authority < ActiveRecord::Base
   def scraper_data_morph_style(start_date, end_date, info_logger)
     # The morph api requires a key
     text = open_url_safe(morph_feed_url_for_date_range(start_date, end_date), info_logger,
-      "x-api-key" => ::Configuration::MORPH_API_KEY)
+      "x-api-key" => MySociety::Config::get('MORPH_API_KEY'))
     if text
       Application.translate_morph_feed_data(text)
     else
@@ -107,7 +107,7 @@ class Authority < ActiveRecord::Base
     info_logger = AuthorityLogger.new(self, other_info_logger)
 
     time = Benchmark.ms do
-      collect_applications_date_range(Date.today - ::Configuration::SCRAPE_DELAY, Date.today, info_logger)
+      collect_applications_date_range(Date.today - MySociety::Config::get('SCRAPE_DELAY'), Date.today, info_logger)
     end
     info_logger.info "Took #{(time / 1000).to_i} s to collect applications from #{full_name_and_state}"
   end
