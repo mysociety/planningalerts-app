@@ -19,8 +19,8 @@ end
 gem 'jquery-rails', "2.2.1"
 gem "jquery-ui-rails"
 
-gem "capistrano"
-gem "foreman"
+# gem "capistrano"
+# gem "foreman"
 gem "haml"
 gem "geokit"
 gem "nokogiri"
@@ -42,7 +42,7 @@ gem "rake"
 gem 'rack-throttle'
 gem 'dalli'
 gem 'sanitize'
-gem 'rvm-capistrano'
+# gem 'rvm-capistrano'
 gem 'vanity'
 gem 'rabl'
 gem 'newrelic_rpm'
