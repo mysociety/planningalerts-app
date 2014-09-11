@@ -23,6 +23,14 @@ webrat.log
 .DS_Store
 planningalerts-app.sublime-workspace
 
+# mySoc deployment system
+config/database.yml.deployed
+config/general.yml.deployed
+config/general.tmp.yml
+config/test.yml.deployed
+public/down.html
+vendor/bundle
+
 #IntelliJ
 *.iml
 .generators
