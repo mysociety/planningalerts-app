@@ -28,6 +28,8 @@ config/database.yml.deployed
 config/general.yml.deployed
 config/general.tmp.yml
 config/test.yml.deployed
+config/httpd.conf
+config/httpd.conf.deployed
 public/down.html
 vendor/bundle
 
