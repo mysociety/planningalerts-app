@@ -19,7 +19,17 @@ else
 fi
 
 bundle install --deployment
-bundle exec rake db:schema:load
+
+# only attempt to load the schema if there are no previous migrations
+db_version=`bundle exec rake db:version | grep 'Current version: '`
+if [[ $db_version == "Current version: 0" ]]
+then
+  echo "first run, loading db schema..."
+  bundle exec rake db:schema:load
+else
+  echo "existing db detected, skipping schema:load task"
+fi
+
 bundle exec rake db:migrate
 
 if [ "$RAILS_ENV" = production ]
