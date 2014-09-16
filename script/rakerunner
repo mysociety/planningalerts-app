@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [[ $# -ne 1 ]]; then
+  echo "you have not supplied a rake task to run"
+  echo "usage: rakerunner db:version"
+  exit 0
+fi
+
+# Symlink ruby 1.9.1 into our vhost folder and setup our $PATH so that we use
+# it as ruby, necessary to make bundler et all install the right gems
+if [ ! -e ../bin/ruby ]; then
+    echo "Symlinking ruby1.9.1 as ../bin/ruby"
+    mkdir -p ../bin
+    ln -sf /usr/bin/ruby1.9.1 ../bin/ruby
+fi
+BIN_DIR="`(cd ../bin && pwd)`"
+export PATH="$BIN_DIR:$PATH"
+
+echo "running rake $1"
+bundle exec rake $1
+
