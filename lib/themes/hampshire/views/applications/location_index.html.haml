@@ -1,0 +1,19 @@
+- content_for :page_title, @description
+
+= render "address_search_preamble"
+
+%form.address-search.formtastic.one-field{'accept-charset' => "UTF-8", 'action' => search__postcode_lookup_path, 'method' => "post"}
+  %fieldset.inputs
+    %ol
+      %li#q_input.string{:class => ("error" if @error)}
+        = label_tag(:postcode, "Enter a postcode")
+        = text_field_tag(:postcode, @postcode, placeholder: "e.g. SW1A 1AA")
+        - if @error
+          %p.inline-errors= @error
+  %fieldset.actions
+    %ol
+      %li.submit= submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
+
+- if @applications
+  = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »" do
+    = render "applications", :applications => @applications

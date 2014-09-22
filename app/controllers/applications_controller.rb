@@ -18,6 +18,10 @@ class ApplicationsController < ApplicationController
     @applications = apps.paginate(:page => params[:page], :per_page => 30)
   end
 
+  def location_index
+    @description = "Start here"
+  end
+
   # JSON api for returning the number of scraped applications per day
   def per_day
     authority = Authority.find_by_short_name_encoded!(params[:authority_id])

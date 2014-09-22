@@ -70,12 +70,17 @@ PlanningalertsApp::Application.routes.draw do
     member do
       get :nearby
     end
-    collection do
-      get :search
-      get :search_autocomplete
-    end
+    # old search routes
+    # collection do
+    #   get :search
+    #   get :search_autocomplete
+    # end
     resources :comments, :only => [:create, :show]
   end
+
+  # search controller
+  match '/search' => 'search#index', :as => :search_index
+  match '/search/_postcode_lookup' => 'search#_postcode_lookup', :via => :post
 
   resources :comments, :only => [:index] do
     resources :reports, :only => [:new, :create]
@@ -114,7 +119,7 @@ PlanningalertsApp::Application.routes.draw do
   match 'donate/thanks' => 'static#donate_thanks'
   match 'donate/cancel' => 'static#donate_cancel'
 
-  match '/' => 'applications#search', :as => :address_applications
+  match '/' => 'applications#location_index', :as => :address_applications
 
   match 'layar/getpoi' => 'layar#getpoi'
 
