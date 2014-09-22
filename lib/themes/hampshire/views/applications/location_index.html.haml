@@ -5,9 +5,21 @@
 %form.address-search.formtastic.one-field{'accept-charset' => "UTF-8", 'action' => search__postcode_lookup_path, 'method' => "post"}
   %fieldset.inputs
     %ol
-      %li#q_input.string{:class => ("error" if @error)}
+      %li#postcode_input.string{:class => ("error" if @error)}
         = label_tag(:postcode, "Enter a postcode")
         = text_field_tag(:postcode, @postcode, placeholder: "e.g. SW1A 1AA")
+        - if @error
+          %p.inline-errors= @error
+  %fieldset.actions
+    %ol
+      %li.submit= submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
+
+%form.address-search.formtastic.one-field{'accept-charset' => "UTF-8", 'action' => search__address_lookup_path, 'method' => "post"}
+  %fieldset.inputs
+    %ol
+      %li#address_input.string{:class => ("error" if @error)}
+        = label_tag(:address, "Enter an address")
+        = text_field_tag(:address, @address, placeholder: "e.g. 2 High Street, Winchester")
         - if @error
           %p.inline-errors= @error
   %fieldset.actions

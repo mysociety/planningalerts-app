@@ -20,4 +20,16 @@ class SearchController < ApplicationController
       redirect_to search_index_path
     end
   end
+
+  def _address_lookup
+    # should probably validate this
+    address = CGI::escape(params[:address])
+
+    r = Location.geocode(address)
+    if r.success
+      redirect_to search_index_path({:lat => r.lat, :lng => r.lng})
+    else
+      redirect_to search_index_path
+    end
+  end
 end

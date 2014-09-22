@@ -81,6 +81,7 @@ PlanningalertsApp::Application.routes.draw do
   # search controller
   match '/search' => 'search#index', :as => :search_index
   match '/search/_postcode_lookup' => 'search#_postcode_lookup', :via => :post
+  match '/search/_address_lookup' => 'search#_address_lookup', :via => :post
 
   resources :comments, :only => [:index] do
     resources :reports, :only => [:new, :create]
