@@ -80,8 +80,6 @@ PlanningalertsApp::Application.routes.draw do
 
   # search controller
   match '/search' => 'search#index', :as => :search_index
-  match '/search/_postcode_lookup' => 'search#_postcode_lookup', :via => :post
-  match '/search/_address_lookup' => 'search#_address_lookup', :via => :post
 
   resources :comments, :only => [:index] do
     resources :reports, :only => [:new, :create]
@@ -120,7 +118,7 @@ PlanningalertsApp::Application.routes.draw do
   match 'donate/thanks' => 'static#donate_thanks'
   match 'donate/cancel' => 'static#donate_cancel'
 
-  match '/' => 'applications#location_index', :as => :address_applications
+  match '/' => 'applications#address', :as => :address_applications
 
   match 'layar/getpoi' => 'layar#getpoi'
 

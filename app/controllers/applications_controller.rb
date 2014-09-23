@@ -18,8 +18,38 @@ class ApplicationsController < ApplicationController
     @applications = apps.paginate(:page => params[:page], :per_page => 30)
   end
 
-  def location_index
-    @description = "Start here"
+  def address
+    @description = "Hampshire Planning Applications"
+    if request.post?
+      @postcode = params[:postcode]
+      @address = params[:address]
+    end
+
+    if !@postcode.nil?
+      postcode = CGI::escape(@postcode.gsub(" ", ""))
+      url = "#{MySociety::Config::get('MAPIT_URL')}/postcode/#{postcode}"
+      begin
+        content = HTTParty.get(url).body
+        data = JSON.parse(content)
+        lat = data["wgs84_lat"]
+        lng = data["wgs84_lon"]
+        if lat.nil? or lng.nil?
+          @postcode_error = "Postcode is not valid."
+        else
+          redirect_to search_index_path({:lat => lat, :lng => lng})
+        end
+      rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
+        @postcode_error = "Postcode is not valid."
+      end
+    elsif !@address.nil?
+      address = CGI::escape(@address)
+      r = Location.geocode(address)
+      if r.success
+        redirect_to search_index_path({:lat => r.lat, :lng => r.lng})
+      else
+        @address_error = "Address not found"
+      end
+    end
   end
 
   # JSON api for returning the number of scraped applications per day
@@ -38,37 +68,6 @@ class ApplicationsController < ApplicationController
       format.js do
         render :json => authority.applications_per_week
       end
-    end
-  end
-
-  def address
-    @q = params[:q]
-    @radius = params[:radius] || 2000
-    @sort = params[:sort] || 'time'
-    per_page = 30
-    @page = params[:page]
-    if @q
-      location = Location.geocode(@q)
-      if location.error
-        @other_addresses = []
-        @error = "Address #{location.error}"
-      else
-        @q = location.full_address
-        @alert = Alert.new(:address => @q)
-        @other_addresses = location.all[1..-1].map{|l| l.full_address}
-        @applications = case @sort
-                        when 'distance'
-                          Application.near([location.lat, location.lng], @radius.to_f / 1000, :units => :km).reorder('distance').paginate(:page => params[:page], :per_page => per_page)
-                        else # date_scraped
-                          Application.near([location.lat, location.lng], @radius.to_f / 1000, :units => :km).paginate(:page => params[:page], :per_page => per_page)
-                        end
-        @rss = applications_path(:format => 'rss', :address => @q, :radius => @radius)
-      end
-    end
-    @set_focus_control = "q"
-    # Use a different template if there are results to display
-    if @q && @error.nil?
-      render "address_results"
     end
   end
 
