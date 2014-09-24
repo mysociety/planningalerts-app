@@ -8,18 +8,7 @@ $(function() {
     e.preventDefault();
     link.append('<%= image_tag("spinner.gif", size: "16x16") %>');
     navigator.geolocation.getCurrentPosition(function(pos) {
-      var latlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-      geocoder = new google.maps.Geocoder();
-      geocoder.geocode({'latLng': latlng}, function(results, status){
-        if (status == google.maps.GeocoderStatus.OK) {
-          console.log(results[0].formatted_address);
-          $("#address")[0].value = results[0].formatted_address;
-          $("#address")[0].form.submit();
-        } else {
-          link.find('img').remove();
-          link.html("Address lookup failed: " + status);
-        }
-      });
+      location.href = '/search?lat='+ pos.coords.latitude + '&lng=' + pos.coords.longitude;
     }, function(err) {
       link.find('img').remove();
       if (err.code == 1) { // User said no

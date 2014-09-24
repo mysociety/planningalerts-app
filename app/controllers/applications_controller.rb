@@ -19,35 +19,37 @@ class ApplicationsController < ApplicationController
   end
 
   def address
+    # placeholder text - if this exact string is required,
+    # it might be better to fetch it from the Config
     @description = "Hampshire Planning Applications"
     if request.post?
-      @postcode = params[:postcode]
-      @address = params[:address]
+      @q = params[:q]
     end
 
-    if !@postcode.nil?
-      postcode = CGI::escape(@postcode.gsub(" ", ""))
+    if !@q.nil?
+      # treat as postcode
+      postcode = CGI::escape(@q.gsub(" ", ""))
       url = "#{MySociety::Config::get('MAPIT_URL')}/postcode/#{postcode}"
       begin
-        content = HTTParty.get(url).body
+        result = HTTParty.get(url)
+        content = result.body
         data = JSON.parse(content)
         lat = data["wgs84_lat"]
         lng = data["wgs84_lon"]
-        if lat.nil? or lng.nil?
-          @postcode_error = "Postcode is not valid."
-        else
-          redirect_to search_index_path({:lat => lat, :lng => lng})
-        end
+        redirect_to search_index_path({:lat => lat, :lng => lng})
       rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
-        @postcode_error = "Postcode is not valid."
-      end
-    elsif !@address.nil?
-      address = CGI::escape(@address)
-      r = Location.geocode(address)
-      if r.success
-        redirect_to search_index_path({:lat => r.lat, :lng => r.lng})
-      else
-        @address_error = "Address not found"
+        # may not be a postcode, treat as address
+        if result.response.is_a?(Net::HTTPNotFound)
+          address = CGI::escape(@q)
+          r = Location.geocode(address)
+          if r.success
+            redirect_to search_index_path({:lat => r.lat, :lng => r.lng})
+          else
+            @address_error = "Address not found"
+          end
+        else
+          @error = "Postcode is not valid."
+        end
       end
     end
   end
