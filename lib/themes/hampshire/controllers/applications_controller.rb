@@ -39,7 +39,60 @@ class HampshireTheme
     end
 
     def search
+      @lat = params[:lat]
+      @lng = params[:lng]
+      url = "#{MySociety::Config::get('MAPIT_URL')}/point/4326/#{@lng},#{@lat}"
+      begin
+        result = HTTParty.get(url)
+        content = result.body
+        data = JSON.parse(content)
+        @authorities = find_planning_authorities(data)
+      rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
+        # TBD
+      end
       return false
+    end
+
+    protected
+
+    def find_planning_authorities(data)
+      return [] if data.blank?
+      result = []
+      data.delete_if { |key, value| key == "debug_db_queries" }
+      district_council = data.select { |key, value| value["type"] == "DIS" }
+      if !district_council.blank?
+        result << {
+          :id => district_council.keys.first,
+          :name => district_council.values.first["name"],
+          :type => "DIS"
+        }
+      end
+      county_council = data.select { |key, value| value["type"] == "CTY" }
+      if !county_council.blank?
+        result << {
+          :id => county_council.keys.first,
+          :name => county_council.values.first["name"],
+          :type => "CTY"
+        }
+      end
+      unitary_authority = data.select { |key, value| value["type"] == "UTA" }
+      if !unitary_authority.blank?
+        result << {
+          :id => unitary_authority.keys.first,
+          :name => unitary_authority.values.first["name"],
+          :type => "UTA"
+        }
+      end
+      national_park_authority = data.select { |key, value| value["type"] == "NPA" }
+      if !national_park_authority.blank?
+        result << {
+          :id => national_park_authority.keys.first,
+          :name => national_park_authority.values.first["name"],
+          :type => "NPA"
+        }
+      end
+
+      result
     end
   end
 end
