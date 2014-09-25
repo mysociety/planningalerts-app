@@ -1,0 +1,128 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://mapit.mysociety.org/postcode/SW990AA
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 404
+      message: NOT FOUND
+    headers:
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Cache-Control:
+      - max-age=2419200
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Url:
+      - /postcode/SW990AA
+      Content-Length:
+      - '62'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Thu, 25 Sep 2014 17:10:48 GMT
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"code": 404, "error": "No Postcode matches the given query."}'
+    http_version: 
+  recorded_at: Thu, 25 Sep 2014 17:10:48 GMT
+- request:
+    method: get
+    uri: http://maps.google.com/maps/api/geocode/json?address=alas%252C%2Bpoor%2Byorick&region=gb&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 25 Sep 2014 17:12:57 GMT
+      Expires:
+      - Fri, 26 Sep 2014 17:12:57 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.002
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: US-ASCII
+      string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
+    http_version: 
+  recorded_at: Thu, 25 Sep 2014 17:12:57 GMT
+- request:
+    method: get
+    uri: http://maps.google.com/maps/api/geocode/json?address=SO234B&region=gb&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 25 Sep 2014 17:23:40 GMT
+      Expires:
+      - Fri, 26 Sep 2014 17:23:40 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Vary:
+      - Accept-Language
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Server:
+      - mafe
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.002
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: US-ASCII
+      string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
+    http_version: 
+  recorded_at: Thu, 25 Sep 2014 17:23:40 GMT
+recorded_with: VCR 2.5.0

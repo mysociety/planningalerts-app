@@ -6,8 +6,8 @@ class HampshireTheme
 
     def address
       if params[:q]
-        postcode = CGI::escape(params[:q].gsub(" ", ""))
-        if MySociety::Validate.is_valid_postcode(postcode)
+        if MySociety::Validate.is_valid_postcode(params[:q])
+          postcode = CGI::escape(params[:q].gsub(" ", ""))
           url = "#{MySociety::Config::get('MAPIT_URL')}/postcode/#{postcode}"
           begin
             result = HTTParty.get(url)
@@ -15,9 +15,13 @@ class HampshireTheme
             data = JSON.parse(content)
             lat = data["wgs84_lat"]
             lng = data["wgs84_lon"]
-            redirect_to search_applications_path({:lat => lat, :lng => lng})
+            if !lat.blank? and !lng.blank?
+              redirect_to search_applications_path({:lat => lat, :lng => lng})
+            else
+              @error = "Postcode is not valid"
+            end
           rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
-            @error = "Postcode is not valid."
+            @error = "Postcode is not valid"
           end
         else
           address = CGI::escape(params[:q])
