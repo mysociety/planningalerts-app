@@ -33,7 +33,7 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! '{"code": 404, "error": "No Postcode matches the given query."}'
-    http_version: 
+    http_version:
   recorded_at: Thu, 25 Sep 2014 17:10:48 GMT
 - request:
     method: get
@@ -78,7 +78,7 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
-    http_version: 
+    http_version:
   recorded_at: Thu, 25 Sep 2014 17:12:57 GMT
 - request:
     method: get
@@ -123,6 +123,6 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
-    http_version: 
+    http_version:
   recorded_at: Thu, 25 Sep 2014 17:23:40 GMT
 recorded_with: VCR 2.5.0
