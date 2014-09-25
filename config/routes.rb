@@ -70,16 +70,12 @@ PlanningalertsApp::Application.routes.draw do
     member do
       get :nearby
     end
-    # old search routes
-    # collection do
-    #   get :search
-    #   get :search_autocomplete
-    # end
+    collection do
+      get :search
+      get :search_autocomplete
+    end
     resources :comments, :only => [:create, :show]
   end
-
-  # search controller
-  match '/search' => 'search#index', :as => :search_index
 
   resources :comments, :only => [:index] do
     resources :reports, :only => [:new, :create]

@@ -1,7 +1,7 @@
 require 'will_paginate/array'
 
 class ApplicationsController < ApplicationController
-  before_filter :use_theme_address_action, :only => [:address]
+  before_filter :use_theme_actions
 
   def index
     @description = "Recent applications"
@@ -156,15 +156,16 @@ class ApplicationsController < ApplicationController
 
   protected
 
-  def use_theme_address_action
-    if defined?(@themer.class::ApplicationsController) and @themer.class::ApplicationsController.public_method_defined?(:address)
+  def use_theme_actions
+    action = params[:action]
+    if (@themer.class::ApplicationsController != ::ApplicationsController) and @themer.class::ApplicationsController.public_method_defined?(action.to_sym)
       theme_controller = @themer.class::ApplicationsController.new(self)
-      result = theme_controller.address
+      result = theme_controller.send(action.to_sym)
       # force a render of the default view to prevent the execution
       # of the default controller method if false is returned by the
       # theme method
       if result == false
-        render "address"
+        render action
       end
     end
   end
