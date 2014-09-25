@@ -93,11 +93,6 @@ class ApplicationsController < ApplicationController
     end
   end
 
-  # not currently used by anything
-  def search_autocomplete
-    render json: Application.search(params[:q], fields: [:address], autocomplete: true, limit: 10).map(&:address).uniq
-  end
-
   def show
     # First check if there is a redirect
     redirect = ApplicationRedirect.find_by_application_id(params[:id])
