@@ -1,6 +1,7 @@
 require 'will_paginate/array'
 
 class ApplicationsController < ApplicationController
+  before_filter :use_theme_address_action, :only => [:address]
 
   def index
     @description = "Recent applications"
@@ -16,42 +17,6 @@ class ApplicationsController < ApplicationController
     end
 
     @applications = apps.paginate(:page => params[:page], :per_page => 30)
-  end
-
-  def address
-    # placeholder text - if this exact string is required,
-    # it might be better to fetch it from the Config
-    @description = "Hampshire Planning Applications"
-    if request.post?
-      @q = params[:q]
-    end
-
-    if !@q.nil?
-      # treat as postcode
-      postcode = CGI::escape(@q.gsub(" ", ""))
-      url = "#{MySociety::Config::get('MAPIT_URL')}/postcode/#{postcode}"
-      begin
-        result = HTTParty.get(url)
-        content = result.body
-        data = JSON.parse(content)
-        lat = data["wgs84_lat"]
-        lng = data["wgs84_lon"]
-        redirect_to search_index_path({:lat => lat, :lng => lng})
-      rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
-        # may not be a postcode, treat as address
-        if result.response.is_a?(Net::HTTPNotFound)
-          address = CGI::escape(@q)
-          r = Location.geocode(address)
-          if r.success
-            redirect_to search_index_path({:lat => r.lat, :lng => r.lng})
-          else
-            @address_error = "Address not found"
-          end
-        else
-          @error = "Postcode is not valid."
-        end
-      end
-    end
   end
 
   # JSON api for returning the number of scraped applications per day
@@ -70,6 +35,37 @@ class ApplicationsController < ApplicationController
       format.js do
         render :json => authority.applications_per_week
       end
+    end
+  end
+
+  def address
+    @q = params[:q]
+    @radius = params[:radius] || 2000
+    @sort = params[:sort] || 'time'
+    per_page = 30
+    @page = params[:page]
+    if @q
+      location = Location.geocode(@q)
+      if location.error
+        @other_addresses = []
+        @error = "Address #{location.error}"
+      else
+        @q = location.full_address
+        @alert = Alert.new(:address => @q)
+        @other_addresses = location.all[1..-1].map{|l| l.full_address}
+        @applications = case @sort
+                        when 'distance'
+                          Application.near([location.lat, location.lng], @radius.to_f / 1000, :units => :km).reorder('distance').paginate(:page => params[:page], :per_page => per_page)
+                        else # date_scraped
+                          Application.near([location.lat, location.lng], @radius.to_f / 1000, :units => :km).paginate(:page => params[:page], :per_page => per_page)
+                        end
+        @rss = applications_path(:format => 'rss', :address => @q, :radius => @radius)
+      end
+    end
+    @set_focus_control = "q"
+    # Use a different template if there are results to display
+    if @q && @error.nil?
+      render "address_results"
     end
   end
 
@@ -155,6 +151,21 @@ class ApplicationsController < ApplicationController
     respond_to do |format|
       format.html { render "nearby" }
       format.rss { render "api/index", :format => :rss, :layout => false, :content_type => Mime::XML }
+    end
+  end
+
+  protected
+
+  def use_theme_address_action
+    if defined?(@themer.class::ApplicationsController) and @themer.class::ApplicationsController.public_method_defined?(:address)
+      theme_controller = @themer.class::ApplicationsController.new(self)
+      result = theme_controller.address
+      # force a render of the default view to prevent the execution
+      # of the default controller method if false is returned by the
+      # theme method
+      if result == false
+        render "address"
+      end
     end
   end
 end

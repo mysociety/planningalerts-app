@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
     end
     if @theme == "hampshire"
       self.prepend_view_path "lib/themes/hampshire/views"
+      load "lib/themes/hampshire/controllers/applications_controller.rb"
     end
   end
 
