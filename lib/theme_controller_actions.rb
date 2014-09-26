@@ -8,9 +8,15 @@ module ThemeControllerActions
   protected
 
   def use_theme_controller_actions
+    # by definition, the default theme shouldn't override anything
+    return if @themer.class.to_s == "DefaultTheme"
+
+    current_class_name = self.class.to_s
     action = params[:action]
-    if (@themer.class::ApplicationsController != ::ApplicationsController) and @themer.class::ApplicationsController.public_method_defined?(action.to_sym)
-      theme_controller = @themer.class::ApplicationsController.new(self)
+
+    if eval("#{@themer.class}::#{current_class_name}").public_method_defined?(:overrides_base_theme?) and
+       eval("#{@themer.class}::#{current_class_name}").public_method_defined?(action.to_sym)
+      theme_controller = eval("#{@themer.class}::#{current_class_name}").new(self)
       result = theme_controller.send(action.to_sym)
 
       # not ideal but... copy back any view assigned variables

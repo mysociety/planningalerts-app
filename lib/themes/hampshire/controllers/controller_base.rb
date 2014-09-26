@@ -1,5 +1,9 @@
 class HampshireTheme
   class ControllerBase < ::ApplicationController
+    def overrides_base_theme?
+      true
+    end
+
     def initialize(original_controller)
       self.response = original_controller.response
       self.params = original_controller.params
