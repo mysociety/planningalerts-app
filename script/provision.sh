@@ -9,9 +9,6 @@ sudo apt-get install curl git libxslt-dev libxml2-dev proj libpq-dev postgresql-
 # sphinx
 sudo apt-get install sphinxsearch -y
 
-# elasticsearch prereqs
-sudo apt-get install openjdk-7-jre -y
-
 # redis prereqs
 sudo apt-get install tcl8.5 -y
 

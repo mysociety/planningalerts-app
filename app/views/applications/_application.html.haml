@@ -7,7 +7,4 @@
       - else
         #{time_ago_in_words(application.date_scraped)} ago
     %p.description
-      - unless details.empty?
-        = raw(details[:highlight][:description])
-      - else
-        = application.description
+      = application.respond_to?(:excerpts) && application.excerpts ? @applications.excerpt_for(html_escape(application.description)).html_safe : application.description
