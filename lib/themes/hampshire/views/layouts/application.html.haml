@@ -11,12 +11,14 @@
         = yield(:page_title)
       - else
         Explore planning applications near you
-      | Hampshire Planning Applicatio
+      | Hampshire Planning Applications
 
     - if @rss
       %link(rel="alternate" type="application/rss+xml" title="RSS" href=@rss)
 
     = stylesheet_link_tag 'application.css', :media => 'screen, projection'
+    -# Including both stylesheets rather than a totally new one for now...
+    = stylesheet_link_tag 'hampshire/application.css', :media => 'screen, projection'
     = stylesheet_link_tag 'print.css', :media => 'print'
     /[if IE]
       = stylesheet_link_tag 'ie.css', :media => 'screen, projection'
