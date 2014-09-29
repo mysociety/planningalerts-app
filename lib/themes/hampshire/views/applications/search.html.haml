@@ -1,12 +1,24 @@
 %h3= "Search"
 #map
 
-%h3 Co-ordinates
+- if params[:postcode] or params[:address]
+  %h4 Original geosearch
+
+  %p
+    -if params[:postcode]
+      Postcode:
+      =CGI::unescape(params[:postcode])
+
+    -if params[:address]
+      Address:
+      =CGI::unescape(params[:address])
+
+%h4 Co-ordinates
 
 %p
   ="#{@lat}, #{@lng}"
 
-%h3 Authorities
+%h4 Authorities
 
 %p
   = @authorities

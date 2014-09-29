@@ -16,7 +16,7 @@ class HampshireTheme
             lat = data["wgs84_lat"]
             lng = data["wgs84_lon"]
             if !lat.blank? and !lng.blank?
-              redirect_to search_applications_path({:lat => lat, :lng => lng})
+              redirect_to search_applications_path({:lat => lat, :lng => lng, :postcode => params[:q]})
             else
               @error = "Postcode is not valid"
             end
@@ -27,7 +27,7 @@ class HampshireTheme
           address = CGI::escape(params[:q])
           r = Location.geocode(address)
           if r.success
-            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng})
+            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng, :address => address})
           else
             @error = "Address not found"
           end
