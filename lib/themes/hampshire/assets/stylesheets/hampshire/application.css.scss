@@ -1,6 +1,32 @@
+//= require screen
 //= require_self
 
-.a-search #map {
-    height: 500px;
+@import "susy";
+@import "bourbon";
+
+.a-address {
+  #main-wrapper {
+    background: transparent url("/assets/map-background.jpg") no-repeat center;
+    min-height: 500px;
+  }
+  .main {
+    background: transparent;
+    padding-top: 2.5em; // mobile and tablet
+    @include at-breakpoint(60em 24) {
+      padding-top: 5em; // big screens
+    }
+    #content {
+      background: #fcfdfc;
+    }
+  }
+}
+
+.a-search {
+  .main {
+    width:100%;
+  }
+  #map {
+    height: 600px;
     width: 100%;
+  }
 }
