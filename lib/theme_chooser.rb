@@ -144,6 +144,12 @@ class ThemeChooser
   end
 
   def self.themer_from_request(request)
-    THEMES.find{|t| t.recognise?(request)}
+    if MySociety::Config::get('THEME', false)
+      theme = THEMES.find{|t| t.theme == MySociety::Config::get('THEME')}
+      raise "Unknown theme #{theme}" if theme.nil?
+      theme
+    else
+      THEMES.find{|t| t.recognise?(request)}
+    end
   end
 end
