@@ -45,13 +45,11 @@ class Application < ActiveRecord::Base
   @@per_page = 100
 
   # Sphinx config
-  define_index do
-    indexes description
-    indexes address
-    indexes suburb
-    indexes postcode
-    indexes authority(:full_name), :as => :authority
-    has date_scraped
+  unless MySociety::Config::get('CUSTOM_MODELS_PATH', false)
+    define_index do
+      indexes description
+      has date_scraped
+    end
   end
 
   # TODO: factor out common location accessor between Application and Alert
