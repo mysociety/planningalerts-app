@@ -16,7 +16,7 @@ class HampshireTheme
             lat = data["wgs84_lat"]
             lng = data["wgs84_lon"]
             if !lat.blank? and !lng.blank?
-              redirect_to search_applications_path({:lat => lat, :lng => lng, :postcode => params[:q]})
+              redirect_to search_applications_path({:lat => lat, :lng => lng, :postcode => params[:q], :search => params[:s]})
             else
               @error = "Postcode is not valid"
             end
@@ -27,7 +27,7 @@ class HampshireTheme
           address = CGI::escape(params[:q])
           r = Location.geocode(address)
           if r.success
-            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng, :address => address})
+            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng, :address => address, :search => params[:s]})
           else
             @error = "Address not found"
           end
@@ -39,6 +39,11 @@ class HampshireTheme
     end
 
     def search
+      @search = params[:search]
+      # "anything" is our special keyword meaning don't do a full text search
+      if !@search.blank? && @search.strip.downcase == "anything"
+        @search = ''
+      end
       @lat = params[:lat]
       @lng = params[:lng]
       url = "#{MySociety::Config::get('MAPIT_URL')}/point/4326/#{@lng},#{@lat}"

@@ -59,6 +59,8 @@ gem "global_convert"
 # For Bayesian Classification
 gem "stuff-classifier", :git => 'https://github.com/alexandru/stuff-classifier.git'
 gem "redis"
+# For a fancy search box
+gem "select2-rails"
 
 group :test do
   # Apparently capybara 2 only works with Ruby 1.9

@@ -7,6 +7,7 @@ feature "Custom Hampshire pages" do
     end
 
     page.should have_content("Search for and compare the outcomes of planning applications in Hampshire.")
+    page.should have_field("Show applications for", :with => 'anything')
     page.should have_content("Enter a postcode or address")
     page.should have_content("or locate me automatically")
   end

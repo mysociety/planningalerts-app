@@ -5,9 +5,12 @@
 %form.address-search.formtastic.one-field{'accept-charset' => "UTF-8", 'action' => address_applications_path, 'method' => "post"}
   %fieldset.inputs
     %ol
+      %li#s_input.string
+        = label_tag(:s, "Show applications for:")
+        = text_field_tag(:s, (params[:s] or "anything"), :placeholder => "e.g. Conservatories")
       %li#q_input.string{:class => ("error" if @error)}
         = label_tag(:q, "Enter a postcode or address:")
-        = text_field_tag(:q, @q, placeholder: "e.g. SO23 8UJ")
+        = text_field_tag(:q, params[:q], placeholder: "e.g. SO23 8UJ")
         = link_to "#", class: "inline-hints", id: "geolocate" do
           &hellip; or locate me automatically
         - if @error

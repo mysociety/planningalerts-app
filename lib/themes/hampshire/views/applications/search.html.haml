@@ -22,3 +22,12 @@
 
 %p
   = @authorities
+
+%h4 Search
+
+%p
+  - if @search.blank?
+    None
+  - else
+    = @search
+
