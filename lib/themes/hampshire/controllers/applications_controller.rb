@@ -46,14 +46,33 @@ class HampshireTheme
       end
       @lat = params[:lat]
       @lng = params[:lng]
-      url = "#{MySociety::Config::get('MAPIT_URL')}/point/4326/#{@lng},#{@lat}"
-      begin
-        result = HTTParty.get(url)
-        content = result.body
-        data = JSON.parse(content)
-        @authorities = find_planning_authorities(data)
-      rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
-        # TBD
+      if @lat and @lng
+        url = "#{MySociety::Config::get('MAPIT_URL')}/point/4326/#{@lng},#{@lat}"
+        begin
+          result = HTTParty.get(url)
+          content = result.body
+          data = JSON.parse(content)
+          @authorities = find_planning_authorities(data)
+        rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
+          # TBD
+        end
+        # TODO: Fix this hacky ugliness
+        if request.format == Mime::HTML
+          per_page = 30
+        else
+          per_page = Application.per_page
+        end
+
+        if @search
+          @applications = Application.search @search, :fields => [:description, :address],
+                                                     :order => {:date_scraped => :desc},
+                                                     :page => params[:page], :limit => per_page,
+                                                     :highlight => {:tag => '<span class="match">'}
+          @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
+        end
+        @description = @search ? "Search: #{@search}" : "Search"
+
+        render "applications/_applications", :locals => {:applications => @applications}
       end
       return false
     end

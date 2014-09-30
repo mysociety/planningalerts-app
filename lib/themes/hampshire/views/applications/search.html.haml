@@ -30,6 +30,7 @@
     None
   - else
     = @search
+    - if @applications
+      = render "applications", :applications => @applications
 
 = content_for :extra_javascript, javascript_include_tag("hampshire.maps")
-
