@@ -1,7 +1,21 @@
 %h3= "Search"
-- if params[:lat] and params[:lng]
-  #map
 
+#sidebar
+  - if @display == "map"
+    = link_to 'List view', params.merge({:display => 'list'}), :class => 'results-display-link'
+  - elsif @map_display_possible
+    = link_to 'Map view', params.merge({:display => 'map'}), :class => 'results-display-link'
+
+#list{:class => 'results-display'}
+  - if @applications
+    = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »" do
+      = render "applications", :applications => @applications
+
+- if @display == "map"
+  #map{:class => 'results-display'}
+    %p Sorry, there would be a map here, but you need to have javascript enabled to view it.
+
+- if params[:postcode] or params[:address]
   %h4 Original geosearch
 
   %p
@@ -42,7 +56,5 @@
     of
     =@applications.total_entries
     results
-
-    = render "applications", :applications => @applications
 
 = content_for :extra_javascript, javascript_include_tag("hampshire.maps")

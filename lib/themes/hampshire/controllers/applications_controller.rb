@@ -47,6 +47,16 @@ class HampshireTheme
       end
       @lat = params[:lat]
       @lng = params[:lng]
+      # We can only show the map if we have a location and the user wants to show it
+      if @lat and @lng
+        @map_display_possible = true
+        if !params['display'] or params['display'] == 'map'
+          @display = 'map'
+        end
+      else
+        @map_display_possible = false
+        @display = 'list'
+      end
       if @lat and @lng
         url = "#{::Configuration::MAPIT_URL}/point/4326/#{@lng},#{@lat}"
         begin
