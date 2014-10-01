@@ -1,7 +1,7 @@
 %h3= "Search"
-#map
-
 - if params[:postcode] or params[:address]
+  #map
+
   %h4 Original geosearch
 
   %p
@@ -13,15 +13,15 @@
       Address:
       =CGI::unescape(params[:address])
 
-%h4 Co-ordinates
+  %h4 Co-ordinates
 
-%p
-  ="#{@lat}, #{@lng}"
+  %p
+    ="#{@lat}, #{@lng}"
 
-%h4 Authorities
+  %h4 Authorities
 
-%p
-  = @authorities
+  %p
+    = @authorities
 
 %h4 Search
 
@@ -31,6 +31,19 @@
   - else
     = @search
     - if @applications
+      %h4 Facets
+      %p
+        = @applications.facets
+
+      ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
+      - if @applications.current_page*@applications.per_page <= @applications.total_entries
+        =@applications.current_page*@applications.per_page
+      - else
+        =@applications.total_entries
+      of
+      =@applications.total_entries
+      results
+
       = render "applications", :applications => @applications
 
 = content_for :extra_javascript, javascript_include_tag("hampshire.maps")

@@ -64,13 +64,12 @@ class HampshireTheme
         end
 
         if @search
-          @applications = Application.search @search, :fields => [:description, :address],
-                                                     :order => {:date_scraped => :desc},
-                                                     :page => params[:page], :limit => per_page,
-                                                     :highlight => {:tag => '<span class="match">'}
+          @applications = Application.search @search, :per_page => 10,
+                                                      :order => {:date_scraped => :desc},
+                                                      :page => params[:page]
           @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
+          @description = @search ? "Search: #{@search}" : "Search"
         end
-        @description = @search ? "Search: #{@search}" : "Search"
 
         render "applications/_applications", :locals => {:applications => @applications}
       end
