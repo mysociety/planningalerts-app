@@ -6,11 +6,11 @@
   %fieldset.inputs
     %ol
       %li#s_input.string
-        = label_tag(:s, "Show applications for:")
-        = text_field_tag(:s, (params[:s] or "anything"), :placeholder => "e.g. Conservatories")
+        = label_tag(:search, "Show applications for:")
+        = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "e.g. Conservatories")
       %li#q_input.string{:class => ("error" if @error)}
-        = label_tag(:q, "Enter a postcode or address:")
-        = text_field_tag(:q, params[:q], placeholder: "e.g. SO23 8UJ")
+        = label_tag(:location, "Located around:")
+        = text_field_tag(:location, params[:location], placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
         = link_to "#", class: "inline-hints", id: "geolocate" do
           &hellip; or locate me automatically
         - if @error

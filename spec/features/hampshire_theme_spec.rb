@@ -8,14 +8,14 @@ feature "Custom Hampshire pages" do
 
     page.should have_content("Search for and compare the outcomes of planning applications in Hampshire.")
     page.should have_field("Show applications for", :with => 'anything')
-    page.should have_content("Enter a postcode or address")
+    page.should have_field("Located around")
     page.should have_content("or locate me automatically")
   end
 
   scenario "Submitting an valid looking invalid postcode" do
     VCR.use_cassette('hampshire_theme') do
       visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
-      fill_in("Enter a postcode or address:", :with => "SW99 0AA")
+      fill_in("Located around:", :with => "SW99 0AA")
       click_button("Search")
     end
 
@@ -25,7 +25,7 @@ feature "Custom Hampshire pages" do
   scenario "Submitting an invalid postcode" do
     VCR.use_cassette('hampshire_theme') do
       visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
-      fill_in("Enter a postcode or address:", :with => "SO234B")
+      fill_in("Located around:", :with => "SO234B")
       click_button("Search")
     end
 
@@ -35,7 +35,7 @@ feature "Custom Hampshire pages" do
   scenario "Submitting an invalid address" do
     VCR.use_cassette('hampshire_theme') do
       visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
-      fill_in("Enter a postcode or address:", :with => "alas, poor yorick")
+      fill_in("Located around:", :with => "alas, poor yorick")
       click_button("Search")
     end
 

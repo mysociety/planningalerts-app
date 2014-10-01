@@ -5,9 +5,9 @@ class HampshireTheme
     load "validate.rb"
 
     def address
-      if params[:q]
-        if MySociety::Validate.is_valid_postcode(params[:q])
-          postcode = CGI::escape(params[:q].gsub(" ", ""))
+      if params[:location]
+        if MySociety::Validate.is_valid_postcode(params[:location])
+          postcode = CGI::escape(params[:location].gsub(" ", ""))
           url = "#{MySociety::Config::get('MAPIT_URL')}/postcode/#{postcode}"
           begin
             result = HTTParty.get(url)
@@ -16,7 +16,7 @@ class HampshireTheme
             lat = data["wgs84_lat"]
             lng = data["wgs84_lon"]
             if !lat.blank? and !lng.blank?
-              redirect_to search_applications_path({:lat => lat, :lng => lng, :postcode => params[:q], :search => params[:s]})
+              redirect_to search_applications_path({:lat => lat, :lng => lng, :postcode => params[:location], :search => params[:search]})
             else
               @error = "Postcode is not valid"
             end
@@ -24,10 +24,10 @@ class HampshireTheme
             @error = "Postcode is not valid"
           end
         else
-          address = CGI::escape(params[:q])
+          address = CGI::escape(params[:location])
           r = Location.geocode(address)
           if r.success
-            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng, :address => address, :search => params[:s]})
+            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng, :address => address, :search => params[:search]})
           else
             @error = "Address not found"
           end
