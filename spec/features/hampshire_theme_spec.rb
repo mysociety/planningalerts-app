@@ -23,7 +23,7 @@ feature "Custom Hampshire pages" do
   end
 
   scenario "Submitting an invalid postcode" do
-    VCR.use_cassette('hampshire_theme', :record => :new_episodes) do
+    VCR.use_cassette('hampshire_theme') do
       visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
       fill_in("Enter a postcode or address:", :with => "SO234B")
       click_button("Search")
@@ -33,7 +33,7 @@ feature "Custom Hampshire pages" do
   end
 
   scenario "Submitting an invalid address" do
-    VCR.use_cassette('hampshire_theme', :record => :new_episodes) do
+    VCR.use_cassette('hampshire_theme') do
       visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
       fill_in("Enter a postcode or address:", :with => "alas, poor yorick")
       click_button("Search")
