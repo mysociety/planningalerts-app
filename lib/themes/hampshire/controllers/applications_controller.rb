@@ -56,19 +56,16 @@ class HampshireTheme
         rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
           # TBD
         end
-        # TODO: Fix this hacky ugliness
-        if request.format == Mime::HTML
-          per_page = 30
-        else
-          per_page = Application.per_page
-        end
 
         if @search
-          @applications = Application.search @search, :per_page => 10,
-                                                      :order => {:date_scraped => :desc},
-                                                      :page => params[:page]
+          search_params = {:per_page => 10,
+                          :order => {:date_scraped => :desc},
+                          :page => params[:page]}
+          if params[:authority]
+            search_params[:with] = {:authority_facet => Zlib.crc32(params[:authority])}
+          end
+          @applications = Application.search @search, search_params
           @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
-          @description = @search ? "Search: #{@search}" : "Search"
         end
 
         render "applications/_applications", :locals => {:applications => @applications}
