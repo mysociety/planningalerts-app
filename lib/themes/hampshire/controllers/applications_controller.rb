@@ -39,6 +39,7 @@ class HampshireTheme
     end
 
     def search
+      @distance_in_miles = 5
       @search = params[:search]
       # "anything" is our special keyword meaning don't do a full text search
       if !@search.blank? && @search.strip.downcase == "anything"
@@ -57,27 +58,20 @@ class HampshireTheme
           # TBD
         end
 
+        if @search.blank?
+          # defaults to miles
+          # can change to km by appending :units => :km to args
+          @applications = Application.near([@lat, @lng], @distance_in_miles)
+        else
+          @search_lat = @lat.to_f / 180 * Math::PI
+          @search_lng = @lng.to_f / 180 * Math::PI
+          @search_range = @distance_in_miles * 1.609344
+          @applications = do_search(true)
+          @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
+        end
+      else
         unless @search.blank?
-          search_params = {:per_page => 10,
-                          :order => {:date_scraped => :desc},
-                          :page => params[:page]}
-          facet_filter = {}
-          if params[:authority]
-            facet_filter[:authority_facet] = Zlib.crc32(params[:authority])
-          end
-          # uncomment once we've got categories wired up
-          # if params[:category]
-          #   with[:category_facet] = Zlib.crc32(params[:category])
-          # end
-          #
-          # uncomment once we've got status wired up
-          # if params[:status]
-          #   with[:status_facet] = Zlib.crc32(params[:status])
-          # end
-          unless facet_filter.empty?
-            search_params[:with] = facet_filter
-          end
-          @applications = Application.search @search, search_params
+          @applications = do_search
           @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
         end
       end
@@ -85,6 +79,33 @@ class HampshireTheme
     end
 
     protected
+
+    def do_search(use_distance=false)
+      search_params = {:per_page => 10,
+                       :order => {:date_scraped => :desc},
+                       :page => params[:page]}
+      with_params = {}
+      if params[:authority]
+        with_params[:authority_facet] = Zlib.crc32(params[:authority])
+      end
+      if use_distance
+        search_params[:geo] = [@search_lat, @search_lng]
+        with_params['@geodist'] = 0.0..@search_range
+      end
+      # uncomment once we've got categories wired up
+      # if params[:category]
+      #   with_params[:category_facet] = Zlib.crc32(params[:category])
+      # end
+      #
+      # uncomment once we've got status wired up
+      # if params[:status]
+      #   with_params[:status_facet] = Zlib.crc32(params[:status])
+      # end
+      unless with_params.empty?
+        search_params[:with] = with_params
+      end
+      Application.search @search, search_params
+    end
 
     def find_planning_authorities(data)
       return [] if data.blank?

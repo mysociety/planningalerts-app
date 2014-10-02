@@ -11,6 +11,13 @@ Rails.configuration.to_prepare do
       # indexes category, :facet => true
       # indexes status, :facet = true
 
+      # enable geosearch - see http://pat.github.io/thinking-sphinx/geosearching.html
+      has 'RADIANS("applications"."lat")', :as => :latitude,  :type => :float
+      has 'RADIANS("applications"."lng")', :as => :longitude, :type => :float
+
+      # Postgres-specific bit:
+      group_by '"applications"."lat"', '"applications"."lng"'
+
       has date_scraped
     end
   end

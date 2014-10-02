@@ -1,5 +1,5 @@
 %h3= "Search"
-- if params[:postcode] or params[:address]
+- if params[:lat] and params[:lng]
   #map
 
   %h4 Original geosearch
@@ -26,24 +26,23 @@
 %h4 Search
 
 %p
-  - if @search.blank?
+  - if @applications.blank?
     None
   - else
     = @search
-    - if @applications
-      %h4 Facets
-      %p
-        = @applications.facets
+    %h4 Facets
+    %p
+      = @applications.facets
 
-      ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
-      - if @applications.current_page*@applications.per_page <= @applications.total_entries
-        =@applications.current_page*@applications.per_page
-      - else
-        =@applications.total_entries
-      of
-      =@applications.total_entries
-      results
+    / ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
+    / - if @applications.current_page*@applications.per_page <= @applications.total_entries
+    /   =@applications.current_page*@applications.per_page
+    / - else
+    /   =@applications.total_entries
+    / of
+    / =@applications.total_entries
+    / results
 
-      = render "applications", :applications => @applications
+    = render "applications", :applications => @applications
 
 = content_for :extra_javascript, javascript_include_tag("hampshire.maps")
