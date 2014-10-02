@@ -57,7 +57,7 @@ class HampshireTheme
           # TBD
         end
 
-        if @search
+        unless @search.blank?
           search_params = {:per_page => 10,
                           :order => {:date_scraped => :desc},
                           :page => params[:page]}
@@ -80,8 +80,6 @@ class HampshireTheme
           @applications = Application.search @search, search_params
           @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
         end
-
-        render "applications/_applications", :locals => {:applications => @applications}
       end
       return false
     end

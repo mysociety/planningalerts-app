@@ -33,7 +33,7 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! '{"code": 404, "error": "No Postcode matches the given query."}'
-    http_version:
+    http_version: 
   recorded_at: Thu, 25 Sep 2014 17:10:48 GMT
 - request:
     method: get
@@ -78,7 +78,7 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
-    http_version:
+    http_version: 
   recorded_at: Thu, 25 Sep 2014 17:12:57 GMT
 - request:
     method: get
@@ -123,6 +123,81 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
-    http_version:
+    http_version: 
   recorded_at: Thu, 25 Sep 2014 17:23:40 GMT
+- request:
+    method: get
+    uri: http://mapit.mysociety.org/point/4326/-1.319368478028908,51.06254955783433
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Expires:
+      - Thu, 30 Oct 2014 13:06:22 GMT
+      Vary:
+      - Accept-Encoding
+      Cache-Control:
+      - max-age=2419200
+      Access-Control-Allow-Origin:
+      - ! '*'
+      Last-Modified:
+      - Thu, 02 Oct 2014 13:06:22 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Url:
+      - /point/4326/-1.319368478028908,51.06254955783433
+      Transfer-Encoding:
+      - chunked
+      Date:
+      - Thu, 02 Oct 2014 13:06:22 GMT
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+    body:
+      encoding: US-ASCII
+      string: ! '{"65921": {"parent_area": null, "generation_high": 22, "all_names":
+        {}, "id": 65921, "codes": {"gss": "E14001041", "unit_id": "25128"}, "name":
+        "Winchester", "country": "E", "type_name": "UK Parliament constituency", "generation_low":
+        13, "country_name": "England", "type": "WMC"}, "11811": {"parent_area": null,
+        "generation_high": 22, "all_names": {}, "id": 11811, "codes": {"ons": "08",
+        "gss": "E15000008", "unit_id": "41421"}, "name": "South East", "country":
+        "E", "type_name": "European region", "generation_low": 1, "country_name":
+        "England", "type": "EUR"}, "123782": {"parent_area": null, "generation_high":
+        22, "all_names": {}, "id": 123782, "codes": {"ons": "E01023263"}, "name":
+        "Winchester 007C", "country": "E", "type_name": "Lower Layer Super Output
+        Area (Generalised)", "generation_low": 13, "country_name": "England", "type":
+        "OLG"}, "14989": {"parent_area": 2227, "generation_high": 22, "all_names":
+        {}, "id": 14989, "codes": {"unit_id": "17671"}, "name": "Winchester Eastgate",
+        "country": "E", "type_name": "County council electoral division", "generation_low":
+        3, "country_name": "England", "type": "CED"}, "2227": {"parent_area": null,
+        "generation_high": 22, "all_names": {}, "id": 2227, "codes": {"ons": "24",
+        "gss": "E10000014", "unit_id": "17765"}, "name": "Hampshire County Council",
+        "country": "E", "type_name": "County council", "generation_low": 1, "country_name":
+        "England", "type": "CTY"}, "45908": {"parent_area": null, "generation_high":
+        22, "all_names": {}, "id": 45908, "codes": {"ons": "E02004835"}, "name": "Winchester
+        007", "country": "E", "type_name": "Middle Layer Super Output Area (Generalised)",
+        "generation_low": 13, "country_name": "England", "type": "OMG"}, "4693": {"parent_area":
+        2331, "generation_high": 22, "all_names": {}, "id": 4693, "codes": {"ons":
+        "24UPHC", "gss": "E05004668", "unit_id": "17678"}, "name": "St Michael", "country":
+        "E", "type_name": "District council ward", "generation_low": 1, "country_name":
+        "England", "type": "DIW"}, "38714": {"parent_area": null, "generation_high":
+        22, "all_names": {}, "id": 38714, "codes": {"ons": "E02004835"}, "name": "Winchester
+        007", "country": "E", "type_name": "Middle Layer Super Output Area (Full)",
+        "generation_low": 13, "country_name": "England", "type": "OMF"}, "2331": {"parent_area":
+        null, "generation_high": 22, "all_names": {}, "id": 2331, "codes": {"ons":
+        "24UP", "gss": "E07000094", "unit_id": "17754"}, "name": "Winchester City
+        Council", "country": "E", "type_name": "District council", "generation_low":
+        1, "country_name": "England", "type": "DIS"}, "89404": {"parent_area": null,
+        "generation_high": 22, "all_names": {}, "id": 89404, "codes": {"ons": "E01023263"},
+        "name": "Winchester 007C", "country": "E", "type_name": "Lower Layer Super
+        Output Area (Full)", "generation_low": 13, "country_name": "England", "type":
+        "OLF"}}'
+    http_version: 
+  recorded_at: Thu, 02 Oct 2014 13:06:22 GMT
 recorded_with: VCR 2.5.0
