@@ -61,8 +61,21 @@ class HampshireTheme
           search_params = {:per_page => 10,
                           :order => {:date_scraped => :desc},
                           :page => params[:page]}
+          facet_filter = {}
           if params[:authority]
-            search_params[:with] = {:authority_facet => Zlib.crc32(params[:authority])}
+            facet_filter[:authority_facet] = Zlib.crc32(params[:authority])
+          end
+          # uncomment once we've got categories wired up
+          # if params[:category]
+          #   with[:category_facet] = Zlib.crc32(params[:category])
+          # end
+          #
+          # uncomment once we've got status wired up
+          # if params[:status]
+          #   with[:status_facet] = Zlib.crc32(params[:status])
+          # end
+          unless facet_filter.empty?
+            search_params[:with] = facet_filter
           end
           @applications = Application.search @search, search_params
           @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
