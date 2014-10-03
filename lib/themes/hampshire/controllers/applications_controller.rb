@@ -85,8 +85,9 @@ class HampshireTheme
                        :order => {:date_scraped => :desc},
                        :page => params[:page]}
       with_params = {}
-      if params[:authority]
-        with_params[:authority_facet] = Zlib.crc32(params[:authority])
+      if params[:authority] and !use_distance
+        authority_facet = Zlib.crc32(CGI::unescape(params[:authority]))
+        with_params[:authority_facet] = authority_facet
       end
       if use_distance
         search_params[:geo] = [@search_lat, @search_lng]
