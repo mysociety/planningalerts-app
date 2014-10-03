@@ -19,12 +19,13 @@ describe ApplicationsController do
         expect(assigns(:search)).to eq nil
       end
 
-      it 'should blank the search value if passed "anything"' do
+      it 'should assign nil the search value if passed "anything"' do
         get :search, {:search => "anything"}
-        expect(assigns(:search)).to eq ""
+        expect(assigns(:search)).to eq nil
       end
 
       it 'should assign latlng to the view if passed in' do
+        Application.stub(:search)
         VCR.use_cassette('hampshire_theme') do
           get :search, {:lat => lat, :lng => lng}
         end
@@ -37,7 +38,7 @@ describe ApplicationsController do
                            :order => {:date_scraped=>:desc},
                            :page => '2',
                            :geo => [0.8912096142469838, -0.023027323988630912],
-                           :with => {'@geodist' => 0.0..8.04672}}
+                           :with => {'@geodist' => 0.0..8046.72}}
         Application.should_receive(:search).
           with('test', expected_params).
           and_return([])
@@ -64,7 +65,7 @@ describe ApplicationsController do
                            :order => {:date_scraped=>:desc},
                            :page => nil,
                            :geo => [0.8912096142469838, -0.023027323988630912],
-                           :with => {'@geodist' => 0.0..8.04672}}
+                           :with => {'@geodist' => 0.0..8046.72}}
         Application.should_receive(:search).with("tree", expected_params).and_return([])
 
         VCR.use_cassette('hampshire_theme') do
@@ -77,7 +78,7 @@ describe ApplicationsController do
                            :order => {:date_scraped=>:desc},
                            :page => nil,
                            :geo => [0.8912096142469838, -0.023027323988630912],
-                           :with => {'@geodist' => 0.0..8.04672}}
+                           :with => {'@geodist' => 0.0..8046.72}}
         Application.should_receive(:search).with("tree", expected_params).and_return([])
 
         VCR.use_cassette('hampshire_theme') do
@@ -85,8 +86,13 @@ describe ApplicationsController do
         end
       end
 
-      it "should do a near lookup if passed 'anything' as a keyword" do
-        Application.should_receive(:near).with([lat,lng], 5).and_return([])
+      it "should do a search without the keyword if passed 'anything' as a keyword" do
+        expected_params = {:per_page => 10,
+                           :order => {:date_scraped=>:desc},
+                           :page => nil,
+                           :geo => [0.8912096142469838, -0.023027323988630912],
+                           :with => {'@geodist' => 0.0..8046.72}}
+        Application.should_receive(:search).with(expected_params).and_return([])
 
         VCR.use_cassette('hampshire_theme') do
           get :search, {:search => 'anything', :lat => lat, :lng => lng}

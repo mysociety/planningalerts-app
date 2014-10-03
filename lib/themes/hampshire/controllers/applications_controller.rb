@@ -43,7 +43,7 @@ class HampshireTheme
       @search = params[:search]
       # "anything" is our special keyword meaning don't do a full text search
       if !@search.blank? && @search.strip.downcase == "anything"
-        @search = ''
+        @search = nil
       end
       @lat = params[:lat]
       @lng = params[:lng]
@@ -58,17 +58,14 @@ class HampshireTheme
           # TBD
         end
 
-        if @search.blank?
-          # defaults to miles
-          # can change to km by appending :units => :km to args
-          @applications = Application.near([@lat, @lng], @distance_in_miles)
-        else
-          @search_lat = @lat.to_f / 180 * Math::PI
-          @search_lng = @lng.to_f / 180 * Math::PI
-          @search_range = @distance_in_miles * 1.609344
-          @applications = do_search(true)
-          @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
-        end
+        # convert degrees to radians
+        @search_lat = @lat.to_f / 180 * Math::PI
+        @search_lng = @lng.to_f / 180 * Math::PI
+
+        # convert miles to metres (not km as originally thought)
+        @search_range = @distance_in_miles.to_f * 1609.344
+        @applications = do_search(true)
+        @rss = search_applications_path(:format => "rss", :page => nil)
       else
         unless @search.blank?
           @applications = do_search
@@ -105,7 +102,11 @@ class HampshireTheme
       unless with_params.empty?
         search_params[:with] = with_params
       end
-      Application.search @search, search_params
+      if @search.nil?
+        Application.search search_params
+      else
+        Application.search @search, search_params
+      end
     end
 
     def find_planning_authorities(data)
