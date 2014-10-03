@@ -34,14 +34,14 @@
     %p
       = @applications.facets
 
-    / ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
-    / - if @applications.current_page*@applications.per_page <= @applications.total_entries
-    /   =@applications.current_page*@applications.per_page
-    / - else
-    /   =@applications.total_entries
-    / of
-    / =@applications.total_entries
-    / results
+    ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
+    - if @applications.current_page*@applications.per_page <= @applications.total_entries
+      =@applications.current_page*@applications.per_page
+    - else
+      =@applications.total_entries
+    of
+    =@applications.total_entries
+    results
 
     = render "applications", :applications => @applications
 
