@@ -36,7 +36,7 @@ PlanningalertsApp::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => MySociety::Config::get('HOST') }
+  config.action_mailer.default_url_options = { :host => Configuration::HOST }
 
   # Enable threaded mode
   # config.threadsafe!
@@ -53,8 +53,8 @@ PlanningalertsApp::Application.configure do
   config.action_mailer.smtp_settings = {
      :address => "localhost",
      :port => 2525,
-     :user_name => MySociety::Config::get('CUTTLEFISH_USER_NAME'),
-     :password => MySociety::Config::get('CUTTLEFISH_PASSWORD'),
+     :user_name => Configuration::CUTTLEFISH_USER_NAME,
+     :password => Configuration::CUTTLEFISH_PASSWORD,
      # The cuttlefish smtp server is currently using a self-signed certificate
      :openssl_verify_mode => "none",
      :authentication => :plain

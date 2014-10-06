@@ -15,7 +15,7 @@ class Location < SimpleDelegator
   end
 
   def self.geocode(address)
-    r = Geokit::Geocoders::GoogleGeocoder3.geocode(address, :bias => MySociety::Config::get('COUNTRY_CODE').downcase)
+    r = Geokit::Geocoders::GoogleGeocoder3.geocode(address, :bias => Configuration::COUNTRY_CODE.downcase)
     r = r.all.find{|l| Location.new(l).in_correct_country?} || r
     l = Location.new(r)
     l.original_address = address
@@ -23,7 +23,7 @@ class Location < SimpleDelegator
   end
 
   def in_correct_country?
-    country_code == MySociety::Config::get('COUNTRY_CODE')
+    country_code == Configuration::COUNTRY_CODE
   end
 
   def suburb
@@ -42,8 +42,8 @@ class Location < SimpleDelegator
       elsif lat.nil? || lng.nil?
         "isn't valid"
       elsif !in_correct_country?
-        "#{country_code} isn't in #{MySociety::Config::get('COUNTRY_NAME')}"
-      elsif accuracy < MySociety::Config::get('MINIMUM_ACCURACY')
+        "#{country_code} isn't in #{Configuration::COUNTRY_NAME}"
+      elsif accuracy < Configuration::MINIMUM_ACCURACY
         "isn't complete. We saw that address as \"#{full_address}\" which we don't recognise as a full street address. Check your spelling and make sure to include suburb and state"
       end
     end
@@ -60,7 +60,7 @@ class Location < SimpleDelegator
   end
 
   def full_address
-    to_replace = MySociety::Config::get('COUNTRY_NAME').gsub(/^the /, "")
+    to_replace = Configuration::COUNTRY_NAME.gsub(/^the /, "")
     __getobj__.full_address.sub(", #{to_replace}", "")
   end
 

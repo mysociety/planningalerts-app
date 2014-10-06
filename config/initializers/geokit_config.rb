@@ -30,8 +30,8 @@ if defined? Geokit
 
   #use the Google MAP auth info, if there is any
   begin
-    Geokit::Geocoders::google_client_id = MySociety::Config::get('GOOGLE_MAPS_CLIENT_ID')
-    Geokit::Geocoders::google_cryptographic_key = MySociety::Config::get('GOOGLE_MAPS_CRYPTOGRAPHIC_KEY')
+    Geokit::Geocoders::google_client_id = Configuration::GOOGLE_MAPS_CLIENT_ID
+    Geokit::Geocoders::google_cryptographic_key = Configuration::GOOGLE_MAPS_CRYPTOGRAPHIC_KEY
   rescue
     # this is ok, we can live without the auth details
 	end

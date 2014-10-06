@@ -45,7 +45,7 @@ class Application < ActiveRecord::Base
   @@per_page = 100
 
   # Sphinx config
-  unless MySociety::Config::get('CUSTOM_MODELS_PATH', false)
+  unless defined?(Configuration::CUSTOM_MODELS_PATH) and !Configuration::CUSTOM_MODELS_PATH.blank?
     define_index do
       indexes description
       has date_scraped

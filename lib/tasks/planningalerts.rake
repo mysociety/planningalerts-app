@@ -95,8 +95,8 @@ namespace :planningalerts do
               :type_uri => 'http://data.hampshirehub.net/def/planning/PlanningApplication'
             }
           },
-          :user => MySociety::Config::get('PUBLISHMYDATA_USER'),
-          :password => MySociety::Config::get('PUBLISHMYDATA_PASSWORD'),
+          :user => Configuration::PUBLISHMYDATA_USER,
+          :password => Configuration::PUBLISHMYDATA_PASSWORD,
         )
         response = request.execute
 
@@ -136,8 +136,8 @@ namespace :planningalerts do
                   :uri => application['http://schema.org/location'][0]['@id']
               },
             },
-            :user => MySociety::Config::get('PUBLISHMYDATA_USER'),
-            :password => MySociety::Config::get('PUBLISHMYDATA_PASSWORD'),
+            :user => Configuration::PUBLISHMYDATA_USER,
+            :password => Configuration::PUBLISHMYDATA_PASSWORD,
           ).execute
           # the "resource" endpoint returns an array despite not being plural
           place = JSON.parse(place_json)[0]

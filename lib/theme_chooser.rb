@@ -23,19 +23,19 @@ class DefaultTheme < Theme
   end
 
   def app_name
-    MySociety::Config::get('EMAIL_FROM_NAME')
+    Configuration::EMAIL_FROM_NAME
   end
 
   def email_from_address
-    MySociety::Config::get('EMAIL_FROM_ADDRESS')
+    Configuration::EMAIL_FROM_ADDRESS
   end
 
   def google_analytics_key
-    MySociety::Config::get('GOOGLE_ANALYTICS_KEY')
+    Configuration::GOOGLE_ANALYTICS_KEY
   end
 
   def google_maps_client_id
-    MySociety::Config::get('GOOGLE_MAPS_CLIENT_ID') if defined?(MySociety::Config::get('GOOGLE_MAPS_CLIENT_ID'))
+    Configuration::GOOGLE_MAPS_CLIENT_ID if defined?(Configuration::GOOGLE_MAPS_CLIENT_ID)
   end
 
 # TODO Put this in the config
@@ -56,27 +56,27 @@ class NSWTheme < Theme
 
   # This might have a port number included
   def host
-    MySociety::Config::get('THEME_NSW_HOST')
+    Configuration::THEME_NSW_HOST
   end
 
   def app_name
-    MySociety::Config::get('THEME_NSW_EMAIL_FROM_NAME')
+    Configuration::THEME_NSW_EMAIL_FROM_NAME
   end
 
   def email_from_address
-    MySociety::Config::get('THEME_NSW_EMAIL_FROM_ADDRESS')
+    Configuration::THEME_NSW_EMAIL_FROM_ADDRESS
   end
 
   def cuttlefish_user_name
-    MySociety::Config::get('THEME_NSW_CUTTLEFISH_USER_NAME')
+    Configuration::THEME_NSW_CUTTLEFISH_USER_NAME
   end
 
   def cuttlefish_password
-    MySociety::Config::get('THEME_NSW_CUTTLEFISH_PASSWORD')
+    Configuration::THEME_NSW_CUTTLEFISH_PASSWORD
   end
 
   def google_analytics_key
-    MySociety::Config::get('THEME_NSW_GOOGLE_ANALYTICS_KEY')
+    Configuration::THEME_NSW_GOOGLE_ANALYTICS_KEY
   end
 
   def google_maps_client_id
@@ -101,27 +101,27 @@ class HampshireTheme < Theme
 
   # This might have a port number included
   def host
-    MySociety::Config::get('THEME_HAMPSHIRE_HOST')
+    Configuration::THEME_HAMPSHIRE_HOST
   end
 
   def app_name
-    MySociety::Config::get('THEME_HAMPSHIRE_EMAIL_FROM_NAME')
+    Configuration::THEME_HAMPSHIRE_EMAIL_FROM_NAME
   end
 
   def email_from_address
-    MySociety::Config::get('THEME_HAMPSHIRE_EMAIL_FROM_ADDRESS')
+    Configuration::THEME_HAMPSHIRE_EMAIL_FROM_ADDRESS
   end
 
   def cuttlefish_user_name
-    MySociety::Config::get('THEME_HAMPSHIRE_CUTTLEFISH_USER_NAME')
+    Configuration::THEME_HAMPSHIRE_CUTTLEFISH_USER_NAME
   end
 
   def cuttlefish_password
-    MySociety::Config::get('THEME_HAMPSHIRE_CUTTLEFISH_PASSWORD')
+    Configuration::THEME_HAMPSHIRE_CUTTLEFISH_PASSWORD
   end
 
   def google_analytics_key
-    MySociety::Config::get('THEME_HAMPSHIRE_GOOGLE_ANALYTICS_KEY')
+    Configuration::THEME_HAMPSHIRE_GOOGLE_ANALYTICS_KEY
   end
 
   def google_maps_client_id
@@ -144,8 +144,8 @@ class ThemeChooser
   end
 
   def self.themer_from_request(request)
-    if MySociety::Config::get('THEME', false)
-      theme = THEMES.find{|t| t.theme == MySociety::Config::get('THEME')}
+    if defined?(Configuration::THEME)
+      theme = THEMES.find{|t| t.theme == Configuration::THEME}
       raise "Unknown theme #{theme}" if theme.nil?
       theme
     else

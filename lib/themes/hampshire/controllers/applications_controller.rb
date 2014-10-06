@@ -8,7 +8,7 @@ class HampshireTheme
       if params[:location]
         if MySociety::Validate.is_valid_postcode(params[:location])
           postcode = CGI::escape(params[:location].gsub(" ", ""))
-          url = "#{MySociety::Config::get('MAPIT_URL')}/postcode/#{postcode}"
+          url = "#{::Configuration::MAPIT_URL}/postcode/#{postcode}"
           begin
             result = HTTParty.get(url)
             content = result.body
@@ -48,7 +48,7 @@ class HampshireTheme
       @lat = params[:lat]
       @lng = params[:lng]
       if @lat and @lng
-        url = "#{MySociety::Config::get('MAPIT_URL')}/point/4326/#{@lng},#{@lat}"
+        url = "#{::Configuration::MAPIT_URL}/point/4326/#{@lng},#{@lat}"
         begin
           result = HTTParty.get(url)
           content = result.body

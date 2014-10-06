@@ -1,3 +1,5 @@
+HOST: 'localhost:3000'
+
 # See https://morph.io/api
 MORPH_API_KEY: "xxxxxxxxxxxxxxxxxxxx"
 
@@ -64,3 +66,6 @@ MAPIT_URL: "http://mapit.mysociety.org"
 COUNTRY_NAME: 'the UK'
 COUNTRY_CODE: 'GB'
 MINIMUM_ACCURACY: 4
+
+HONEYBADGER_API_KEY: 'not used'
+JUST_HERE_FOR_THE_TEST: true

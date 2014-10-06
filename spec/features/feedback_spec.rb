@@ -77,7 +77,7 @@ feature "Give feedback to Council" do
   end
 
   scenario "Reporting abuse on a confirmed comment" do
-    email_moderator = MySociety::Config::get('EMAIL_MODERATOR')
+    email_moderator = Configuration::EMAIL_MODERATOR
     VCR.use_cassette('planningalerts') do
       comment = Factory(:comment, :confirmed => true, :text => "I'm saying something abusive", :name => "Jack Rude", :email => "rude@foo.com", :id => "23")
       visit(new_comment_report_path(comment))

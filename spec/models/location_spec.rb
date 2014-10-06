@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe "Location" do
   describe "valid location" do
     before :each do
-      @result = mock(:all => [mock(:country_code => MySociety::Config::get('COUNTRY_CODE'), :lat => 51.3476038, :lng => -0.845855, :accuracy => 6)])
-      Geokit::Geocoders::GoogleGeocoder3.should_receive(:geocode).with("Eversley Quarry, Fox Lane, Eversley, Hampshire, GU46 7RU", :bias => MySociety::Config::get('COUNTRY_CODE').downcase).and_return(@result)
+      @result = mock(:all => [mock(:country_code => Configuration::COUNTRY_CODE, :lat => 51.3476038, :lng => -0.845855, :accuracy => 6)])
+      Geokit::Geocoders::GoogleGeocoder3.should_receive(:geocode).with("Eversley Quarry, Fox Lane, Eversley, Hampshire, GU46 7RU", :bias => Configuration::COUNTRY_CODE.downcase).and_return(@result)
       @loc = Location.geocode("Eversley Quarry, Fox Lane, Eversley, Hampshire, GU46 7RU")
     end
 
@@ -19,7 +19,7 @@ describe "Location" do
   end
 
   it "should return nil if the address to geocode isn't valid" do
-    Geokit::Geocoders::GoogleGeocoder3.should_receive(:geocode).with("", :bias => MySociety::Config::get('COUNTRY_CODE').downcase).and_return(mock(:lat => nil, :lng => nil, :all => []))
+    Geokit::Geocoders::GoogleGeocoder3.should_receive(:geocode).with("", :bias => Configuration::COUNTRY_CODE.downcase).and_return(mock(:lat => nil, :lng => nil, :all => []))
     l = Location.geocode("")
     l.lat.should be_nil
     l.lng.should be_nil
@@ -59,19 +59,19 @@ describe "Location" do
     Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:lat => 1, :lng => 2, :country_code => "US", :all => [mock(:lat => 1, :lng => 2, :country_code => "US")]))
 
     l = Location.geocode("New York")
-    l.error.should == "US isn't in #{MySociety::Config::get('COUNTRY_NAME')}"
+    l.error.should == "US isn't in #{Configuration::COUNTRY_NAME}"
   end
 
   it "should not error if there are multiple matches from the geocoder" do
-    Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:lat => 1, :lng => 2, :country_code => MySociety::Config::get('COUNTRY_CODE'),
-      :all => [mock(:country_code => MySociety::Config::get('COUNTRY_CODE'), :lat => 1, :lng => 2, :accuracy => 6), mock(:country_code => MySociety::Config::get('COUNTRY_CODE'), :lat => 1.1, :lng => 2.1, :accuracy => 6)]))
+    Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:lat => 1, :lng => 2, :country_code => Configuration::COUNTRY_CODE,
+      :all => [mock(:country_code => Configuration::COUNTRY_CODE, :lat => 1, :lng => 2, :accuracy => 6), mock(:country_code => Configuration::COUNTRY_CODE, :lat => 1.1, :lng => 2.1, :accuracy => 6)]))
 
     l = Location.geocode("Fox Lane")
     l.error.should be_nil
   end
 
   it "should error if the address is not a full street address but rather a suburb name or similar" do
-    Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:all => [mock(:country_code => MySociety::Config::get('COUNTRY_CODE'), :lat => 1, :lng => 2, :accuracy => 3, :full_address => "Fox Lane, Hampshire, UK")]))
+    Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:all => [mock(:country_code => Configuration::COUNTRY_CODE, :lat => 1, :lng => 2, :accuracy => 3, :full_address => "Fox Lane, Hampshire, UK")]))
 
     l = Location.geocode("Fox Lane, Hampshire")
     l.error.should == "isn't complete. We saw that address as \"Fox Lane, Hampshire\" which we don't recognise as a full street address. Check your spelling and make sure to include suburb and state"
