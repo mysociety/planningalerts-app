@@ -75,6 +75,7 @@ class HampshireTheme
         # convert miles to metres (not km as originally thought)
         @search_range = @distance_in_miles.to_f * 1609.344
         @applications = do_search(true)
+        @applications_json = @applications.to_json
         @rss = search_applications_path(:format => "rss", :page => nil)
       else
         unless @search.blank?
