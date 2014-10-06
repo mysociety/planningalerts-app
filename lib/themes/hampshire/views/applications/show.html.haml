@@ -1,14 +1,15 @@
 - content_for :page_title, page_title(@application)
 - content_for :meta_description, @application.description
-- content_for :extra_meta_tags do
-  %meta(name="twitter:card" content="summary")
-  %meta(name="twitter:site" content="@PlanningAlerts")
-  %meta(name="twitter:title" content="#{@application.address}")
-  %meta(name="twitter:description" content="#{@application.description[0..199] if @application.description}")
-  %meta(name="twitter:image" content="#{google_static_streetview_url(@application, :size => "120x120")}")
+- unless defined?(Configuration::THEME_HAMPSHIRE_DISABLE_SOCIAL_SHARING)
+  - content_for :extra_meta_tags do
+    %meta(name="twitter:card" content="summary")
+    %meta(name="twitter:site" content="@PlanningAlerts")
+    %meta(name="twitter:title" content="#{@application.address}")
+    %meta(name="twitter:description" content="#{@application.description[0..199] if @application.description}")
+    %meta(name="twitter:image" content="#{google_static_streetview_url(@application, :size => "120x120")}")
 
-= render "applications/facebook"
-= render "applications/twitter"
+  = render "applications/facebook"
+  = render "applications/twitter"
 
 #main
   #application
@@ -41,9 +42,8 @@
   - unless defined?(Configuration::THEME_HAMPSHIRE_DISABLE_ALERTS)
     =render "applications/alert", {:application => @application, :alert => @alert, :nearby_count => @nearby_count}
 
-  #social
-    =render "applications/twitter_share_button", :application => @application
-    =render "applications/facebook_share_button", :application => @application
+  - unless defined?(Configuration::THEME_HAMPSHIRE_DISABLE_SOCIAL_SHARING)
+    =render "applications/social_sharing", :application => @application
 
 - if @application.location
   :javascript
