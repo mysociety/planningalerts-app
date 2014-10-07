@@ -88,10 +88,11 @@ class HampshireTheme
 
     protected
 
-    def do_search(use_distance=false)
-      search_params = {:per_page => 10,
+    def do_search(use_distance=false, override_params={})
+      search_params = {:per_page => Application.per_page,
                        :order => {:date_scraped => :desc},
                        :page => params[:page]}
+      search_params.merge!(override_params)
       with_params = {}
       if params[:authority] and !use_distance
         authority_facet = Zlib.crc32(CGI::unescape(params[:authority]))
