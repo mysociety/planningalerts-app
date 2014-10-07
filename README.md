@@ -35,6 +35,17 @@ PlanningAlerts is brought to you by the [OpenAustralia Foundation](http://www.op
 **Run The Tests**
  * Run the test suite - `rake`
 
+### Deployment
+
+To use capistrano and the OpenAustralia Foundation's default configuration model, ignore this part of the instructions and carry on. To use mySociety's yaml-based configuration system instead you will need to:
+
+1. Get the git submodules with `git submodule update --init`
+1. Copy the settings in `config/general.yml-example` and `config/test.yml-example` to `config/general.yml` and `config/test.yml`
+
+This should cause the Configuration object in `app/models/configuration.rb` to be overriden by `lib/themes/hampshire/configuration.rb` which will replace the Configuration object's values with the ones held in the yml files. You can test whether this is working by running `rspec lib/themes/hampshire/spec/models/configuration_spec.rb`
+
+Please note - customisations which are specific to mySociety's Hampshire theme have settings which exist only in the yml files. Config settings which relate to the main application are duplicated in the Configuration object.
+
 ### Scraping and sending emails in development
 
 **Step 1 - Seed authorities table**
