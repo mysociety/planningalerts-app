@@ -1,9 +1,5 @@
 %h3= "Search"
 
-%p
-  applications per page:
-  = @applications.per_page
-
 #sidebar
   - if @display == "map"
     = link_to 'List view', params.merge({:display => 'list'}), :class => 'results-display-link'
@@ -64,4 +60,19 @@
 = content_for :extra_javascript do
   %script
     var applications = #{raw @applications_json};
+= content_for :extra_javascript do
+  %script{:id=> 'marker-template', :type => 'text/template'}
+    %small
+      %a{:href => '/applications/{{ application.id }}'}
+        {{ application.council_reference }}
+    %h3 {{ application.address }}
+    %p {{ application.description }}
+    %dl
+      %dt Valid:
+      %dd {{ application.date_received }}
+      %dt Status:
+      %dd TODO
+      %dt Decision date:
+      %dd TODO
+    %a{:href => '{{ application.info_url }}'} Read more
 = content_for :extra_javascript, javascript_include_tag("hampshire.maps")
