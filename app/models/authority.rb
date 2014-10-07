@@ -170,11 +170,16 @@ class Authority < ActiveRecord::Base
   def applications_per_week
     # Sunday is the beginning of the week (and the date returned here)
     # Have to compensate for MySQL which treats Monday as the beginning of the week
-    h = applications.group("CAST(SUBDATE(date_scraped, WEEKDAY(date_scraped) + 1) AS DATE)").count
-    min = h.keys.min
-    max = Date.today - Date.today.wday
-    (min..max).step(7) do |date|
-      h[date] = 0 unless h.has_key?(date)
+    if Rails.configuration.database_configuration[Rails.env]["adapter"] =~ /mysql/i
+      h = applications.group("CAST(SUBDATE(date_scraped, WEEKDAY(date_scraped) + 1) AS DATE)").count
+      min = h.keys.min
+      max = Date.today - Date.today.wday
+      (min..max).step(7) do |date|
+        h[date] = 0 unless h.has_key?(date)
+      end
+    else # naively assumes that the logical alternative is postgres
+      # postgres treats Sunday as the beginning of the week
+      h = applications.group("date_scraped - interval '1 day' * EXTRACT(DOW FROM date_scraped)").count
     end
     h.sort
   end
