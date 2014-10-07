@@ -39,7 +39,7 @@ class HampshireTheme
     end
 
     def search
-      @distance_in_miles = 5
+      @distance_in_miles = 2
       @search = params[:search]
       # "anything" is our special keyword meaning don't do a full text search
       if !@search.blank? && @search.strip.downcase == "anything"
