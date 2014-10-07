@@ -21,4 +21,17 @@ Rails.configuration.to_prepare do
       has date_scraped
     end
   end
+
+  Authority.class_eval do
+    def applications_received_per_week
+      # warning - assumes postgres!
+      h = applications.group("date_scraped - interval '1 day' * EXTRACT(DOW FROM date_received)").count
+      h.sort
+    end
+
+    def median_applications_received_per_week
+      v = applications_received_per_week.select{|a| a[1] > 0}.map{|a| a[1]}.sort
+      v[v.count / 2]
+    end
+  end
 end
