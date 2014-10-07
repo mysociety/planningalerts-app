@@ -57,7 +57,7 @@ class HampshireTheme
         @map_display_possible = false
         @display = 'list'
       end
-      if @lat and @lng
+      if @map_display_possible
         url = "#{::Configuration::MAPIT_URL}/point/4326/#{@lng},#{@lat}"
         begin
           result = HTTParty.get(url)
@@ -75,7 +75,19 @@ class HampshireTheme
         # convert miles to metres (not km as originally thought)
         @search_range = @distance_in_miles.to_f * 1609.344
         @applications = do_search(true)
-        @applications_json = @applications.to_json
+        if @display == 'map'
+          # Simple check to see if we already have everything or if we need to
+          # do another, bigger, search to get pins for the map
+          if @applications.total_pages > 1
+            # Thinking sphinx limits you to 1,000 searches by default, so that's
+            # the most we can get.
+            # We might have a stray page param if we've switched to the map
+            # from a list view, therefore we force the page param to 1
+            @applications_json = do_search(true, {:per_page => 1000, :page => 1}).to_json
+          else
+            @applications_json = @applications.to_json
+          end
+        end
         @rss = search_applications_path(:format => "rss", :page => nil)
       else
         unless @search.blank?

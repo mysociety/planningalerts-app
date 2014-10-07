@@ -1,5 +1,9 @@
 %h3= "Search"
 
+%p
+  applications per page:
+  = @applications.per_page
+
 #sidebar
   - if @display == "map"
     = link_to 'List view', params.merge({:display => 'list'}), :class => 'results-display-link'
