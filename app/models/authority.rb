@@ -20,8 +20,6 @@ end
 class Authority < ActiveRecord::Base
   has_many :applications
 
-  default_scope order('id')
-
   # changed disabled = 0 to disabled = false
   scope :enabled, :conditions => 'disabled = false or disabled is null'
   # changed from double to single quotes

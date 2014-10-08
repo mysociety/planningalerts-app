@@ -1,6 +1,4 @@
 class Stat < ActiveRecord::Base
-  default_scope order('id')
-
   def self.applications_sent
     get_value_for_key("applications_sent")
   end
