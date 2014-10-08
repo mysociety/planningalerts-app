@@ -1,12 +1,13 @@
 - content_for :page_title, "Planning authorities currently covered by the service"
 %h3= yield :page_title
 
-%ul.list-options
-  %li
-    %b Go to county
-  - @authorities.each_with_index do |a, i|
+- if @authorities.count > 1
+  %ul.list-options
     %li
-      %a.button-small.button.button-pill{ :href => "##{a.first.downcase}" }= a.first
+      %b Go to county
+    - @authorities.each_with_index do |a, i|
+      %li
+        %a.button-small.button.button-pill{ :href => "##{a.first.downcase}" }= a.first
 
 - @authorities.each do |state, authorities|
   %h4{:id => state.downcase}= state
