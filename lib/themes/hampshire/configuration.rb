@@ -1,19 +1,15 @@
-Rails.configuration.to_prepare do
-  module Configuration
-    self.constants.each do |const|
-      # unset the constant
-      remove_const(const)
+module Configuration
+  if ENV["RAILS_ENV"] == "test"
+    config = YAML::load_file(Rails.root + "config/test.yml")
+  else
+    config = YAML::load_file(Rails.root + "config/general.yml")
+  end
 
-      # reset, copying the value from the yml file
-      const_set(const.to_s, MySociety::Config::get("#{const.to_s}"))
-    end
+  config.keys.each do |const|
+    # unset the constant if already defined
+    remove_const(const) if self.constants.include?(const.to_sym)
 
-    def self.const_missing(const)
-      if MySociety::Config::get("#{const.to_s}", "NotDefined") != "NotDefined"
-        const_set(const.to_s, MySociety::Config::get("#{const.to_s}"))
-      else
-        raise NameError, "uninitialized constant #{const}"
-      end
-    end
+    # set the new value
+    const_set(const.to_s, config[const])
   end
 end

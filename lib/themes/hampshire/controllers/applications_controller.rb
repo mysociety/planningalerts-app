@@ -2,6 +2,7 @@ load File.expand_path('../controller_base.rb',  __FILE__)
 
 class HampshireTheme
   class ApplicationsController < ControllerBase
+    $:.push(File.join(File.dirname(__FILE__), '../../commonlib/rblib'))
     load "validate.rb"
 
     def address
