@@ -17,6 +17,14 @@ class QueryParamsPresentConstraint
 end
 
 PlanningalertsApp::Application.routes.draw do
+
+  # Allow easy extension from themes. Note these will have the highest priority.
+  unless $app_route_extensions.nil?
+    $app_route_extensions.each do |f|
+      load File.join(f)
+    end
+  end
+
   constraints :subdomain => "api" do
     constraints FormatConstraint.new do
       match "(*path)" => redirect{|p,r| "http://www.#{r.domain(2)}/#{p[:path]}"}
