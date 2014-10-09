@@ -9,7 +9,7 @@ Rails.configuration.to_prepare do
 
       # to be added when available
       # indexes category, :facet => true
-      # indexes status, :facet = true
+      indexes status, :facet => true
 
       # enable geosearch - see http://pat.github.io/thinking-sphinx/geosearching.html
       has 'RADIANS("applications"."lat")', :as => :latitude,  :type => :float

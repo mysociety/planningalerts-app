@@ -140,11 +140,13 @@ class HampshireTheme
       # if params[:category]
       #   with_params[:category_facet] = Zlib.crc32(params[:category])
       # end
-      #
-      # uncomment once we've got status wired up
-      # if params[:status]
-      #   with_params[:status_facet] = Zlib.crc32(params[:status])
-      # end
+
+      # using this as a filter could cause us problems if we always
+      # want to be able to display counts of all 3 facets
+      # might switch this off in the end
+      if params[:status]
+        with_params[:status_facet] = Zlib.crc32(params[:status])
+      end
       unless with_params.empty?
         search_params[:with] = with_params
       end
