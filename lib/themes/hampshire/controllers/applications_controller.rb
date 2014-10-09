@@ -22,6 +22,20 @@ class HampshireTheme
     end
 
     def search
+      process_location_params
+      # If process_location_params set an instance var for postcode or
+      # address, the search was successful and we can show the results
+      if @postcode
+        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :postcode => @postcode, :search => params[:search]})
+        return false
+      elsif @address
+        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :address => @address, :search => params[:search]})
+        return false
+      elsif @error
+        # @error will be set if either of the above failed and can thus be
+        # displayed to the user
+        return false
+      end
       @distance_in_miles = 2
       @search = params[:search]
       # "anything" is our special keyword meaning don't do a full text search
