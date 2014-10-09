@@ -13,4 +13,6 @@
           applications
         %span.percent_approved
           ="#{(Application.where(:authority_id => authority.id, :status => "Approved").count.to_f / Application.where(:authority_id => authority.id).count.to_f * 100).round}% approved"
+        %span.percent_delayed
+          ="#{(Application.where(:authority_id => authority.id, :delayed => true).count.to_f / Application.where(:authority_id => authority.id).count.to_f * 100).round}% delayed"
 
