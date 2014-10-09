@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Override the homepage to go straight to application search
+  root :to => 'applications#search'
+
   # switch off routes not used by the theme
   match 'faq', :to => 'static#error_404'
   match 'getinvolved', :to => 'static#error_404'
