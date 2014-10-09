@@ -1,88 +1,94 @@
-%h3= "Search"
+= content_for :title, @description
 
-#searchbar
-  = form_tag(search_applications_path, :method => :post) do |f|
-    = label_tag(:search, "Showing applications for:")
-    = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "e.g. Conservatories")
-    = label_tag(:location, "Located around:")
-    = text_field_tag(:location, (params[:address] or params[:postcode]), placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
-    - if @error
-      %p.inline-errors= @error
-    = submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
+- if @show_results
+  %h3= "Search"
 
-#sidebar
+  #searchbar
+    = form_tag(search_applications_path, :method => :post) do |f|
+      = label_tag(:search, "Showing applications for:")
+      = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "e.g. Conservatories")
+      = label_tag(:location, "Located around:")
+      = text_field_tag(:location, (params[:address] or params[:postcode]), placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
+      - if @error
+        %p.inline-errors= @error
+      = submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
+
+  #sidebar
+    - if @display == "map"
+      = link_to 'List view', params.merge({:display => 'list'}), :class => 'results-display-link'
+    - elsif @map_display_possible
+      = link_to 'Map view', params.merge({:display => 'map'}), :class => 'results-display-link'
+
+  #list{:class => 'results-display'}
+    - if @applications
+      = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »" do
+        = render "applications", :applications => @applications
+
   - if @display == "map"
-    = link_to 'List view', params.merge({:display => 'list'}), :class => 'results-display-link'
-  - elsif @map_display_possible
-    = link_to 'Map view', params.merge({:display => 'map'}), :class => 'results-display-link'
+    #map{:class => 'results-display'}
+      %p Sorry, there would be a map here, but you need to have javascript enabled to view it.
 
-#list{:class => 'results-display'}
-  - if @applications
-    = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »" do
-      = render "applications", :applications => @applications
+  - if params[:postcode] or params[:address]
+    %h4 Original geosearch
 
-- if @display == "map"
-  #map{:class => 'results-display'}
-    %p Sorry, there would be a map here, but you need to have javascript enabled to view it.
-
-- if params[:postcode] or params[:address]
-  %h4 Original geosearch
-
-  %p
-    -if params[:postcode]
-      Postcode:
-      =CGI::unescape(params[:postcode])
-
-    -if params[:address]
-      Address:
-      =CGI::unescape(params[:address])
-
-  %h4 Co-ordinates
-
-  %p
-    ="#{@lat}, #{@lng}"
-
-  %h4 Authorities
-
-  %p
-    = @authorities
-
-%h4 Search
-
-%p
-  - if @applications.blank?
-    None
-  - else
-    = @search
-    %h4 Facets
     %p
-      = @applications.facets
+      -if params[:postcode]
+        Postcode:
+        =CGI::unescape(params[:postcode])
 
-    ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
-    - if @applications.current_page*@applications.per_page <= @applications.total_entries
-      =@applications.current_page*@applications.per_page
+      -if params[:address]
+        Address:
+        =CGI::unescape(params[:address])
+
+    %h4 Co-ordinates
+
+    %p
+      ="#{@lat}, #{@lng}"
+
+    %h4 Authorities
+
+    %p
+      = @authorities
+
+  %h4 Search
+
+  %p
+    - if @applications.blank?
+      None
     - else
-      =@applications.total_entries
-    of
-    =@applications.total_entries
-    results
+      = @search
+      %h4 Facets
+      %p
+        = @applications.facets
 
-= content_for :extra_javascript do
-  %script
-    var applications = #{raw @applications_json};
-= content_for :extra_javascript do
-  %script{:id=> 'marker-template', :type => 'text/template'}
-    %small
-      %a{:href => '/applications/{{ application.id }}'}
-        {{ application.council_reference }}
-    %h3 {{ application.address }}
-    %p {{ application.description }}
-    %dl
-      %dt Valid:
-      %dd {{ application.date_received }}
-      %dt Status:
-      %dd TODO
-      %dt Decision date:
-      %dd TODO
-    %a{:href => '{{ application.info_url }}'} Read more
-= content_for :extra_javascript, javascript_include_tag("hampshire.maps")
+      ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
+      - if @applications.current_page*@applications.per_page <= @applications.total_entries
+        =@applications.current_page*@applications.per_page
+      - else
+        =@applications.total_entries
+      of
+      =@applications.total_entries
+      results
+
+  = content_for :extra_javascript do
+    %script
+      var applications = #{raw @applications_json};
+  = content_for :extra_javascript do
+    %script{:id=> 'marker-template', :type => 'text/template'}
+      %small
+        %a{:href => '/applications/{{ application.id }}'}
+          {{ application.council_reference }}
+      %h3 {{ application.address }}
+      %p {{ application.description }}
+      %dl
+        %dt Valid:
+        %dd {{ application.date_received }}
+        %dt Status:
+        %dd TODO
+        %dt Decision date:
+        %dd TODO
+      %a{:href => '{{ application.info_url }}'} Read more
+  = content_for :extra_javascript, javascript_include_tag("hampshire.maps")
+- else
+  = render "address_search_preamble"
+  = render "search_form"

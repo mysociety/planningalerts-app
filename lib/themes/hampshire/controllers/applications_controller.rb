@@ -6,9 +6,11 @@ class HampshireTheme
     load "validate.rb"
 
     def search
+      @show_results = false
       if params[:location]
         process_location
-      else
+      elsif params[:postcode] or params[:address] or params[:authority]
+        @show_results = true
         @distance_in_miles = 2
         @search = params[:search]
         # "anything" is our special keyword meaning don't do a full text search
