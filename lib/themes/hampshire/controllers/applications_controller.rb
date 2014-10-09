@@ -6,34 +6,16 @@ class HampshireTheme
     load "validate.rb"
 
     def address
-      if params[:location]
-        if MySociety::Validate.is_valid_postcode(params[:location])
-          postcode = CGI::escape(params[:location].gsub(" ", ""))
-          url = "#{::Configuration::MAPIT_URL}/postcode/#{postcode}"
-          begin
-            result = HTTParty.get(url)
-            content = result.body
-            data = JSON.parse(content)
-            lat = data["wgs84_lat"]
-            lng = data["wgs84_lon"]
-            if !lat.blank? and !lng.blank?
-              redirect_to search_applications_path({:lat => lat, :lng => lng, :postcode => params[:location], :search => params[:search]})
-            else
-              @error = "Postcode is not valid"
-            end
-          rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
-            @error = "Postcode is not valid"
-          end
-        else
-          address = CGI::escape(params[:location])
-          r = Location.geocode(address)
-          if r.success
-            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng, :address => address, :search => params[:search]})
-          else
-            @error = "Address not found"
-          end
-        end
+      process_location_params
+      # If process_location_params set an instance var for postcode or
+      # address, the search was successful and we can show the results
+      if @postcode
+        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :postcode => @postcode, :search => params[:search]})
+      elsif @address
+        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :address => @address, :search => params[:search]})
       end
+      # @error will be set if either of these failed and can thus be displayed
+      # to the user
       # return false to signal to the filter method to halt execution
       # before processing the original controller method
       return false
@@ -100,6 +82,51 @@ class HampshireTheme
     end
 
     protected
+
+    def process_location_params
+      # Process the location parameter (either a postcode or address) into a
+      # lat/lng
+      if params[:location]
+        if MySociety::Validate.is_valid_postcode(params[:location])
+          process_postcode(CGI::escape(params[:location]))
+        else
+          process_address(CGI::escape(params[:location]))
+        end
+      end
+    end
+
+    def process_postcode(postcode)
+      # Process a user-submitted postcode into lat/lng
+      stripped_postcode = postcode.gsub(" ", "")
+      url = "#{::Configuration::MAPIT_URL}/postcode/#{stripped_postcode}"
+      begin
+        result = HTTParty.get(url)
+        content = result.body
+        data = JSON.parse(content)
+        lat = data["wgs84_lat"]
+        lng = data["wgs84_lon"]
+        if !lat.blank? and !lng.blank?
+          @lat = lat
+          @lng = lng
+          @postcode = postcode
+        else
+          @error = "Postcode is not valid"
+        end
+      rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
+        @error = "Postcode is not valid"
+      end
+    end
+
+    def process_address(address)
+      r = Location.geocode(address)
+      if r.success
+        @lat = r.lat
+        @lng = r.lng
+        @address = address
+      else
+        @error = "Address not found"
+      end
+    end
 
     def do_search(use_distance=false, override_params={})
       search_params = {:per_page => Application.per_page,
