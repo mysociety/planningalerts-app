@@ -1,0 +1,37 @@
+- if params[:postcode] or params[:address]
+  %h4 Original geosearch
+  %p
+    -if params[:postcode]
+      Postcode:
+      =CGI::unescape(params[:postcode])
+
+    -if params[:address]
+      Address:
+      =CGI::unescape(params[:address])
+
+  %h4 Co-ordinates
+  %p
+    ="#{@lat}, #{@lng}"
+
+  %h4 Authorities
+  %p
+    = @authorities
+
+  %h4 Search
+  %p
+    - if @applications.blank?
+      None
+    - else
+      = @search
+      %h4 Facets
+      %p
+        = @applications.facets
+
+      ="Showing #{(@applications.current_page-1)*@applications.per_page+1} to "
+      - if @applications.current_page*@applications.per_page <= @applications.total_entries
+        =@applications.current_page*@applications.per_page
+      - else
+        =@applications.total_entries
+      of
+      =@applications.total_entries
+      results
