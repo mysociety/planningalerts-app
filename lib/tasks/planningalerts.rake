@@ -157,8 +157,9 @@ namespace :planningalerts do
             )
           end
 
+          # Get status info
           status_present = application['http://data.hampshirehub.net/def/planning/hasDecision']
-          unless status_present.blank?
+          if status_present
             # Pull in the status record
             status_json = RestClient::Request.new(
               :method => :get,
@@ -172,6 +173,7 @@ namespace :planningalerts do
               :password => Configuration::PUBLISHMYDATA_PASSWORD,
             ).execute
             status_data = JSON.parse(status_json)[0]
+
             if status_data['http://data.hampshirehub.net/def/planning/decisionIssued']
               outcome = status_data['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']
               case outcome
@@ -188,8 +190,41 @@ namespace :planningalerts do
               # been made public yet, let's say it's still "In Progress"
               status = "In Progress"
             end
+
+            # Get date info
+            if status_data['http://data.hampshirehub.net/def/planning/targetDate']
+              target_date = status_data['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']
+              target_date = Time.iso8601(target_date)
+            elsif application['http://data.hampshirehub.net/def/planning/targetDate']
+              target_date = application['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']
+              target_date = Time.iso8601(target_date)
+            end
+
+            unless status == "In Progress"
+              if status_data['http://data.hampshirehub.net/def/planning/decisionDate']
+                decision_date = status_data['http://data.hampshirehub.net/def/planning/decisionDate'][0]['@value']
+                decision_date = Time.iso8601(decision_date)
+              elsif application['http://data.hampshirehub.net/def/planning/decisionDate']
+                decision_date = status_data['http://data.hampshirehub.net/def/planning/decisionDate'][0]['@value']
+                decision_date = Time.iso8601(decision_date)
+              end
+              if defined?(target_date)
+                delayed = target_date < decision_date if decision_date
+              end
+            end
           else
             status = "In Progress"
+
+            if application['http://data.hampshirehub.net/def/planning/targetDate']
+              target_date = application['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']
+              target_date = Time.iso8601(target_date)
+            else
+              target_date = nil
+            end
+          end
+
+          unless defined?(delayed)
+            delayed = target_date < Time.iso8601(Time.now) if target_date
           end
 
           # Build basic attributes
@@ -202,6 +237,8 @@ namespace :planningalerts do
             :date_received => date_received,
             :date_scraped => Date.today.to_s,
             :status => status,
+            :decision_date => decision_date,
+            :delayed => delayed,
           }
 
           if location
