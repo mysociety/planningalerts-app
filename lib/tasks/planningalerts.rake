@@ -75,7 +75,7 @@ namespace :planningalerts do
       require 'global_convert'
 
       resources_url = 'http://hantshub-planning.publishmydata.com/resources.json'
-      resource_url = 'http://hantshub-planning.publishmydata.com/resource.json'
+      resource_url =  'http://hantshub-planning.publishmydata.com/resource.json'
       page = 1
       per_page = 11
       applications = []
@@ -157,6 +157,41 @@ namespace :planningalerts do
             )
           end
 
+          status_present = application['http://data.hampshirehub.net/def/planning/hasDecision']
+          unless status_present.blank?
+            # Pull in the status record
+            status_json = RestClient::Request.new(
+              :method => :get,
+              :url => resource_url,
+              :headers => {
+                :params => {
+                    :uri => application['http://data.hampshirehub.net/def/planning/hasDecision'][0]['@id']
+                },
+              },
+              :user => Configuration::PUBLISHMYDATA_USER,
+              :password => Configuration::PUBLISHMYDATA_PASSWORD,
+            ).execute
+            status_data = JSON.parse(status_json)[0]
+            if status_data['http://data.hampshirehub.net/def/planning/decisionIssued']
+              outcome = status_data['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']
+              case outcome
+              when /\/approve$/
+                status = "Approved"
+              when /\/refuse$/
+                status = "Refused"
+              else
+                warn "unknown status - #{outcome}, for #{application['http://data.hampshirehub.net/def/planning/hasCaseReference'][0]['@value']}"
+              end
+            else
+              # hmm, data glitch? No decisionIssued in the decision data :(
+              # or maybe this is when it's been decided but the decision hasn't
+              # been made public yet, let's say it's still "In Progress"
+              status = "In Progress"
+            end
+          else
+            status = "In Progress"
+          end
+
           # Build basic attributes
           attributes = {
             :council_reference => application['http://data.hampshirehub.net/def/planning/hasCaseReference'][0]['@value'],
@@ -166,6 +201,7 @@ namespace :planningalerts do
             :info_url => application['http://xmlns.com/foaf/page'][0]['@id'],
             :date_received => date_received,
             :date_scraped => Date.today.to_s,
+            :status => status,
           }
 
           if location
