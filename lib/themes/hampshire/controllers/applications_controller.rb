@@ -77,9 +77,9 @@ class HampshireTheme
       # Process the location parameter (either a postcode or address) into a
       # lat/lng
       if MySociety::Validate.is_valid_postcode(params[:location])
-        process_postcode(CGI::escape(params[:location]))
+        process_postcode(params[:location])
       else
-        process_address(CGI::escape(params[:location]))
+        process_address(params[:location])
       end
 
       if @postcode
@@ -112,7 +112,7 @@ class HampshireTheme
     end
 
     def process_address(address)
-      r = Location.geocode(address)
+      r = Location.geocode(CGI::escape(address))
       if r.success
         @lat = r.lat
         @lng = r.lng
