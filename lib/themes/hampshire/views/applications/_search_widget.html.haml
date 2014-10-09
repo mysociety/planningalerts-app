@@ -1,8 +1,14 @@
-= form_tag(search_applications_path, :method => :post) do |f|
-  = label_tag(:search, "Showing applications for:")
-  = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "e.g. Conservatories")
-  = label_tag(:location, "Located around:")
-  = text_field_tag(:location, (params[:address] or params[:postcode]), placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
-  - if @error
-    %p.inline-errors= @error
-  = submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
+%form.address-search.formtastic{'accept-charset' => "UTF-8", 'action' => search_applications_path, 'method' => "post"}
+  %fieldset.inputs
+    %ol
+      %li#s_input.string
+        = label_tag(:search, "Showing applications for:")
+        = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "e.g. Conservatories")
+      %li#q_input.string{:class => ("error" if @error)}
+        = label_tag(:location, "Located around:")
+        = text_field_tag(:location, (params[:address] or params[:postcode]), placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
+        - if @error
+          %p.inline-errors= @error
+  %fieldset.actions
+    %ol
+      %li.submit= submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
