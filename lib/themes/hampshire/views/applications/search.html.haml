@@ -26,7 +26,10 @@
 
   = content_for :extra_javascript do
     %script
-      var applications = #{raw @applications_json};
+      - if @applications_json
+        var applications = #{raw @applications_json};
+      - else
+        var applications = [];
   = content_for :extra_javascript do
     = render "js_marker_template"
   = content_for :extra_javascript, javascript_include_tag("hampshire.maps")
