@@ -5,101 +5,122 @@ class HampshireTheme
     $:.push(File.join(File.dirname(__FILE__), '../../commonlib/rblib'))
     load "validate.rb"
 
-    def address
+    def search
+      @show_results = false
       if params[:location]
-        if MySociety::Validate.is_valid_postcode(params[:location])
-          postcode = CGI::escape(params[:location].gsub(" ", ""))
-          url = "#{::Configuration::MAPIT_URL}/postcode/#{postcode}"
+        process_location
+      elsif params[:postcode] or params[:address] or params[:authority]
+        @show_results = true
+        @distance_in_miles = 2
+        @search = params[:search]
+        # "anything" is our special keyword meaning don't do a full text search
+        if !@search.blank? && @search.strip.downcase == "anything"
+          @search = nil
+        end
+        @lat = params[:lat]
+        @lng = params[:lng]
+        # We can only show the map if we have a location and the user wants to show it
+        if @lat and @lng
+          @map_display_possible = true
+          if !params['display'] or params['display'] == 'map'
+            @display = 'map'
+          end
+        else
+          @map_display_possible = false
+          @display = 'list'
+        end
+        if @map_display_possible
+          url = "#{::Configuration::MAPIT_URL}/point/4326/#{@lng},#{@lat}"
           begin
             result = HTTParty.get(url)
             content = result.body
             data = JSON.parse(content)
-            lat = data["wgs84_lat"]
-            lng = data["wgs84_lon"]
-            if !lat.blank? and !lng.blank?
-              redirect_to search_applications_path({:lat => lat, :lng => lng, :postcode => params[:location], :search => params[:search]})
-            else
-              @error = "Postcode is not valid"
-            end
+            @authorities = find_planning_authorities(data)
           rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
-            @error = "Postcode is not valid"
+            # TBD
           end
+
+          # convert degrees to radians
+          @search_lat = @lat.to_f / 180 * Math::PI
+          @search_lng = @lng.to_f / 180 * Math::PI
+
+          # convert miles to metres (not km as originally thought)
+          @search_range = @distance_in_miles.to_f * 1609.344
+          @applications = do_search(true)
+          if @display == 'map'
+            # Simple check to see if we already have everything or if we need to
+            # do another, bigger, search to get pins for the map
+            if @applications.total_pages > 1
+              # Thinking sphinx limits you to 1,000 searches by default, so that's
+              # the most we can get.
+              # We might have a stray page param if we've switched to the map
+              # from a list view, therefore we force the page param to 1
+              @applications_json = do_search(true, {:per_page => 1000, :page => 1}).to_json
+            else
+              @applications_json = @applications.to_json
+            end
+          end
+          @rss = search_applications_path(:format => "rss", :page => nil)
         else
-          address = CGI::escape(params[:location])
-          r = Location.geocode(address)
-          if r.success
-            redirect_to search_applications_path({:lat => r.lat, :lng => r.lng, :address => address, :search => params[:search]})
-          else
-            @error = "Address not found"
+          unless @search.blank?
+            @applications = do_search
+            @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
           end
-        end
-      end
-      # return false to signal to the filter method to halt execution
-      # before processing the original controller method
-      return false
-    end
-
-    def search
-      @distance_in_miles = 2
-      @search = params[:search]
-      # "anything" is our special keyword meaning don't do a full text search
-      if !@search.blank? && @search.strip.downcase == "anything"
-        @search = nil
-      end
-      @lat = params[:lat]
-      @lng = params[:lng]
-      # We can only show the map if we have a location and the user wants to show it
-      if @lat and @lng
-        @map_display_possible = true
-        if !params['display'] or params['display'] == 'map'
-          @display = 'map'
-        end
-      else
-        @map_display_possible = false
-        @display = 'list'
-      end
-      if @map_display_possible
-        url = "#{::Configuration::MAPIT_URL}/point/4326/#{@lng},#{@lat}"
-        begin
-          result = HTTParty.get(url)
-          content = result.body
-          data = JSON.parse(content)
-          @authorities = find_planning_authorities(data)
-        rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
-          # TBD
-        end
-
-        # convert degrees to radians
-        @search_lat = @lat.to_f / 180 * Math::PI
-        @search_lng = @lng.to_f / 180 * Math::PI
-
-        # convert miles to metres (not km as originally thought)
-        @search_range = @distance_in_miles.to_f * 1609.344
-        @applications = do_search(true)
-        if @display == 'map'
-          # Simple check to see if we already have everything or if we need to
-          # do another, bigger, search to get pins for the map
-          if @applications.total_pages > 1
-            # Thinking sphinx limits you to 1,000 searches by default, so that's
-            # the most we can get.
-            # We might have a stray page param if we've switched to the map
-            # from a list view, therefore we force the page param to 1
-            @applications_json = do_search(true, {:per_page => 1000, :page => 1}).to_json
-          else
-            @applications_json = @applications.to_json
-          end
-        end
-        @rss = search_applications_path(:format => "rss", :page => nil)
-      else
-        unless @search.blank?
-          @applications = do_search
-          @rss = search_applications_path(:format => "rss", :search => @search, :page => nil)
         end
       end
       return false
     end
 
     protected
+
+    def process_location
+      # Process the location parameter (either a postcode or address) into a
+      # lat/lng
+      if MySociety::Validate.is_valid_postcode(params[:location])
+        process_postcode(params[:location])
+      else
+        process_address(params[:location])
+      end
+
+      if @postcode
+        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :postcode => @postcode, :search => params[:search]})
+      elsif @address
+        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :address => @address, :search => params[:search]})
+      end
+    end
+
+    def process_postcode(postcode)
+      # Process a user-submitted postcode into lat/lng
+      stripped_postcode = postcode.gsub(" ", "")
+      url = "#{::Configuration::MAPIT_URL}/postcode/#{stripped_postcode}"
+      begin
+        result = HTTParty.get(url)
+        content = result.body
+        data = JSON.parse(content)
+        lat = data["wgs84_lat"]
+        lng = data["wgs84_lon"]
+        if !lat.blank? and !lng.blank?
+          @lat = lat
+          @lng = lng
+          @postcode = postcode
+        else
+          @error = "Postcode is not valid"
+        end
+      rescue SocketError, Errno::ETIMEDOUT, JSON::ParserError
+        @error = "Postcode is not valid"
+      end
+    end
+
+    def process_address(address)
+      r = Location.geocode(CGI::escape(address))
+      if r.success
+        @lat = r.lat
+        @lng = r.lng
+        @address = address
+      else
+        @error = "Address not found"
+      end
+    end
 
     def do_search(use_distance=false, override_params={})
       search_params = {:per_page => Application.per_page,

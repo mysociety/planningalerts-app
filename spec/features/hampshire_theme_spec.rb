@@ -3,7 +3,7 @@ require 'spec_helper'
 feature "Custom Hampshire pages" do
   scenario "Visiting the home page within the Hampshire theme" do
     VCR.use_cassette('hampshire_theme') do
-      visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
+      visit search_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
     end
 
     page.should have_content("Search for and compare the outcomes of planning applications in Hampshire.")
@@ -14,7 +14,7 @@ feature "Custom Hampshire pages" do
 
   scenario "Submitting an valid looking invalid postcode" do
     VCR.use_cassette('hampshire_theme') do
-      visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
+      visit search_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
       fill_in("Located around:", :with => "SW99 0AA")
       click_button("Search")
     end
@@ -24,7 +24,7 @@ feature "Custom Hampshire pages" do
 
   scenario "Submitting an invalid postcode" do
     VCR.use_cassette('hampshire_theme') do
-      visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
+      visit search_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
       fill_in("Located around:", :with => "SO234B")
       click_button("Search")
     end
@@ -34,7 +34,7 @@ feature "Custom Hampshire pages" do
 
   scenario "Submitting an invalid address" do
     VCR.use_cassette('hampshire_theme') do
-      visit address_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
+      visit search_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000")
       fill_in("Located around:", :with => "alas, poor yorick")
       click_button("Search")
     end

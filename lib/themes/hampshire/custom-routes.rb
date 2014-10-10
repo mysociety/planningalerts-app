@@ -3,6 +3,17 @@ Rails.application.routes.draw do
   # (keep original route too)
   match '/applications/:id/:authority/:reference' => 'applications#show', :constraints => {:reference => /.*/}
 
+  # override existing applications resources to allow POSTs to :search
+  resources :applications, :only => [:index, :show] do
+    collection do
+      get :search
+      post :search
+    end
+  end
+
+  # Override the homepage to go straight to application search
+  root :to => 'applications#search'
+
   # switch off routes not used by the theme
   match 'faq', :to => 'static#error_404'
   match 'getinvolved', :to => 'static#error_404'

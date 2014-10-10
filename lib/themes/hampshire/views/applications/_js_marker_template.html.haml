@@ -1,0 +1,14 @@
+%script{:id=> 'marker-template', :type => 'text/template'}
+  %small
+    %a{:href => '/applications/{{ application.id }}'}
+      {{ application.council_reference }}
+  %h3 {{ application.address }}
+  %p {{ application.description }}
+  %dl
+    %dt Valid:
+    %dd {{ application.date_received }}
+    %dt Status:
+    %dd TODO
+    %dt Decision date:
+    %dd TODO
+  %a{:href => '{{ application.info_url }}'} Read more
