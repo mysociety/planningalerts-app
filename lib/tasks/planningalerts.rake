@@ -123,6 +123,9 @@ namespace :planningalerts do
       # https://www.coffeepowered.net/2009/01/23/mass-inserting-data-in-rails-without-killing-your-performance/
       ActiveRecord::Base.transaction do
         applications.each do |application|
+          target_date = nil
+          delayed = nil
+
           # Parse the date received
           date_received = application['http://data.hampshirehub.net/def/planning/dateReceived'][0]['@value']
           date_received = Time.iso8601(date_received)
@@ -218,9 +221,8 @@ namespace :planningalerts do
                 decision_date = status_data['http://data.hampshirehub.net/def/planning/noticeDate'][0]['@value']
                 decision_date = Time.iso8601(decision_date)
               end
-              if defined?(target_date)
+              if target_date
                 delayed = target_date < decision_date if decision_date
-
               end
             end
           else
@@ -234,8 +236,8 @@ namespace :planningalerts do
             end
           end
 
-          unless defined?(delayed)
-            delayed = target_date < Time.iso8601(Time.now) if target_date
+          if delayed.nil?
+            delayed = target_date < Time.now if target_date
           end
 
           # Build basic attributes
