@@ -145,6 +145,7 @@ namespace :planningalerts do
           # don't have easting/northings
           if place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'] \
              and place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing']
+            sleep(0.33)
             location = GlobalConvert::Location.new(
               input: {
                 projection: :osgb36,
