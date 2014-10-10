@@ -12,7 +12,7 @@
           =Application.where(:authority_id => authority.id).count
           applications
         %span.percent_approved
-          ="#{(Application.where(:authority_id => authority.id, :status => "Approved").count.to_f / Application.where(:authority_id => authority.id).count.to_f * 100).round}% approved"
+          ="#{authority.percentage_approved}% approved"
         %span.percent_delayed
-          ="#{(Application.where(:authority_id => authority.id, :delayed => true).count.to_f / Application.where(:authority_id => authority.id).count.to_f * 100).round}% delayed"
+          ="#{authority.percentage_delayed}% delayed"
 
