@@ -26,13 +26,18 @@
 
   = content_for :extra_javascript do
     %script
+      var PlanningAlerts = window.PlanningAlerts || {};
+      PlanningAlerts['search'] = {};
       - if @applications_json
-        var applications = #{raw @applications_json};
+        PlanningAlerts.search['applications'] = #{raw @applications_json};
       - else
-        var applications = [];
+        PlanningAlerts.search['applications'] = [];
+      - if @lat and @lng
+        PlanningAlerts.search['lat'] = #{@lat};
+        PlanningAlerts.search['lng'] = #{@lng};
   = content_for :extra_javascript do
     = render "js_marker_template"
-  = content_for :extra_javascript, javascript_include_tag("hampshire.maps")
+  = content_for :extra_javascript, javascript_include_tag("hampshire.search_map")
 - else
   = content_for :extra_body_classes, "initial-search"
   = render "address_search_preamble"

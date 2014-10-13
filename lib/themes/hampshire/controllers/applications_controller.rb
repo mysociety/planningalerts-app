@@ -6,10 +6,18 @@ class HampshireTheme
     load "validate.rb"
 
     def search
-      @show_results = false
+      # Whether we're showing the "results" view or the initial homepage view
+      @show_results = params.has_key?(:results) or false
+
       if params[:location]
         process_location
-      elsif params[:postcode] or params[:address] or params[:authority]
+        if @error
+          return false
+        end
+      end
+
+      # process_location sets @lat and @lng if there's a valid location
+      if (@lat and @lng) or params[:authority]
         @show_results = true
         @distance_in_miles = 2
         @search = params[:search]
@@ -17,18 +25,17 @@ class HampshireTheme
         if !@search.blank? && @search.strip.downcase == "anything"
           @search = nil
         end
-        @lat = params[:lat]
-        @lng = params[:lng]
         # We can only show the map if we have a location and the user wants to show it
+        @display = 'list'
         if @lat and @lng
           @map_display_possible = true
-          if !params['display'] or params['display'] == 'map'
+          if params['display'].blank? or params['display'] == 'map'
             @display = 'map'
           end
         else
           @map_display_possible = false
-          @display = 'list'
         end
+
         if @map_display_possible
           url = "#{::Configuration::MAPIT_URL}/point/4326/#{@lng},#{@lat}"
           begin
@@ -80,12 +87,6 @@ class HampshireTheme
         process_postcode(params[:location])
       else
         process_address(params[:location])
-      end
-
-      if @postcode
-        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :postcode => @postcode, :search => params[:search]})
-      elsif @address
-        redirect_to search_applications_path({:lat => @lat, :lng => @lng, :address => @address, :search => params[:search]})
       end
     end
 

@@ -1,4 +1,4 @@
-%form.address-search.formtastic{'accept-charset' => "UTF-8", 'action' => search_applications_path, 'method' => "post"}
+%form.address-search.formtastic{'accept-charset' => "UTF-8", 'action' => search_applications_path, 'method' => "get"}
   %fieldset.inputs
     %ol
       %li#s_input.string
@@ -6,9 +6,12 @@
         = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "e.g. Conservatories")
       %li#q_input.string{:class => ("error" if @error)}
         = label_tag(:location, "Located around:")
-        = text_field_tag(:location, (params[:address] or params[:postcode]), placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
+        = text_field_tag(:location, params[:location], placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
         - if @error
           %p.inline-errors= @error
+      = hidden_field_tag(:results, true)
+      - unless @display.blank?
+        = hidden_field_tag(:display, @display)
   %fieldset.actions
     %ol
       %li.submit= submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
