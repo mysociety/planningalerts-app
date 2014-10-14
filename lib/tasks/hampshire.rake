@@ -258,24 +258,24 @@ namespace :hampshire do
       csv = CSV.parse(file, :headers => true)
       correct = 0
       incorrect = 0
+      correct_reasons = []
+      incorrect_reasons = []
       csv.each do |row|
         description = row["description"]
         category = classifier.classify(description)
         row_category = row["category"]
-        if row_category.blank?
-          puts "Classified previously unknown: #{description} as: #{category}"
-        elsif category.blank?
-          puts "No categorisation possible for: #{description}"
+        row_category = nil if row_category.blank?
+        if category == row_category
+          correct_reasons.push("Correctly Classified: #{description} as: #{category.inspect}")
+          correct += 1
         else
-          if category == row["category"]
-            puts "Correctly Classified: #{description} as: #{category} when it was actually #{row_category}"
-            correct += 1
-          else
-            puts "Incorrectly Classified: #{description} as: #{category} when it was actually #{row_category}"
-            incorrect += 1
-          end
+          incorrect_reasons.push("Incorrectly Classified: #{description} as: #{category.inspect} when it was actually #{row_category.inspect}")
+          incorrect += 1
         end
       end
+      correct_reasons.each { |reason| puts reason }
+      puts '============================='
+      incorrect_reasons.each { |reason| puts reason }
       puts '============================='
       puts "Total rows: #{csv.length}"
       puts "Total correct: #{correct}"
