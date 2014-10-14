@@ -9,7 +9,7 @@ Rails.configuration.to_prepare do
 
       # to be added when available
       # indexes category, :facet => true
-      # indexes status, :facet = true
+      indexes status, :facet => true
 
       # enable geosearch - see http://pat.github.io/thinking-sphinx/geosearching.html
       has 'RADIANS("applications"."lat")', :as => :latitude,  :type => :float
@@ -32,6 +32,15 @@ Rails.configuration.to_prepare do
     def median_applications_received_per_week
       v = applications_received_per_week.select{|a| a[1] > 0}.map{|a| a[1]}.sort
       v[v.count / 2]
+    end
+
+    def percentage_approved
+      (applications.where(:status => "Approved").count.to_f / applications.count.to_f * 100).round
+
+    end
+
+    def percentage_delayed
+      (applications.where(:delayed => true).count.to_f / applications.count.to_f * 100).round
     end
   end
 end

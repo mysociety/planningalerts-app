@@ -1,17 +1,18 @@
 - content_for :page_title, "Planning authorities currently covered by the service"
 %h3= yield :page_title
 
-- if @authorities.count > 1
-  %ul.list-options
-    %li
-      %b Go to county
-    - @authorities.each_with_index do |a, i|
-      %li
-        %a.button-small.button.button-pill{ :href => "##{a.first.downcase}" }= a.first
-
 - @authorities.each do |state, authorities|
   %h4{:id => state.downcase}= state
   %ul.authorities
     - authorities.each do |authority|
       %li
+        %span.name
         = link_to authority.full_name, authority_url(authority.short_name_encoded)
+        %span.total_applications
+          =Application.where(:authority_id => authority.id).count
+          applications
+        %span.percent_approved
+          ="#{authority.percentage_approved}% approved"
+        %span.percent_delayed
+          ="#{authority.percentage_delayed}% delayed"
+
