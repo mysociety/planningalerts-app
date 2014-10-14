@@ -401,7 +401,6 @@ DEPENDENCIES
   rake
   rb-fsevent
   redcarpet (= 2.3.0)
-  redis
   rspec-rails (~> 2.4)
   sanitize
   sass-rails

@@ -40,3 +40,6 @@ vendor/bundle
 
 #Vagrant
 .vagrant
+
+# ApplicationClassifier
+*.application-classifications

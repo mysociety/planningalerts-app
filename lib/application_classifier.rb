@@ -1,5 +1,4 @@
 require 'stuff-classifier'
-require 'redis'
 
 class ApplicationClassifier < Object
   # A thin wrapper around stuff-classifier's Bayes classifier, to handle
@@ -7,8 +6,11 @@ class ApplicationClassifier < Object
 
   def initialize(name)
     @name = name
-    storage = StuffClassifier::RedisStorage.new(@name)
-    @classifier = StuffClassifier::Bayes.new(@name, :storage => storage)
+    storage = StuffClassifier::FileStorage.new(Rails.root.join('lib', "#{name}.application-classifications"))
+    @classifier = StuffClassifier::Bayes.new(
+      @name,
+      :storage => storage
+    )
     puts "Initialised classifier"
     puts "Categories: #{@classifier.categories.inspect}"
   end
@@ -18,7 +20,7 @@ class ApplicationClassifier < Object
   end
 
   def self.train_from_csv(csv_path, limit, name)
-    storage = StuffClassifier::RedisStorage.new(name)
+    storage = StuffClassifier::FileStorage.new(Rails.root.join('lib', "#{name}.application-classifications"))
     classifier = StuffClassifier::Bayes.new(name, :storage => storage, :purge_state => true)
     training_file = File.read(csv_path)
     training_csv = CSV.parse(training_file, :headers => true)
