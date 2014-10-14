@@ -20,6 +20,23 @@ Rails.configuration.to_prepare do
 
       has date_scraped
     end
+
+    validates :category, :inclusion => {
+        :in => [
+          'Anything',
+          'Conservatories',
+          'Extensions',
+          'Loft Conversions',
+          'Garage Conversions',
+          'Doors and Windows',
+          'Fences, Gates and Garden Walls',
+          'Outbuildings',
+          'Trees and Hedges',
+          'Major Developments'
+        ],
+        :allow_nil => true,
+        :message => "%{value} is not an allowed category"
+      }
   end
 
   Authority.class_eval do
