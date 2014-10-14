@@ -28,6 +28,9 @@ ActiveAdmin.register Application do
       row :on_notice_from
       row :on_notice_to
       row :no_alerted
+      row :status
+      row :category
+      row :delayed
     end
   end
 
