@@ -207,17 +207,9 @@ namespace :planningalerts do
             # don't try to compare undecided application's target dates
             # against decision dates
             unless status == "In Progress"
-              # try to use the decisionDate from the status lookup
-              if status_data['http://data.hampshirehub.net/def/planning/decisionDate']
-                decision_date = status_data['http://data.hampshirehub.net/def/planning/decisionDate'][0]['@value']
-                decision_date = Time.iso8601(decision_date)
-              # not found? ok, see if there's a decision date in the application record
-              elsif application['http://data.hampshirehub.net/def/planning/decisionDate']
-                decision_date = status_data['http://data.hampshirehub.net/def/planning/decisionDate'][0]['@value']
-                decision_date = Time.iso8601(decision_date)
-              # not there either? Try to use the status lookup's noticeDate instead
-              # (where both fields exist it looks as though the values are identical)
-              elsif status_data['http://data.hampshirehub.net/def/planning/noticeDate']
+              # noticeDate is the official date that notice of the decision is
+              # given to the applicant
+              if status_data['http://data.hampshirehub.net/def/planning/noticeDate']
                 decision_date = status_data['http://data.hampshirehub.net/def/planning/noticeDate'][0]['@value']
                 decision_date = Time.iso8601(decision_date)
               end
