@@ -1,53 +1,5 @@
 namespace :hampshire do
   namespace :applications do
-    desc "Load planning applications from a CSV, index them, generate XML sitemap"
-    task :load_from_csv_and_index, [:authority_id, :filename] => [:load_from_csv, 'ts:in', 'planningalerts:sitemap']
-
-    desc "Load planning applications from a CSV"
-    task :load_from_csv, [:authority_id, :filename] => :environment do |t, args|
-      require 'global_convert'
-      # TODO - probably load one file for all authorities in the future
-      authority = Authority.find(args[:authority_id])
-      puts "Loading planning applications for #{authority.full_name_and_state}"
-      file = File.read(args[:filename])
-      csv = CSV.parse(file, :headers => true)
-      csv.each do |row|
-        attributes = {
-          :council_reference => row["application_number"],
-          :authority_id => authority.id,
-          :address => row["location"],
-          :description => row["proposal"],
-          :date_received => row["recieved_date"],
-          :date_scraped => Time.now, # Can't be nil
-          # Can't be nil because has to validate as a URL - TODO fix this
-          :info_url => 'http://example.com'
-          # TODO
-          # decision method (commitee, appeal, etc)
-          # breaking the address down into smaller parts (geocoder?), suburb, postcode especially
-          # for/against counts
-        }
-        if row["gridref_east"] and row["gridref_north"]
-          # Get a location in lat/ln from the OSGB coords in the CSV
-          location = GlobalConvert::Location.new(
-            input: {
-              projection: :osgb36,
-              lon: row["gridref_east"].to_f,
-              lat: row["gridref_north"].to_f
-            },
-            output: {
-              projection: :wgs84
-            }
-          )
-          attributes.merge({
-            :lat => location.lat,
-            :lng => location.lon
-          })
-        end
-        application = Application.where(attributes).first_or_initialize
-        application.save!
-      end
-    end
-
     desc "Load planning applications from a PublishMyData dataset, index them generate XML sitemap"
     task :load_from_publishmydata_and_index, [:authority_id, :dataset] => [:load_from_publishmydata, 'ts:in', 'planningalerts:sitemap']
 
