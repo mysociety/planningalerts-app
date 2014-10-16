@@ -2,6 +2,24 @@ require 'spec_helper'
 
 describe PMDApplicationProcessor do
 
+  context 'when extracting the description' do
+    let :application do
+      {
+        'http://data.hampshirehub.net/def/planning/hasCaseText' => [{'@value' => 'test description'}]
+      }
+    end
+
+    it 'should extract the description' do
+      description = PMDApplicationProcessor.extract_description(application)
+      expect(description).to eq('test description')
+    end
+
+    it 'should default to nil' do
+      description = PMDApplicationProcessor.extract_description({})
+      expect(description).to eq(nil)
+    end
+  end
+
   context 'when extracting the address and location' do
     let :application do
       {
@@ -304,40 +322,48 @@ describe PMDApplicationProcessor do
 
   end
 
-  context 'when extracting categories' do
-    let :householder_application do
+  context 'when extracting the council category' do
+    let :application do
       {
         'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [
           {
             '@id' => 'http://opendatacommunities.org/def/concept/planning/application/6000/6014'
           }
-        ],
-        'http://data.hampshirehub.net/def/planning/hasCaseText' => [
-          {
-            '@value' => 'test description'
-          }
         ]
       }
     end
 
+    it 'should extract the council category' do
+      council_category = PMDApplicationProcessor.extract_council_category(application)
+      expect(council_category).to eq('http://opendatacommunities.org/def/concept/planning/application/6000/6014')
+    end
+
+    it 'should default to nil' do
+      council_category = PMDApplicationProcessor.extract_council_category({})
+      expect(council_category).to eq(nil)
+    end
+  end
+
+  context 'when extracting categories' do
     it 'should use the classifier for household developments' do
       classifier = mock
       classifier.should_receive(:classify).with('test description').and_return('test')
-      category = PMDApplicationProcessor.extract_category(householder_application, classifier)
+      category = PMDApplicationProcessor.extract_category(
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6014',
+        'test description',
+        classifier
+      )
       expect(category).to eq('test')
     end
 
     it 'should only try to classify householder applications with a description' do
       classifier = mock
       classifier.should_not_receive(:classify)
-      householder_application_without_description = {
-        'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [
-          {
-            '@id' => 'http://opendatacommunities.org/def/concept/planning/application/6000/6014'
-          }
-        ]
-      }
-      category = PMDApplicationProcessor.extract_category(householder_application_without_description, classifier)
+      category = PMDApplicationProcessor.extract_category(
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6014',
+        nil,
+        classifier
+      )
       expect(category).to eq(nil)
     end
 
@@ -346,14 +372,11 @@ describe PMDApplicationProcessor do
       classifier.should_not_receive(:classify)
       major_categories = ['6001', '6002', '6003', '6004', '6005', '6006']
       major_categories.each do |category|
-        major_application = {
-          'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [
-            {
-              '@id' => "http://opendatacommunities.org/def/concept/planning/application/6000/#{category}"
-            }
-          ]
-        }
-        category = PMDApplicationProcessor.extract_category(major_application, classifier)
+        category = PMDApplicationProcessor.extract_category(
+          "http://opendatacommunities.org/def/concept/planning/application/6000/#{category}",
+          'test description',
+          classifier
+        )
         expect(category).to eq('Major Developments')
       end
     end
@@ -363,14 +386,11 @@ describe PMDApplicationProcessor do
       classifier.should_not_receive(:classify)
       tree_categories = ['6019', '6022']
       tree_categories.each do |category|
-        tree_application = {
-          'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [
-            {
-              '@id' => "http://opendatacommunities.org/def/concept/planning/application/6000/#{category}"
-            }
-          ]
-        }
-        category = PMDApplicationProcessor.extract_category(tree_application, classifier)
+        category = PMDApplicationProcessor.extract_category(
+          "http://opendatacommunities.org/def/concept/planning/application/6000/#{category}",
+          'test description',
+          classifier
+        )
         expect(category).to eq('Trees and Hedges')
       end
     end
@@ -378,11 +398,11 @@ describe PMDApplicationProcessor do
     it 'should ignore applications without a developmentCategory' do
       classifier = mock
       classifier.should_not_receive(:classify)
-      category = PMDApplicationProcessor.extract_category({}, classifier)
+      category = PMDApplicationProcessor.extract_category(nil, 'test description', classifier)
       expect(category).to eq(nil)
     end
 
-    it 'should ignore applications that are not householder or Major' do
+    it 'should ignore applications that are not householder or Trees or Major' do
       classifier = mock
       classifier.should_not_receive(:classify)
       other_categories = ['6007', '6008', '6009', '6010', '6011', '6012',
@@ -390,14 +410,11 @@ describe PMDApplicationProcessor do
                           '6021', '6023', '6024', '6025', '6026', '6027',
                           '6028', '6029', '6030']
       other_categories.each do |category|
-        other_application = {
-          'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [
-            {
-              '@id' => "http://opendatacommunities.org/def/concept/planning/application/6000/#{category}"
-            }
-          ]
-        }
-        category = PMDApplicationProcessor.extract_category(other_application, classifier)
+        category = PMDApplicationProcessor.extract_category(
+          "http://opendatacommunities.org/def/concept/planning/application/6000/#{category}",
+          'test description',
+          classifier
+        )
         expect(category).to eq(nil)
       end
     end
