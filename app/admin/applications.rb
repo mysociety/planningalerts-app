@@ -30,6 +30,7 @@ ActiveAdmin.register Application do
       row :no_alerted
       row :status
       row :category
+      row :council_category
       row :delayed
     end
   end
