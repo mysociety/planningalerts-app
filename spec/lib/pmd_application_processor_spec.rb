@@ -344,7 +344,7 @@ describe PMDApplicationProcessor do
     it 'should recognise Major Developments' do
       classifier = mock
       classifier.should_not_receive(:classify)
-      major_categories = ['6001', '6002', '6003', '6004', '6006']
+      major_categories = ['6001', '6002', '6003', '6004', '6005', '6006']
       major_categories.each do |category|
         major_application = {
           'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [
@@ -358,6 +358,23 @@ describe PMDApplicationProcessor do
       end
     end
 
+    it 'should recognise Trees and Hedges' do
+      classifier = mock
+      classifier.should_not_receive(:classify)
+      tree_categories = ['6019', '6022']
+      tree_categories.each do |category|
+        tree_application = {
+          'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [
+            {
+              '@id' => "http://opendatacommunities.org/def/concept/planning/application/6000/#{category}"
+            }
+          ]
+        }
+        category = PMDApplicationProcessor.extract_category(tree_application, classifier)
+        expect(category).to eq('Trees and Hedges')
+      end
+    end
+
     it 'should ignore applications without a developmentCategory' do
       classifier = mock
       classifier.should_not_receive(:classify)
@@ -368,7 +385,10 @@ describe PMDApplicationProcessor do
     it 'should ignore applications that are not householder or Major' do
       classifier = mock
       classifier.should_not_receive(:classify)
-      other_categories = ['6005', '6007', '6008', '6009', '6010', '6011', '6012', '6013']
+      other_categories = ['6007', '6008', '6009', '6010', '6011', '6012',
+                          '6013', '6015', '6016', '6017', '6018', '6020',
+                          '6021', '6023', '6024', '6025', '6026', '6027',
+                          '6028', '6029', '6030']
       other_categories.each do |category|
         other_application = {
           'http://data.hampshirehub.net/def/planning/hasDevelopmentCategory' => [

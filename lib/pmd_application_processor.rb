@@ -78,28 +78,40 @@ class PMDApplicationProcessor
     return delayed
   end
 
-  def self.extract_category(application, classifier)
+  def self.extract_council_category(application)
+    council_category = nil
+    if application['http://data.hampshirehub.net/def/planning/hasDevelopmentCategory']
+      council_category = application['http://data.hampshirehub.net/def/planning/hasDevelopmentCategory'][0]['@id']
+    end
+    return council_category
+  end
+
+  def self.extract_category(council_category, description, classifier)
     # We determine some by Q/R code, and others using a Bayesian classifier
     category = nil
-    if application['http://data.hampshirehub.net/def/planning/hasDevelopmentCategory']
-      puts "Application has description"
-      development_category = application['http://data.hampshirehub.net/def/planning/hasDevelopmentCategory'][0]['@id']
+    if council_category
       householder_developments = 'http://opendatacommunities.org/def/concept/planning/application/6000/6014'
       major_development_categories = [
         'http://opendatacommunities.org/def/concept/planning/application/6000/6001',
-        'http://opendatacommunities.org/def/concept/planning/application/6000/6006',
         'http://opendatacommunities.org/def/concept/planning/application/6000/6002',
         'http://opendatacommunities.org/def/concept/planning/application/6000/6003',
-        'http://opendatacommunities.org/def/concept/planning/application/6000/6004'
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6004',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6005',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6006',
       ]
-      if development_category == householder_developments and application['http://data.hampshirehub.net/def/planning/hasCaseText']
-        puts "Application is in householder category and has description:"
-        puts "#{application['http://data.hampshirehub.net/def/planning/hasCaseText'][0]['@value']}"
-        category = classifier.classify(application['http://data.hampshirehub.net/def/planning/hasCaseText'][0]['@value'])
-        puts "Category is: #{category}"
-      elsif major_development_categories.include?(development_category)
-        puts "Application is in the major developments category and has description"
+      tree_and_hedge_categories = [
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6019',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6022',
+      ]
+
+      if council_category == householder_developments
+        if description
+          category = classifier.classify(description)
+        end
+      elsif major_development_categories.include?(council_category)
         category = 'Major Developments'
+      elsif tree_and_hedge_categories.include?(council_category)
+        category = 'Trees and Hedges'
       end
     end
     return category

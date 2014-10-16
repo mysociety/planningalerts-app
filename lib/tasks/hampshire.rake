@@ -120,7 +120,8 @@ namespace :hampshire do
           status = PMDApplicationProcessor.extract_status(decision)
           decision_date = PMDApplicationProcessor.extract_decision_date(decision, status)
           delayed = PMDApplicationProcessor.extract_delayed(application, decision, status, decision_date)
-          category = PMDApplicationProcessor.extract_category(application, classifier)
+          council_category = PMDApplicationProcessor.extract_council_category(application)
+          category = PMDApplicationProcessor.extract_category(council_category, description, classifier)
 
           # Build basic attributes
           attributes = {
@@ -134,14 +135,12 @@ namespace :hampshire do
             :status => status,
             :decision_date => decision_date,
             :delayed => delayed,
+            :council_category => council_category,
+            :category => category
           }
 
           if location
             attributes.merge!({:lat => location.lat, :lng => location.lon})
-          end
-
-          if category
-            attributes.merge!({:category => category})
           end
 
           application = Application.where(
