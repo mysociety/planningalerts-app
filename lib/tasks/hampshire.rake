@@ -22,7 +22,6 @@ namespace :hampshire do
           # Can't be nil because has to validate as a URL - TODO fix this
           :info_url => 'http://example.com'
           # TODO
-          # category
           # decision method (commitee, appeal, etc)
           # breaking the address down into smaller parts (geocoder?), suburb, postcode especially
           # for/against counts
@@ -64,6 +63,8 @@ namespace :hampshire do
       done = false
 
       authority = Authority.find(args[:authority_id])
+
+      classifier = ApplicationClassifier.new('applications')
 
       while !done
         request = RestClient::Request.new(
@@ -119,6 +120,7 @@ namespace :hampshire do
           status = PMDApplicationProcessor.extract_status(decision)
           decision_date = PMDApplicationProcessor.extract_decision_date(decision, status)
           delayed = PMDApplicationProcessor.extract_delayed(application, decision, status, decision_date)
+          category = PMDApplicationProcessor.extract_category(application, classifier)
 
           # Build basic attributes
           attributes = {
@@ -138,8 +140,9 @@ namespace :hampshire do
             attributes.merge!({:lat => location.lat, :lng => location.lon})
           end
 
-
-          puts "Saving attributes: #{attributes.inspect}"
+          if category
+            attributes.merge!({:category => category})
+          end
 
           application = Application.where(
             :authority_id => authority.id,

@@ -11,8 +11,6 @@ class ApplicationClassifier < Object
       @name,
       :storage => storage
     )
-    puts "Initialised classifier"
-    puts "Categories: #{@classifier.categories.inspect}"
   end
 
   def classify(description)

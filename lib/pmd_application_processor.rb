@@ -78,6 +78,33 @@ class PMDApplicationProcessor
     return delayed
   end
 
+  def self.extract_category(application, classifier)
+    # We determine some by Q/R code, and others using a Bayesian classifier
+    category = nil
+    if application['http://data.hampshirehub.net/def/planning/hasDevelopmentCategory']
+      puts "Application has description"
+      development_category = application['http://data.hampshirehub.net/def/planning/hasDevelopmentCategory'][0]['@id']
+      householder_developments = 'http://opendatacommunities.org/def/concept/planning/application/6000/6014'
+      major_development_categories = [
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6001',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6006',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6002',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6003',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6004'
+      ]
+      if development_category == householder_developments and application['http://data.hampshirehub.net/def/planning/hasCaseText']
+        puts "Application is in householder category and has description:"
+        puts "#{application['http://data.hampshirehub.net/def/planning/hasCaseText'][0]['@value']}"
+        category = classifier.classify(application['http://data.hampshirehub.net/def/planning/hasCaseText'][0]['@value'])
+        puts "Category is: #{category}"
+      elsif major_development_categories.include?(development_category)
+        puts "Application is in the major developments category and has description"
+        category = 'Major Developments'
+      end
+    end
+    return category
+  end
+
   def self.extract_address(application)
     # Pull in the localisation record
     place_json = RestClient::Request.new(
