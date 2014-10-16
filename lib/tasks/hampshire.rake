@@ -58,8 +58,6 @@ namespace :hampshire do
       require 'json'
       require 'global_convert'
 
-      resources_url = 'http://hantshub-planning.publishmydata.com/resources.json'
-      resource_url =  'http://hantshub-planning.publishmydata.com/resource.json'
       page = 1
       per_page = 11
       applications = []
@@ -70,7 +68,7 @@ namespace :hampshire do
       while !done
         request = RestClient::Request.new(
           :method => :get,
-          :url => resources_url,
+          :url => 'http://hantshub-planning.publishmydata.com/resources.json',
           :headers => {
             :params => {
               :page => page,
@@ -98,7 +96,7 @@ namespace :hampshire do
             done = true
           end
         else
-          puts "No more data"
+          puts "No data returned"
           done = true
         end
       end
@@ -113,114 +111,20 @@ namespace :hampshire do
           # Parse the date received
           date_received = application['http://data.hampshirehub.net/def/planning/dateReceived'][0]['@value']
           date_received = Time.iso8601(date_received)
-
-          # Pull in the localisation record
-          place_json = RestClient::Request.new(
-            :method => :get,
-            :url => resource_url,
-            :headers => {
-              :params => {
-                  :uri => application['http://schema.org/location'][0]['@id']
-              },
-            },
-            :user => Configuration::PUBLISHMYDATA_USER,
-            :password => Configuration::PUBLISHMYDATA_PASSWORD,
-          ).execute
-          # the "resource" endpoint returns an array despite not being plural
-          place = JSON.parse(place_json)[0]
-          # Some places, e.g http://data.hampshirehub.net/id/planning-application/district-council/rushmoor/14/00311/CONDPP/location
-          # don't have easting/northings
-          if place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'] \
-             and place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing']
-            sleep(0.33)
-            location = GlobalConvert::Location.new(
-              input: {
-                projection: :osgb36,
-                lon: place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'][0]['@value'],
-                lat: place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing'][0]['@value']
-              },
-              output: {
-                projection: :wgs84
-              }
-            )
-          end
-
-          # Get status info
-          status_present = application['http://data.hampshirehub.net/def/planning/hasDecision']
-          if status_present
-            # Pull in the status record
-            status_json = RestClient::Request.new(
-              :method => :get,
-              :url => resource_url,
-              :headers => {
-                :params => {
-                    :uri => application['http://data.hampshirehub.net/def/planning/hasDecision'][0]['@id']
-                },
-              },
-              :user => Configuration::PUBLISHMYDATA_USER,
-              :password => Configuration::PUBLISHMYDATA_PASSWORD,
-            ).execute
-            status_data = JSON.parse(status_json)[0]
-
-            if status_data['http://data.hampshirehub.net/def/planning/decisionIssued']
-              outcome = status_data['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']
-              case outcome
-              when /\/approve$/
-                status = "Approved"
-              when /\/refuse$/
-                status = "Refused"
-              else
-                warn "unknown status - #{outcome}, for #{application['http://data.hampshirehub.net/def/planning/hasCaseReference'][0]['@value']}"
-              end
-            else
-              # hmm, data glitch? No decisionIssued in the decision data :(
-              # or maybe this is when it's been decided but the decision hasn't
-              # been made public yet, let's say it's still "In Progress"
-              status = "In Progress"
-            end
-
-            # Get date info
-            if status_data['http://data.hampshirehub.net/def/planning/targetDate']
-              target_date = status_data['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']
-              target_date = Time.iso8601(target_date)
-            elsif application['http://data.hampshirehub.net/def/planning/targetDate']
-              target_date = application['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']
-              target_date = Time.iso8601(target_date)
-            end
-
-            # don't try to compare undecided application's target dates
-            # against decision dates
-            unless status == "In Progress"
-              # noticeDate is the official date that notice of the decision is
-              # given to the applicant
-              if status_data['http://data.hampshirehub.net/def/planning/noticeDate']
-                decision_date = status_data['http://data.hampshirehub.net/def/planning/noticeDate'][0]['@value']
-                decision_date = Time.iso8601(decision_date)
-              end
-              if target_date
-                delayed = target_date < decision_date if decision_date
-              end
-            end
-          else
-            status = "In Progress"
-
-            if application['http://data.hampshirehub.net/def/planning/targetDate']
-              target_date = application['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']
-              target_date = Time.iso8601(target_date)
-            else
-              target_date = nil
-            end
-          end
-
-          if delayed.nil?
-            delayed = target_date < Time.now if target_date
-          end
+          # Extract data from associated records
+          description = PMDApplicationProcessor.extract_description(application)
+          place = PMDApplicationProcessor.extract_address(application)
+          location = PMDApplicationProcessor.extract_location(place)
+          decision = PMDApplicationProcessor.extract_decision(application)
+          status = PMDApplicationProcessor.extract_status(decision)
+          decision_date = PMDApplicationProcessor.extract_decision_date(decision, status)
+          delayed = PMDApplicationProcessor.extract_delayed(application, decision, status, decision_date)
 
           # Build basic attributes
           attributes = {
             :council_reference => application['http://data.hampshirehub.net/def/planning/hasCaseReference'][0]['@value'],
             :authority_id => authority.id,
-            :description => application['http://data.hampshirehub.net/def/planning/hasCaseText'][0]['@value'],
+            :description => description,
             :address => place['http://www.w3.org/2000/01/rdf-schema#label'][0]['@value'],
             :info_url => application['http://xmlns.com/foaf/page'][0]['@id'],
             :date_received => date_received,
@@ -231,13 +135,20 @@ namespace :hampshire do
           }
 
           if location
-            attributes.merge({:lat => location.lat, :lng => location.lon})
+            attributes.merge!({:lat => location.lat, :lng => location.lon})
           end
 
-          unless Application.find_by_council_reference attributes[:council_reference]
-            application = Application.new attributes
-            application.save!
+
+          puts "Saving attributes: #{attributes.inspect}"
+
+          application = Application.where(
+            :authority_id => authority.id,
+            :council_reference => attributes[:council_reference]
+          ).first_or_initialize(attributes)
+          unless application.new_record?
+            application.update_attributes(attributes)
           end
+          application.save!
         end
       end
     end
