@@ -164,8 +164,8 @@ namespace :hampshire do
       )
     end
 
-    desc "Classify planning applications"
-    task :classify_csv, [:filename] => :environment do |t, args|
+    desc "Test the application classifier"
+    task :test_classifier, [:filename] => :environment do |t, args|
       classifier = ApplicationClassifier.new('applications')
       file = File.read(args[:filename])
       csv = CSV.parse(file, :headers => true)
@@ -195,6 +195,21 @@ namespace :hampshire do
       puts "Total incorrect: #{incorrect}"
       score = (correct.to_f / csv.length.to_f) * 100
       puts "Score: #{score}%"
+    end
+
+    desc "Classify applications in the database"
+    task :classify => :environment do
+      classifier = ApplicationClassifier.new('applications')
+      applications = Application.all
+      # Wrap this in one big transation to make it slightly faster
+      # https://www.coffeepowered.net/2009/01/23/mass-inserting-data-in-rails-without-killing-your-performance/
+      ActiveRecord::Base.transaction do
+        applications.each do |application|
+          category = PMDApplicationProcessor.extract_category(application.council_category, application.description, classifier)
+          application.category = category
+          application.save!
+        end
+      end
     end
   end
 end
