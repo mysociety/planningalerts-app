@@ -8,7 +8,7 @@ Rails.configuration.to_prepare do
       indexes authority(:full_name), :as => :authority, :facet => true
 
       # to be added when available
-      # indexes category, :facet => true
+      indexes category, :facet => true
       indexes status, :facet => true
 
       # enable geosearch - see http://pat.github.io/thinking-sphinx/geosearching.html
@@ -37,6 +37,12 @@ Rails.configuration.to_prepare do
         :allow_nil => true,
         :message => "%{value} is not an allowed category"
       }
+
+
+    def geocode
+      # Override geocode with a noop because we don't need to geocode
+      # applications
+    end
   end
 
   Authority.class_eval do

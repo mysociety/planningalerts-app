@@ -128,7 +128,6 @@ class PMDApplicationProcessor
     location = nil
     if place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'] \
        and place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing']
-      sleep(0.33)
       location = GlobalConvert::Location.new(
         input: {
           projection: :osgb36,
