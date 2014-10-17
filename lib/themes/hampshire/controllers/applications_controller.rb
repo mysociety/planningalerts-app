@@ -45,7 +45,6 @@ class HampshireTheme
           end
         end
       end
-
       return false
     end
   end
