@@ -10,7 +10,7 @@ namespace :hampshire do
       require 'global_convert'
 
       page = 1
-      per_page = 11
+      per_page = 100
       applications = []
       done = false
 
