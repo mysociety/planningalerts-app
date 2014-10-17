@@ -70,6 +70,18 @@ THEME_HAMPSHIRE_DISABLE_SOCIAL_SHARING: true
 
 THEME_HAMPSHIRE_SEARCH_RADIUS: 2 # Miles
 
+# Categories for Applications
+THEME_HAMPSHIRE_CATEGORIES:
+  - 'Conservatories'
+  - 'Extensions'
+  - 'Loft Conversions'
+  - 'Garage Conversions'
+  - 'Doors and Windows'
+  - 'Fences, Gates and Garden Walls'
+  - 'Outbuildings'
+  - 'Trees and Hedges'
+  - 'Major Developments'
+
 COUNTRY_NAME: 'the UK'
 COUNTRY_CODE: 'GB'
 MINIMUM_ACCURACY: 4

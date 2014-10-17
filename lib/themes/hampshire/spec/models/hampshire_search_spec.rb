@@ -10,8 +10,8 @@ describe HampshireSearch do
     expect(search.search).to eq(nil)
   end
 
-  it "should set search to nil if 'anything' is supplied" do
-    search = HampshireSearch.new(:search => 'anything')
+  it "should set search to nil if 'Anything' is supplied" do
+    search = HampshireSearch.new(:search => 'Anything')
     expect(search.search).to eq(nil)
   end
 

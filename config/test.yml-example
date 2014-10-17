@@ -63,6 +63,18 @@ THEME_HAMPSHIRE_GOOGLE_ANALYTICS_KEY: ""
 
 THEME_HAMPSHIRE_SEARCH_RADIUS: 2 # Miles
 
+# Categories for Applications
+THEME_HAMPSHIRE_CATEGORIES:
+  - 'Conservatories'
+  - 'Extensions'
+  - 'Loft Conversions'
+  - 'Garage Conversions'
+  - 'Doors and Windows'
+  - 'Fences, Gates and Garden Walls'
+  - 'Outbuildings'
+  - 'Trees and Hedges'
+  - 'Major Developments'
+
 MAPIT_URL: "http://mapit.mysociety.org"
 
 COUNTRY_NAME: 'the UK'

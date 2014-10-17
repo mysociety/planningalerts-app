@@ -1,6 +1,6 @@
 class HampshireSearch < ApplicationSearch
   attr_accessor :search, :page, :location, :lat, :lng, :authority, :postcode,
-                :address, :status
+                :address, :status, :categories
 
   validate :valid_location
 
