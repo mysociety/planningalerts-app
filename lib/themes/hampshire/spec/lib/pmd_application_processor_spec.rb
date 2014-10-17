@@ -49,8 +49,8 @@ describe PMDApplicationProcessor do
 
     it 'should extract the location' do
       location = PMDApplicationProcessor.extract_location(place)
-      expect(location.lat).to be_within(0.001).of(0.895)
-      expect(location.lon).to be_within(0.001).of(-0.0133)
+      expect(location[:lat]).to be_within(0.001).of(51.2916)
+      expect(location[:lng]).to be_within(0.001).of(-0.7622)
     end
 
     it 'should ignore applications with no or missing location info' do

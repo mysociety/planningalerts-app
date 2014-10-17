@@ -92,7 +92,7 @@ namespace :hampshire do
           }
 
           if location
-            attributes.merge!({:lat => location.lat, :lng => location.lon})
+            attributes.merge!({:lat => location[:lat], :lng => location[:lng]})
           end
 
           application = Application.where(

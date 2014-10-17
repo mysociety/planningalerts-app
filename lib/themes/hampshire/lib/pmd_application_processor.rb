@@ -140,16 +140,24 @@ class PMDApplicationProcessor
     location = nil
     if place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'] \
        and place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing']
-      location = GlobalConvert::Location.new(
-        input: {
-          projection: :osgb36,
-          lon: place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'][0]['@value'],
-          lat: place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing'][0]['@value']
+      radians_location = GlobalConvert::Location.new(
+        :input => {
+          :projection => :osgb36,
+          :lon => place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'][0]['@value'],
+          :lat => place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing'][0]['@value']
         },
-        output: {
-          projection: :wgs84
+        :output => {
+          :projection => :wgs84
         }
       )
+      # Global convert returns the location lat/lng in Radians, which is ace
+      # because our search engine also works in Radians, however the planning
+      # alerts convention (and, well, most people's convention) is degrees,
+      # so we convert to degrees here
+      location = {
+        :lat => radians_location.lat * (180 / Math::PI),
+        :lng => radians_location.lon * (180 / Math::PI)
+      }
     end
     return location
   end
