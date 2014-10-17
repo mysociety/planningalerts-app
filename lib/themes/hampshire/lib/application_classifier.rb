@@ -6,7 +6,7 @@ class ApplicationClassifier < Object
 
   def initialize(name)
     @name = name
-    storage = StuffClassifier::FileStorage.new(Rails.root.join('lib', "#{name}.application-classifications"))
+    storage = StuffClassifier::FileStorage.new(Rails.root.join('lib', 'themes', 'hampshire', 'lib', "#{name}.application-classifications"))
     @classifier = StuffClassifier::Bayes.new(
       @name,
       :storage => storage
@@ -18,7 +18,7 @@ class ApplicationClassifier < Object
   end
 
   def self.train_from_csv(csv_path, limit, name)
-    storage = StuffClassifier::FileStorage.new(Rails.root.join('lib', "#{name}.application-classifications"))
+    storage = StuffClassifier::FileStorage.new(Rails.root.join('lib', 'themes', 'hampshire', 'lib', "#{name}.application-classifications"))
     classifier = StuffClassifier::Bayes.new(name, :storage => storage, :purge_state => true)
     training_file = File.read(csv_path)
     training_csv = CSV.parse(training_file, :headers => true)
