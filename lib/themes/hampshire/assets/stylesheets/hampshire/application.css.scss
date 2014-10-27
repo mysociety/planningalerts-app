@@ -1,34 +1,18 @@
-//= require select2
+// Start with resets, frameworks, and styles
+// from main planningalerts app
 //= require screen
+
+// Then include styles for this project…
 //= require_self
 
+// Make mixins available to Hampshire planning styles
+// (Mixins aren't shared via Rails require sprockets)
 @import "susy";
 @import "bourbon";
 
-.a-search {
-  &.search-results {
-    .main {
-      width:100%;
-    }
-    #map {
-      width: 100%;
-    }
-  }
+// Hampshire planning stuff
+@import "select2";
 
-  &.initial-search {
-    #main-wrapper {
-      background: transparent url("/assets/map-background.jpg") no-repeat center;
-      min-height: 500px;
-    }
-    .main {
-      background: transparent;
-      padding-top: 2.5em; // mobile and tablet
-      @include at-breakpoint(60em 24) {
-        padding-top: 5em; // big screens
-      }
-      #content {
-        background: #fcfdfc;
-      }
-    }
-  }
-}
+@import "colors";
+@import "header";
+

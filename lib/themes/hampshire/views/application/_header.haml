@@ -1,9 +1,6 @@
 #header-wrapper
   #header.container
-    %h1= link_to "Hampshire Planning Applications", root_path
-    %h2
-      Explore planning applications
-      %em near you
+    %h1= link_to "OpenPlanning", root_path
 
     .hide= link_to "Skip navigation", "#content"
     #menu
@@ -11,3 +8,8 @@
       %ul.collapse.hidden
         = li_selected(:controller => "/applications", :action => "address") do
           = link_to 'Search', address_applications_path
+        %li
+          %a{:href => "#"} Authorities
+        %li
+          %a{:href => "#"} About
+

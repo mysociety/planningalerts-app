@@ -1,0 +1,56 @@
+$header-height: 50px;
+
+#header-wrapper {
+  color: #fff;
+  background: $color-hampshire-navyblue;
+}
+
+#header {
+  @extend .container;
+
+  // TODO: Replace textual h1 with OpenPlanning logo image (@1x @2x)
+  h1 {
+    color: inherit;
+    padding-top: 0;
+    font-size: 1em;
+    line-height: $header-height;
+    float: left;
+
+    a {
+      text-shadow: none;
+    }
+
+    a, a:link, a:visited, a:hover, a:focus {
+      color: inherit;
+    }
+  }
+}
+
+#menu {
+  // Position toggle to top right of header, rather than below the h1
+  .toggle {
+    position: absolute;
+    top: 10px;
+    margin-top: 0;
+    right: 20px;
+  }
+
+  @include at-breakpoint(30em) {
+    // Let menu float to top right of header, rather than extending
+    // 100% width below the h1
+    width: auto;
+
+    a {
+      padding-top: 0;
+      padding-bottom: 0;
+      line-height: $header-height;
+    }
+  }
+
+  ul li.selected a,
+  a:hover,
+  a:focus {
+    background: transparent;
+    color: inherit;
+  }
+}
