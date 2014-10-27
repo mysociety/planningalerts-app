@@ -1,0 +1,45 @@
+body {
+  // Give the body the same background colour as the footer,
+  // so the footer looks like it fills the window on short pages.
+  background-color: $color-hampshire-skyblue;
+}
+
+#main-wrapper {
+  // And give the main content area a white background,
+  // so the body background doesn't show through.
+  background-color: #fff;
+}
+
+#footer-wrapper {
+  background-color: $color-hampshire-skyblue;
+  border-top: 1px solid mix($color-hampshire-gunmetal, $color-hampshire-skyblue, 10%);
+}
+
+#footer {
+  // TODO: Replace text with OpenPlanning logo image (@1x @2x)
+  h3 {
+    color: $color-hampshire-navyblue;
+    margin: 0.2em 0 0.8em 0;
+  }
+
+  p {
+    color: $color-hampshire-frost;
+
+    a, a:link, a:visited {
+      color: $color-hampshire-frost;
+      text-decoration: underline;
+    }
+
+    a:hover, a:focus {
+      color: mix($color-hampshire-royalblue, $color-hampshire-frost, 50%);
+    }
+  }
+
+  .oaf {
+    p {
+      margin: 0;
+      color: mix($color-hampshire-frost, $color-hampshire-skyblue, 50%);
+    }
+  }
+}
+
