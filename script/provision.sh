@@ -6,7 +6,7 @@ export LC_ALL="en_US.UTF-8"
 
 sudo apt-get update
 
-sudo apt-get install curl git libxslt-dev libxml2-dev proj libpq-dev postgresql-8.4 -y
+sudo apt-get install curl git libxslt-dev libxml2-dev proj libpq-dev postgresql -y
 
 # sphinx
 sudo apt-get install sphinxsearch -y
