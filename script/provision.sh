@@ -22,3 +22,6 @@ curl -sSL https://get.rvm.io | bash -s stable
 source .bash_profile
 
 rvm install rvm install 1.9.3-p547
+
+cd /vagrant
+bundle install
