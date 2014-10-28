@@ -23,27 +23,35 @@
 
 - if @show_results
   = content_for :extra_body_classes, "search-results"
-  %h3= "Search"
 
   #searchbar
     = render "search_widget"
 
-  #sidebar
-    - if @display == "map"
-      = link_to 'List view', params.merge({:display => 'list'}), :class => 'results-display-link'
-    - elsif @map_display_possible
-      = link_to 'Map view', params.merge({:display => 'map'}), :class => 'results-display-link'
+  #results.container
+    #sidebar
+      %h2 Found <strong>XX</strong> matching planning applications
+      %p
+        Show results
+        - if @display == "map"
+          = link_to 'as a list', params.merge({:display => 'list'}), :class => 'results-display-link'
+        - elsif @map_display_possible
+          = link_to 'on a map', params.merge({:display => 'map'}), :class => 'results-display-link'
+      #sidebar-stats
+        %p (sidebar stats will go here)
+      %p
+        See more statistics for
+        = link_to 'Some Lovely Council', '#', :class => 'parent-council-link'
 
-  #list{:class => 'results-display'}
-    - if @applications
-      = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »" do
-        = render "applications", :applications => @applications
+    #list{:class => 'results-display'}
+      - if @applications
+        = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »" do
+          = render "applications", :applications => @applications
 
   - if @display == "map"
     #map{:class => 'results-display'}
       %p Sorry, there would be a map here, but you need to have javascript enabled to view it.
 
-  = render "search_debug"
+    = render "search_debug"
 
   = content_for :extra_javascript do
     = render "js_marker_template"

@@ -1,0 +1,148 @@
+$color-sidebar-border: mix(#999, $color-hampshire-skyblue, 50%);
+
+body.search-results {
+  .main {
+    width: 100%;
+  }
+
+  #content {
+    padding: 0;
+  }
+
+  #results {
+    position: relative; // So we can absolutely position sidebar
+  }
+}
+
+#searchbar {
+  background-color: $color-hampshire-skyblue;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+
+  form {
+    padding: 1em 0;
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+
+    p + p {
+      margin-left: 0.5em;
+    }
+
+    label {
+      margin-right: 0.5em;
+    }
+  }
+
+  .select2-container {
+    text-align: left;
+    vertical-align: top;
+
+    .select2-choice {
+      padding: 0.4em 0.6em;
+      line-height: normal;
+      height: auto;
+      border-radius: 0;
+      border: 1px solid #bbb;
+      background: #fff;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+
+      .select2-arrow {
+        border-radius: 0;
+        background: transparent;
+        border: none;
+        right: 2px;
+
+        b {
+          background-position: 0 3px;
+        }
+      }
+    }
+  }
+
+  .select2-dropdown-open .select2-choice .select2-arrow b {
+    background-position: -18px 3px;
+  }
+
+  .select2-container-active .select2-choice {
+    border-color: $color-select2-focus;
+  }
+
+  #s_input label, #q_input label {
+    text-transform: lowercase;
+  }
+
+  #status, #search, #location {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0.4em 0.6em;
+    width: 9em;
+    font-size: 1em; // 16px
+    line-height: normal;
+    font-family: inherit;
+    color: inherit;
+    border: 1px solid #bbb;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    background-color: #fff;
+    -wekbit-appearance: none;
+
+    &:focus {
+      outline: none;
+      border-color: $color-select2-focus;
+    }
+  }
+
+  #status {
+    height: 2em; // rough height, for when javascript select2 is disabled
+    width: 6em;
+  }
+
+  .button-action {
+    background: $color-hampshire-green;
+    border: 1px solid darken($color-hampshire-green, 10%);
+    font-weight: bold;
+    font-size: 1em; // 16px
+    line-height: normal;
+    font-family: inherit;
+    padding: 0.4em 1em;
+    box-shadow: none;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+  }
+}
+
+#sidebar {
+  position: absolute;
+  top: 1em;
+  z-index: 2;
+  background: $color-hampshire-skyblue;
+  border: 1px solid darken($color-sidebar-border, 10%);
+  padding: 1em;
+  box-sizing: border-box; // so padding doesn't mess up column percentages
+
+  h2 {
+    font-size: 1em;
+  }
+
+  p {
+    margin-bottom: 0.75em;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .parent-council-link {
+    display: block; // break onto new line
+  }
+}
+
+#sidebar-stats {
+  background: #fff;
+  border-top: 1px solid $color-sidebar-border;
+  border-bottom: 1px solid $color-sidebar-border;
+  margin: 1em -1em;
+  padding: 1em;
+}
