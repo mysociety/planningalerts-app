@@ -45,6 +45,14 @@ $header-height: 50px;
       padding-bottom: 0;
       line-height: $header-height;
     }
+
+    li:last-child {
+      margin-right: 0;
+
+      a {
+        padding-right: 0; // Make link line up with right edge of container
+      }
+    }
   }
 
   ul li.selected a,

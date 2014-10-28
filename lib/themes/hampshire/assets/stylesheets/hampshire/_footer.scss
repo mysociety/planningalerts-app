@@ -10,6 +10,12 @@ body {
   background-color: #fff;
 }
 
+.main {
+  // And remove the off-white background given to the
+  // main column by the default planningalerts-app styles.
+  background: transparent;
+}
+
 #footer-wrapper {
   background-color: $color-hampshire-skyblue;
   border-top: 1px solid mix($color-hampshire-gunmetal, $color-hampshire-skyblue, 10%);

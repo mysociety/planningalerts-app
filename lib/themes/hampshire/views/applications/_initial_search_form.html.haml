@@ -1,17 +1,18 @@
-%form.address-search.formtastic{'accept-charset' => "UTF-8", 'action' => search_applications_path, 'method' => "get"}
-  %fieldset.inputs
-    %ol
-      %li#s_input.string
-        = label_tag(:search, "Show applications for:")
-        = text_field_tag(:search, (params[:search] or "Anything"), :placeholder => "e.g. Conservatories")
-      %li#q_input.string{:class => ("error" if @search and @search.invalid?)}
-        = label_tag(:location, "Located around:")
-        = text_field_tag(:location, params[:location], placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
-        = link_to "#", class: "inline-hints", id: "geolocate" do
-          &hellip; or locate me automatically
-        - if @search and @search.invalid?
-          - @search.errors.each do |attr, error|
-            %p.inline-errors= error
-  %fieldset.actions
-    %ol
-      %li.submit= submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
+%form#home-search{'accept-charset' => "UTF-8", 'action' => search_applications_path, 'method' => "get"}
+  %header
+    %h1
+      Explore planning applications
+      %small across Hampshire and your local area
+  - if @search and @search.invalid?
+    #errors
+      - @search.errors.each do |attr, error|
+        %p= error
+  %fieldset
+    %p#s_input
+      = label_tag(:search, "Show applications for")
+      = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "conservatories")
+    %p#q_input{:class => ("error" if @search and @search.invalid?)}
+      = label_tag(:location, "Near")
+      = text_field_tag(:location, params[:location], placeholder: "postcode")
+    %p.submit
+      = submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
