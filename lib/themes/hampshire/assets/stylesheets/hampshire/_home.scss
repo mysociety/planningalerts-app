@@ -6,25 +6,6 @@ body.initial-search {
   }
 }
 
-// TODO: These overrides should probably go in their own scss file
-// (they have nothing to do with the home page, per se)
-#content {
-  padding-top: 2em;
-  padding-bottom: 2em;
-}
-
-@include at-breakpoint(60em) {
-  // Reset #content and #main back to default .container styles
-  .main {
-    width: 59.9em;
-  }
-
-  #content {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
 #home-search {
   background-color: #fff;
   text-align: center;

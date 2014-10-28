@@ -1,0 +1,23 @@
+.main {
+  // Remove the off-white background given to the
+  // main column by the default planningalerts-app styles.
+  background: transparent;
+}
+
+#content {
+  // #content has { padding: 2em 1.5em } by default, which is odd
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+@include at-breakpoint(60em) {
+  // Reset #content and #main back to default .container styles
+  .main {
+    width: 59.9em;
+  }
+
+  #content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
