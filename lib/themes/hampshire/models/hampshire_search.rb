@@ -8,7 +8,7 @@ class HampshireSearch < ApplicationSearch
     attributes.each do |name, value|
       send("#{name}=", value)
     end
-
+    @categories = ::Configuration::THEME_HAMPSHIRE_CATEGORIES
     process_search_and_category
   end
 
@@ -88,9 +88,11 @@ class HampshireSearch < ApplicationSearch
         @category = nil
       elsif @categories.include?(@search)
         @category = @search
+        @search = nil
       else
         # Not a matching category
         @search = @search
+        @category = nil
       end
     end
   end

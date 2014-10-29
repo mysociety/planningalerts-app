@@ -19,8 +19,7 @@ class HampshireTheme
                                       :search => params[:search],
                                       :authority => params[:authority],
                                       :status => params[:status],
-                                      :page => params[:page],
-                                      :categories => @categories)
+                                      :page => params[:page])
         if @search.valid?
           @show_results = true
           @map_display_possible = false
