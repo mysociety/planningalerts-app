@@ -144,137 +144,155 @@ describe HampshireSearch do
         expect(search.errors[:address]).to eq(["Sorry, we couldn't find that address."])
       end
     end
+  end
 
-    context "when performing a search" do
-      it "should set some sensible defaults" do
-        search = HampshireSearch.new()
-        expected_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil
-        }
-        Application.should_receive(:search).with(expected_params)
-        search.valid?
-        search.perform_search
-      end
+  context "when performing a search" do
+    it "should set some sensible defaults" do
+      search = HampshireSearch.new()
+      expected_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil
+      }
+      Application.should_receive(:search).with(expected_params)
+      search.valid?
+      search.perform_search
+    end
 
-      it "should allow its defaults to be overriden" do
-        search = HampshireSearch.new()
-        expected_params = {
-          :per_page => 1000,
-          :order => {:date_scraped => :asc},
-          :page => 2
-        }
-        Application.should_receive(:search).with(expected_params)
-        search.valid?
-        search.perform_search(expected_params)
-      end
+    it "should allow its defaults to be overriden" do
+      search = HampshireSearch.new()
+      expected_params = {
+        :per_page => 1000,
+        :order => {:date_scraped => :asc},
+        :page => 2
+      }
+      Application.should_receive(:search).with(expected_params)
+      search.valid?
+      search.perform_search(expected_params)
+    end
 
-      it "should add an authority facet if given an authority and no location" do
-        search = HampshireSearch.new(:authority => 'Rushmoor')
-        expected_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil,
-          :with => {:authority_facet => Zlib.crc32(CGI::unescape('Rushmoor'))}
-        }
-        Application.should_receive(:search).with(expected_params)
-        search.valid?
-        search.perform_search
-      end
+    it "should add an authority facet if given an authority and no location" do
+      search = HampshireSearch.new(:authority => 'Rushmoor')
+      expected_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil,
+        :with => {:authority_facet => Zlib.crc32(CGI::unescape('Rushmoor'))}
+      }
+      Application.should_receive(:search).with(expected_params)
+      search.valid?
+      search.perform_search
+    end
 
-      it "should not add an authority facet if given an authority and a location" do
-        search = HampshireSearch.new(:authority => 'Rushmoor', :location => 'GU14 6AZ')
-        authority_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil,
-          :with => {:authority_facet => Zlib.crc32('Rushmoor')}
-        }
-        Application.should_not_receive(:search).with(authority_params)
-        MySociety::MaPit.should_receive(:call)
-                        .with('postcode', 'GU146AZ')
-                        .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
-        search.valid?
-        search.perform_search
-      end
+    it "should not add an authority facet if given an authority and a location" do
+      search = HampshireSearch.new(:authority => 'Rushmoor', :location => 'GU14 6AZ')
+      authority_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil,
+        :with => {:authority_facet => Zlib.crc32('Rushmoor')}
+      }
+      Application.should_not_receive(:search).with(authority_params)
+      MySociety::MaPit.should_receive(:call)
+                      .with('postcode', 'GU146AZ')
+                      .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
+      search.valid?
+      search.perform_search
+    end
 
-      it "should do a geosearch if given a location" do
-        search = HampshireSearch.new(:location => 'GU14 6AZ')
-        expected_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil,
-          :geo=>[0.017453292519943295, 0.03490658503988659],
-          :with=>{"@geodist"=>0.0..3218.688}
-        }
-        Application.should_receive(:search).with(expected_params)
-        MySociety::MaPit.should_receive(:call)
-                        .with('postcode', 'GU146AZ')
-                        .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
-        search.valid?
-        search.perform_search
-      end
+    it "should do a geosearch if given a location" do
+      search = HampshireSearch.new(:location => 'GU14 6AZ')
+      expected_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil,
+        :geo=>[0.017453292519943295, 0.03490658503988659],
+        :with=>{"@geodist"=>0.0..3218.688}
+      }
+      Application.should_receive(:search).with(expected_params)
+      MySociety::MaPit.should_receive(:call)
+                      .with('postcode', 'GU146AZ')
+                      .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
+      search.valid?
+      search.perform_search
+    end
 
-      it "should do a keyword search if given a search string" do
-        search = HampshireSearch.new(:search => 'Test')
-        expected_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil
-        }
-        Application.should_receive(:search).with('Test', expected_params)
-        search.valid?
-        search.perform_search
-      end
+    it "should do a keyword search if given a search string" do
+      search = HampshireSearch.new(:search => 'Test')
+      expected_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil
+      }
+      Application.should_receive(:search).with('Test', expected_params)
+      search.valid?
+      search.perform_search
+    end
 
-      it "should do a keyword and location search if given a search string and a location" do
-        search = HampshireSearch.new(:search => 'Test', :location => 'GU14 6AZ')
-        expected_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil,
-          :geo=>[0.017453292519943295, 0.03490658503988659],
-          :with=>{"@geodist"=>0.0..3218.688}
-        }
-        Application.should_receive(:search).with('Test', expected_params)
-        MySociety::MaPit.should_receive(:call)
-                        .with('postcode', 'GU146AZ')
-                        .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
-        search.valid?
-        search.perform_search
-      end
+    it "should do a keyword and location search if given a search string and a location" do
+      search = HampshireSearch.new(:search => 'Test', :location => 'GU14 6AZ')
+      expected_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil,
+        :geo=>[0.017453292519943295, 0.03490658503988659],
+        :with=>{"@geodist"=>0.0..3218.688}
+      }
+      Application.should_receive(:search).with('Test', expected_params)
+      MySociety::MaPit.should_receive(:call)
+                      .with('postcode', 'GU146AZ')
+                      .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
+      search.valid?
+      search.perform_search
+    end
 
-      it "should add the status facet if given a status" do
-        search = HampshireSearch.new(:status => 'Refused')
-        expected_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil,
-          :with => {:status_facet => Zlib.crc32('Refused')}
-        }
-        Application.should_receive(:search).with(expected_params)
-        search.valid?
-        search.perform_search
-      end
+    it "should add the status facet if given a status" do
+      search = HampshireSearch.new(:status => 'Refused')
+      expected_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil,
+        :with => {:status_facet => Zlib.crc32('Refused')}
+      }
+      Application.should_receive(:search).with(expected_params)
+      search.valid?
+      search.perform_search
+    end
 
-      it "should add the category facet if given a category" do
-        search = HampshireSearch.new(:search => 'Conservatories')
-        expected_params = {
-          :per_page => Application.per_page,
-          :order => {:date_scraped => :desc},
-          :page => nil,
-          :with => {:category_facet => Zlib.crc32('Conservatories')}
-        }
-        Application.should_receive(:search).with(expected_params)
-        search.valid?
-        search.perform_search
-      end
+    it "should add the category facet if given a category" do
+      search = HampshireSearch.new(:search => 'Conservatories')
+      expected_params = {
+        :per_page => Application.per_page,
+        :order => {:date_scraped => :desc},
+        :page => nil,
+        :with => {:category_facet => Zlib.crc32('Conservatories')}
+      }
+      Application.should_receive(:search).with(expected_params)
+      search.valid?
+      search.perform_search
+    end
+
+    it "should calculate search stats" do
+      search = HampshireSearch.new(:search => 'Test')
+      stub_search = stub(:total_entries => 50,
+                         :facets => {
+                           :status=>{
+                              "Approved"=>30,
+                              "Refused"=>5,
+                              "In Progress"=>15}})
+      Application.should_receive(:search).and_return(stub_search)
+      search.valid?
+      search.perform_search
+
+      expect(search.stats).to be_a(Hash)
+      expect(search.stats[:total_results]).to eq(50)
+      expect(search.stats[:percentage_approved]).to eq(60)
+      expect(search.stats[:percentage_refused]).to eq(10)
+      expect(search.stats[:percentage_current]).to eq(30)
     end
   end
 
   context "when finding authorities" do
-
     it "should return a list of authorities if there's a location" do
       search = HampshireSearch.new(:location => 'GU14 6AZ')
       mock_areas = {

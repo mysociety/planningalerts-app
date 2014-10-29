@@ -1,6 +1,6 @@
 class HampshireSearch < ApplicationSearch
   attr_accessor :search, :page, :location, :lat, :lng, :authority, :postcode,
-                :address, :status, :categories, :category
+                :address, :status, :categories, :category, :stats
 
   validate :valid_location
 
@@ -55,10 +55,12 @@ class HampshireSearch < ApplicationSearch
       search_params[:with] = with_params
     end
     if @search.nil?
-      return Application.search search_params
+      results = Application.search search_params
     else
-      return Application.search @search, search_params
+      results = Application.search @search, search_params
     end
+    @stats = calculate_stats(results) if results
+    return results
   end
 
   protected
@@ -130,6 +132,34 @@ class HampshireSearch < ApplicationSearch
     else
       errors.add(:address, "Sorry, we couldn't find that address.")
     end
+  end
+
+  def calculate_stats(results)
+    stats = {}
+    stats[:total_results] = results.total_entries
+
+    approved_count = results.facets[:status]["Approved"].to_i
+    if approved_count > 0
+      stats[:percentage_approved] = (approved_count.to_f / results.total_entries * 100).round
+    else
+      stats[:percentage_approved] = 0
+    end
+
+    refused_count = results.facets[:status]["Refused"].to_i
+    if refused_count > 0
+      stats[:percentage_refused] = (refused_count.to_f / results.total_entries * 100).round
+    else
+      stats[:percentage_refused] = 0
+    end
+
+    current_count = results.facets[:status]["In Progress"].to_i
+    if current_count > 0
+      stats[:percentage_current] = (current_count.to_f / results.total_entries * 100).round
+    else
+      stats[:percentage_current] = 0
+    end
+
+    stats
   end
 
   def find_planning_authorities(data)
