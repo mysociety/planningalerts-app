@@ -4,13 +4,14 @@
       %li#s_input.string
         = label_tag(:search, "Show applications for:")
         = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "e.g. Conservatories")
-      %li#q_input.string{:class => ("error" if @error)}
+      %li#q_input.string{:class => ("error" if @search and @search.invalid?)}
         = label_tag(:location, "Located around:")
         = text_field_tag(:location, params[:location], placeholder: "e.g. SO23 8UJ or Romsey Rd, Winchester")
         = link_to "#", class: "inline-hints", id: "geolocate" do
           &hellip; or locate me automatically
-        - if @error
-          %p.inline-errors= @error
+        - if @search and @search.invalid?
+          - @search.errors.each do |attr, error|
+            %p.inline-errors= error
   %fieldset.actions
     %ol
       %li.submit= submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"

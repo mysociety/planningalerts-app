@@ -32,9 +32,9 @@
         PlanningAlerts.search['applications'] = #{raw @applications_json};
       - else
         PlanningAlerts.search['applications'] = [];
-      - if @lat and @lng
-        PlanningAlerts.search['lat'] = #{@lat};
-        PlanningAlerts.search['lng'] = #{@lng};
+      - if @search.is_location_search?
+        PlanningAlerts.search['lat'] = #{@search.lat};
+        PlanningAlerts.search['lng'] = #{@search.lng};
   = content_for :extra_javascript do
     = render "js_marker_template"
   = content_for :extra_javascript, javascript_include_tag("hampshire.search_map")

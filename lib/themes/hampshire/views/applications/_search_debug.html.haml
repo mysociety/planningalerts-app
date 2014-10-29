@@ -1,4 +1,4 @@
-- if params[:postcode] or params[:address]
+- if params[:location]
   %h4 Original geosearch
   %p
     -if params[:postcode]
@@ -11,18 +11,19 @@
 
   %h4 Co-ordinates
   %p
-    ="#{@lat}, #{@lng}"
+    ="#{@search.lat}, #{@search.lng}"
 
   %h4 Authorities
   %p
-    = @authorities
+    = @search.authorities
 
+- if params[:search]
   %h4 Search
   %p
     - if @applications.blank?
       None
     - else
-      = @search
+      = params[:search]
       %h4 Facets
       %p
         = @applications.facets
