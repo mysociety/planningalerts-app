@@ -12,6 +12,22 @@ body.search-results {
   #results {
     position: relative; // So we can absolutely position sidebar
   }
+
+  &.fullscreen-map {
+    height: 100%;
+
+    #content, #map {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      // top is set dynamically by javascript
+    }
+
+    #footer-wrapper, #list {
+      display: none;
+    }
+  }
 }
 
 #searchbar {
