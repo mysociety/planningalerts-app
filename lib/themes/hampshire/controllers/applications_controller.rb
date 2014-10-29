@@ -4,8 +4,8 @@ require "#{Rails.root.to_s}/lib/themes/hampshire/models/hampshire_search.rb"
 class HampshireTheme
   class ApplicationsController < ControllerBase
     $:.push(File.join(File.dirname(__FILE__), '../../commonlib/rblib'))
-    load "validate.rb"
-    load "mapit.rb"
+    require "validate.rb"
+    require "mapit.rb"
 
     def search
       @categories = ::Configuration::THEME_HAMPSHIRE_CATEGORIES

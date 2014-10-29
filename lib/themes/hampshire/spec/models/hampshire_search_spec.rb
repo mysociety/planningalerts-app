@@ -1,8 +1,8 @@
 require File.expand_path(File.join(File.dirname(__FILE__),'..','..','..','..','..','spec','spec_helper.rb'))
 require "#{Rails.root.to_s}/lib/themes/hampshire/models/hampshire_search.rb"
 $:.push(File.join(File.dirname(__FILE__), '../../commonlib/rblib'))
-load "validate.rb"
-load "mapit.rb"
+require "validate.rb"
+require "mapit.rb"
 
 describe HampshireSearch do
   it "should set search to nil if nothing is supplied" do
