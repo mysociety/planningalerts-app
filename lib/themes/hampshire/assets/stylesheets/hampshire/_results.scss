@@ -3,6 +3,8 @@ $color-sidebar-border: mix(#999, $color-hampshire-skyblue, 50%);
 body.search-results {
   .main {
     width: 100%;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   #content {
@@ -133,12 +135,16 @@ body.search-results {
 
 #sidebar {
   position: absolute;
-  top: 1em;
+  top: 2em;
   z-index: 2;
   background: $color-hampshire-skyblue;
   border: 1px solid darken($color-sidebar-border, 10%);
   padding: 1em;
   box-sizing: border-box; // so padding doesn't mess up column percentages
+
+  display: block; // override default inline-block (!?)
+  float: none; // override default float
+  width: 28%; // override default 23% at viewport widths less than 60em
 
   h2 {
     font-size: 1.3em;
@@ -207,5 +213,124 @@ body.search-results {
 
   .pending .bar {
     background-color: $color-hampshire-gunmetal;
+  }
+}
+
+#list {
+  padding-left: 32%; // 28% for sidebar, plus 4% padding
+
+  .pagination:first-child {
+    display: none;
+  }
+}
+
+.applications li {
+  border-bottom: none;
+  padding: 2em 0 0 0;
+}
+
+.application {
+  a:link {
+    text-decoration: none;
+    color: $color-hampshire-navyblue;
+  }
+
+  .reference {
+    color: $color-hampshire-gunmetal;
+    margin-bottom: 0.5em;
+  }
+
+  .address {
+    color: inherit;
+    font-size: 1.5em;
+    line-height: 1.2em;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .description {
+    color: inherit;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+  }
+
+  a:hover .address {
+    color: $color-hampshire-royalblue;
+  }
+
+  .metadata {
+    color: inherit;
+    font-size: 0.9em;
+    line-height: 1em;
+
+    dt, dd {
+      display: inline;
+    }
+
+    dt {
+      margin: 0 0.2em 0 1.5em;
+    }
+  }
+
+  dt.status {
+    display: none;
+  }
+
+  dd.status {
+    background-color: $color-hampshire-gunmetal;
+    border-radius: 0.2em;
+    padding: 0.2em 0.4em;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.9em;
+
+    &.approved {
+      background-color: $color-hampshire-green;
+    }
+
+    &.rejected {
+      background-color: $color-hampshire-red;
+    }
+
+    &.pending {
+      background-color: $color-hampshire-gunmetal;
+    }
+  }
+}
+
+.pagination {
+  padding: 2em 0;
+  text-align: left;
+  display: table;
+
+  & > * {
+    padding: 0.5em 1em;
+    display: table-cell;
+    border: 1px solid $color-hampshire-skyblue;
+    border-left-style: none;
+  }
+
+  & > :first-child {
+    border-left-style: solid;
+    @include border-left-radius(0.2em);
+  }
+
+  & > :last-child {
+    @include border-right-radius(0.2em);
+  }
+
+  em {
+    font-style: normal;
+    background-color: $color-hampshire-skyblue;
+    color: $color-hampshire-navyblue;
+  }
+
+  a:link {
+    text-decoration: none;
+  }
+
+  .disabled {
+    color: darken($color-hampshire-skyblue, 20%);
   }
 }
