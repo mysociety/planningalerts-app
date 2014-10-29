@@ -9,7 +9,7 @@
       %dd{:class => "status #{application.status}"}= application.status or 'Unkown status'
       - if application.date_received
         %dt.received Marked valid:
-        %dd.recieved= application.date_received.strftime('%e %b %Y')
+        %dd.received= application.date_received.strftime('%e %b %Y')
       - if application.decision_date
         %dt.decision Decision date:
         %dd.decision= application.decision_date.strftime('%e %b %Y')
