@@ -47,6 +47,7 @@
 
   = content_for :extra_javascript do
     = render "js_marker_template"
+  = content_for :extra_javascript, javascript_include_tag("hampshire.map_styles")
   = content_for :extra_javascript, javascript_include_tag("hampshire.search_map")
 - else
   = content_for :extra_body_classes, "initial-search"
