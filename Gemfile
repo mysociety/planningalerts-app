@@ -58,7 +58,6 @@ gem "redcarpet", "2.3.0"
 gem "global_convert"
 # For Bayesian Classification
 gem "stuff-classifier", :git => 'https://github.com/alexandru/stuff-classifier.git'
-gem "redis"
 # For a fancy search box
 gem "select2-rails"
 

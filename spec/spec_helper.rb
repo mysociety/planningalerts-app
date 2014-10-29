@@ -21,6 +21,8 @@ require "email_spec"
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   c.hook_into :webmock
+  c.filter_sensitive_data('<PUBLISHMYDATA_USER>') { Configuration::PUBLISHMYDATA_USER }
+  c.filter_sensitive_data('<PUBLISHMYDATA_PASSWORD>') { Configuration::PUBLISHMYDATA_PASSWORD }
 end
 
 # Requires supporting ruby files with custom matchers and macros, etc,

@@ -11,6 +11,16 @@ describe ApplicationsController do
   end
 
   context "overridden search action" do
+    it "should assign the list of categories" do
+      get :search
+      expect(assigns(:categories)).to eq Configuration::THEME_HAMPSHIRE_CATEGORIES
+    end
+
+    it "should assign a list of categories as json for the javascript" do
+      get :search
+      expect(assigns(:categories_json)).to eq Configuration::THEME_HAMPSHIRE_CATEGORIES.as_json
+    end
+
     context "deciding whether to show results" do
       context "on the initial search page" do
         it "should default to not showing any results" do

@@ -1,6 +1,6 @@
 class HampshireSearch < ApplicationSearch
   attr_accessor :search, :page, :location, :lat, :lng, :authority, :postcode,
-                :address, :status
+                :address, :status, :categories, :category
 
   validate :valid_location
 
@@ -8,11 +8,8 @@ class HampshireSearch < ApplicationSearch
     attributes.each do |name, value|
       send("#{name}=", value)
     end
-
-    # "anything" is our special keyword meaning don't do a full text search
-    if !@search.blank? && @search.strip.downcase == "anything"
-      @search = nil
-    end
+    @categories = ::Configuration::THEME_HAMPSHIRE_CATEGORIES
+    process_search_and_category
   end
 
   def authorities
@@ -44,10 +41,9 @@ class HampshireSearch < ApplicationSearch
       search_params[:geo] = [lat_in_radians, lng_in_radians]
       with_params['@geodist'] = 0.0..search_range
     end
-    # uncomment once we've got categories wired up
-    # if params[:category]
-    #   with_params[:category_facet] = Zlib.crc32(params[:category])
-    # end
+    if @category
+      with_params[:category_facet] = Zlib.crc32(@category)
+    end
 
     # using this as a filter could cause us problems if we always
     # want to be able to display counts of all 3 facets
@@ -79,6 +75,26 @@ class HampshireSearch < ApplicationSearch
     distance_in_miles = ::Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS
     # convert miles to metres
     return distance_in_miles.to_f * 1609.344
+  end
+
+  def process_search_and_category
+    # Determine if a search string is actually a category and set an
+    # appropriate instance var if so
+    if @search
+      # "Anything" is our special keyword meaning don't do a full text search
+      if @search == 'Anything'
+        # Essentially don't search or filter by category
+        @search = nil
+        @category = nil
+      elsif @categories.include?(@search)
+        @category = @search
+        @search = nil
+      else
+        # Not a matching category
+        @search = @search
+        @category = nil
+      end
+    end
   end
 
   def valid_location

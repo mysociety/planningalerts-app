@@ -8,6 +8,9 @@ class HampshireTheme
     load "mapit.rb"
 
     def search
+      @categories = ::Configuration::THEME_HAMPSHIRE_CATEGORIES
+      @categories_json = @categories.as_json
+
       # Whether we're showing the "results" view or the initial homepage view
       @show_results = params.has_key?(:results) or false
 
@@ -41,7 +44,6 @@ class HampshireTheme
           end
         end
       end
-
       return false
     end
   end

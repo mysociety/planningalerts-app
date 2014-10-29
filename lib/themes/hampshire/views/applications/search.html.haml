@@ -1,5 +1,22 @@
 = content_for :title, @description
 
+= content_for :extra_javascript do
+  -# This has to be present in either view and come before the other js that
+  -# might be loaded if we're showing results, hence it comes at the top
+  %script
+    var PlanningAlerts = window.PlanningAlerts || {};
+    PlanningAlerts['search'] = {};
+    - if @applications_json
+      PlanningAlerts.search['applications'] = #{raw @applications_json};
+    - else
+      PlanningAlerts.search['applications'] = [];
+    - if @search and @search.is_location_search?
+      PlanningAlerts.search['lat'] = #{@search.lat};
+      PlanningAlerts.search['lng'] = #{@search.lng};
+    PlanningAlerts.search['categories'] = #{raw @categories_json};
+
+= content_for :extra_javascript, javascript_include_tag("hampshire.search_box")
+
 - if @show_results
   = content_for :extra_body_classes, "search-results"
   %h3= "Search"
@@ -24,17 +41,6 @@
 
   = render "search_debug"
 
-  = content_for :extra_javascript do
-    %script
-      var PlanningAlerts = window.PlanningAlerts || {};
-      PlanningAlerts['search'] = {};
-      - if @applications_json
-        PlanningAlerts.search['applications'] = #{raw @applications_json};
-      - else
-        PlanningAlerts.search['applications'] = [];
-      - if @search.is_location_search?
-        PlanningAlerts.search['lat'] = #{@search.lat};
-        PlanningAlerts.search['lng'] = #{@search.lng};
   = content_for :extra_javascript do
     = render "js_marker_template"
   = content_for :extra_javascript, javascript_include_tag("hampshire.search_map")

@@ -10,9 +10,33 @@ describe HampshireSearch do
     expect(search.search).to eq(nil)
   end
 
-  it "should set search to nil if 'anything' is supplied" do
-    search = HampshireSearch.new(:search => 'anything')
+  it "should set search to nil if 'Anything' is supplied" do
+    search = HampshireSearch.new(:search => 'Anything')
     expect(search.search).to eq(nil)
+  end
+
+  it "should set category to nil is nothing is supplied" do
+    search = HampshireSearch.new()
+    expect(search.category).to eq(nil)
+  end
+
+  it "should set category to nil is 'Anything' is supplied" do
+    search = HampshireSearch.new(:search => 'Anything')
+    expect(search.category).to eq(nil)
+  end
+
+  it "should set search to nil if a category is supplied" do
+    ::Configuration::THEME_HAMPSHIRE_CATEGORIES.each do |category|
+      search = HampshireSearch.new(:search => category)
+      expect(search.search).to eq(nil)
+    end
+  end
+
+  it "should set the category if a category is supplied" do
+    ::Configuration::THEME_HAMPSHIRE_CATEGORIES.each do |category|
+      search = HampshireSearch.new(:search => category)
+      expect(search.category).to eq(category)
+    end
   end
 
   it "should report that it's a location search if the lat/lng are set" do
@@ -205,13 +229,18 @@ describe HampshireSearch do
       end
 
       it "should do a keyword and location search if given a search string and a location" do
-        search = HampshireSearch.new(:search => 'Test')
+        search = HampshireSearch.new(:search => 'Test', :location => 'GU14 6AZ')
         expected_params = {
           :per_page => Application.per_page,
           :order => {:date_scraped => :desc},
-          :page => nil
+          :page => nil,
+          :geo=>[0.017453292519943295, 0.03490658503988659],
+          :with=>{"@geodist"=>0.0..3218.688}
         }
         Application.should_receive(:search).with('Test', expected_params)
+        MySociety::MaPit.should_receive(:call)
+                        .with('postcode', 'GU146AZ')
+                        .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
         search.valid?
         search.perform_search
       end
@@ -223,6 +252,19 @@ describe HampshireSearch do
           :order => {:date_scraped => :desc},
           :page => nil,
           :with => {:status_facet => Zlib.crc32('Refused')}
+        }
+        Application.should_receive(:search).with(expected_params)
+        search.valid?
+        search.perform_search
+      end
+
+      it "should add the category facet if given a category" do
+        search = HampshireSearch.new(:search => 'Conservatories')
+        expected_params = {
+          :per_page => Application.per_page,
+          :order => {:date_scraped => :desc},
+          :page => nil,
+          :with => {:category_facet => Zlib.crc32('Conservatories')}
         }
         Application.should_receive(:search).with(expected_params)
         search.valid?
