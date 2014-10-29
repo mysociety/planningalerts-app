@@ -1,4 +1,4 @@
-function initialiseMaps(latitude, longitude, address) {
+function initialiseMaps(latitude, longitude, address, extraOptions) {
   var map = new mxn.Mapstraction("map_div","googlev3");
   point = new mxn.LatLonPoint(latitude, longitude);
   map.setCenterAndZoom(point,16);
@@ -7,6 +7,11 @@ function initialiseMaps(latitude, longitude, address) {
   marker = new mxn.Marker(point)
   marker.setLabel(address);
   map.addMarker(marker);
+
+  // Set additional options, note this is Google Maps specific
+  var googleMap = map.getMap();
+  googleMap.setOptions(extraOptions);
+
 
   // Can't yet figure out how to make the POV point at the marker
   var pointToLookAt = new google.maps.LatLng(latitude, longitude);
