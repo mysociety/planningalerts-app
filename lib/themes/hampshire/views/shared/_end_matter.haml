@@ -6,6 +6,8 @@
   %script(src="http://maps.googleapis.com/maps/api/js?client=#{@themer.google_maps_client_id}&sensor=false&v=3.13&libraries=places" type="text/javascript")
 - else
   %script(src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places" type="text/javascript")
+:javascript
+    var PlanningAlerts = window.PlanningAlerts || {};
 = javascript_include_tag "hampshire.application"
 = vanity_js
 
