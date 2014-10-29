@@ -37,7 +37,9 @@ body.search-results {
   box-shadow: 0 1px 0 rgba(0,0,0,0.2);
 
   form {
-    padding: 1em 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    // Don't touch side padding, because .container will sort that out for us
 
     p {
       display: inline;
@@ -139,11 +141,14 @@ body.search-results {
   box-sizing: border-box; // so padding doesn't mess up column percentages
 
   h2 {
-    font-size: 1em;
+    font-size: 1.3em;
+    line-height: 1.2em;
   }
 
   p {
     margin-bottom: 0.75em;
+    font-size: 0.9em;
+    line-height: 1.3em;
   }
 
   p:last-child {
@@ -161,4 +166,46 @@ body.search-results {
   border-bottom: 1px solid $color-sidebar-border;
   margin: 1em -1em;
   padding: 1em;
+
+  p {
+    position: relative;
+  }
+
+  p + p {
+    margin-top: 1em;
+  }
+
+  .visualisation {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 7em;
+  }
+
+  .bar {
+    display: block;
+    height: 100%;
+    // width is set inline, as a percentage of parent
+    box-sizing: border-box; // so padding doesn't mess up percentage width
+    background-color: #999;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    font-weight: bold;
+    font-size: 0.8em;
+    padding: 0 0.5em;
+  }
+
+  .approved .bar {
+    background-color: $color-hampshire-green;
+  }
+
+  .rejected .bar {
+    background-color: $color-hampshire-red;
+  }
+
+  .pending .bar {
+    background-color: $color-hampshire-gunmetal;
+  }
 }

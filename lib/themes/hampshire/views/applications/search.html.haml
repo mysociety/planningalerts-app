@@ -37,7 +37,18 @@
         - elsif @map_display_possible
           = link_to 'on a map', params.merge({:display => 'map'}), :class => 'results-display-link'
       #sidebar-stats
-        %p (sidebar stats will go here)
+        %p.approved
+          %span.status Approved
+          %span.visualisation
+            %span.bar{:style => 'width: 100%'} XX%
+        %p.rejected
+          %span.status Rejected
+          %span.visualisation
+            %span.bar{:style => 'width: 80%'} XX%
+        %p.pending
+          %span.status In progress
+          %span.visualisation
+            %span.bar{:style => 'width: 50%'} XX%
       %p
         See more statistics for
         = link_to 'Some Lovely Council', '#', :class => 'parent-council-link'
