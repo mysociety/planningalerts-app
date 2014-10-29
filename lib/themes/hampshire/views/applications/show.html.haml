@@ -55,9 +55,15 @@
     =render "applications/social_sharing", :application => @application
 
 - if @application.location
+  = content_for :extra_javascript, javascript_include_tag("hampshire.map_styles")
   :javascript
     $(document).ready(function(){
-      initialiseMaps(#{@application.lat}, #{@application.lng}, "#{escape_javascript(@application.address)}");
+      initialiseMaps(
+        #{@application.lat},
+        #{@application.lng},
+        "#{escape_javascript(@application.address)}",
+        {styles: PlanningAlerts.mapStyles}
+      );
     })
 
 = javascript_include_tag "maps"
