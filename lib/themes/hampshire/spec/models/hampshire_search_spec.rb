@@ -57,7 +57,7 @@ describe HampshireSearch do
       search = HampshireSearch.new(:location => 'Farnborough')
       Location.should_receive(:geocode)
               .with(CGI::escape('Farnborough'))
-              .and_return(stub(:success => true, :lat => 1, :lng => 2))
+              .and_return(stub(:error => false, :lat => 1, :lng => 2))
       search.valid?
     end
 
@@ -125,7 +125,7 @@ describe HampshireSearch do
         search = HampshireSearch.new(:location => 'Farnborough')
         Location.should_receive(:geocode)
                 .with(CGI::escape('Farnborough'))
-                .and_return(stub(:success => true, :lat => 1, :lng => 2))
+                .and_return(stub(:error => false, :lat => 1, :lng => 2))
         expect(search.valid?).to eq(true)
         expect(search.address).to eq('Farnborough')
         expect(search.lat).to eq(1)
@@ -136,7 +136,7 @@ describe HampshireSearch do
         search = HampshireSearch.new(:location => 'Farnborough')
         Location.should_receive(:geocode)
                 .with(CGI::escape('Farnborough'))
-                .and_return(stub(:success => false))
+                .and_return(stub(:error => true))
         expect(search.valid?).to eq(false)
         expect(search.address).to eq(nil)
         expect(search.lat).to eq(nil)

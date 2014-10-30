@@ -125,7 +125,7 @@ class HampshireSearch < ApplicationSearch
 
   def valid_address(address)
     r = Location.geocode(CGI::escape(address))
-    if r.success
+    if !r.error
       @address = address
       @lat = r.lat
       @lng = r.lng
