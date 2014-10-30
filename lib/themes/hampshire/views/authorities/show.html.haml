@@ -1,22 +1,40 @@
 - content_for :page_title, @authority.full_name
+= content_for :extra_body_classes, "search-results"
 
 #searchbar
+  %form.container
+    %fieldset
+      Showing all applications for #{@authority.full_name}
 
 #results.container
   #sidebar
+    %h2
+      Showing all #{@applications.total_entries} planning applications made
+      to #{@authority.full_name}.
     #sidebar-stats
+      %p.approved
+        %span.status Approved
+        %span.visualisation
+          %span.bar{:style => "width: 100%"} XX%
+      %p.rejected
+        %span.status Rejected
+        %span.visualisation
+          %span.bar{:style => "width: 100%"} XX%
+      %p.pending
+        %span.status In progress
+        %span.visualisation
+          %span.bar{:style => "width: 100%"} XX%
+
+    %p
+      #{@authority.full_name} receives on average <strong>XX</strong> applications per week.
+
+    %p
+      <strong>XX%</strong> of applications were decided on or before their target decision date.
 
   #list{:class => 'results-display'}
-    %h3= yield :page_title
-
     - if @applications.count == 0
       %p
         No applications for #{@authority.full_name} have yet been collected.
     - else
-      %p
-        For #{@authority.full_name} #{@authority.applications.where("date_received >= ?", 1.week.ago).count} applications were received in the last week, #{@authority.applications.where("date_received >= ?", 1.month.ago).count} in the last month and #{@authority.applications.count} since #{@authority.earliest_date.strftime("%-d %b %Y")}, when this authority was first added to PlanningAlerts. That's a
-        = link_to "median", "http://en.wikipedia.org/wiki/Median"
-        of #{@authority.median_applications_received_per_week} applications per week (ignoring weeks without any applications at all).
-
-      = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »" do
+      = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »", :inner_window => 1 do
         = render "applications/applications", :applications => @applications
