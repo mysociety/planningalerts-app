@@ -6,10 +6,10 @@
     #menu
       = image_tag "menu.png", size: "30x30", class: "toggle"
       %ul.collapse.hidden
-        = li_selected(:controller => "/applications", :action => "address") do
-          = link_to 'Search', address_applications_path
-        %li
-          %a{:href => "#"} Authorities
-        %li
-          %a{:href => "#"} About
+        = li_selected(:controller => "/applications", :action => "search") do
+          = link_to 'Search', search_applications_path
+        = li_selected(:controller => "/authorities", :action => "index") do
+          = link_to 'Authorities', authorities_path
+        = li_selected(:controller => "/static", :action => "about") do
+          = link_to 'About', about_path
 
