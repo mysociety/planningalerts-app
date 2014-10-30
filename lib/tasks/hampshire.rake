@@ -1,4 +1,55 @@
 namespace :hampshire do
+  desc "Calculate authority-wide stats based on currently loaded data"
+  task :calculate_authority_stats => :environment do
+    # get a list of all the categories
+    categories = Configuration::THEME_HAMPSHIRE_CATEGORIES
+
+    # Wrap this in one big transaction to make it slightly faster
+    # https://www.coffeepowered.net/2009/01/23/mass-inserting-data-in-rails-without-killing-your-performance/
+    ActiveRecord::Base.transaction do
+      Authority.enabled.each do |authority|
+        attributes = {
+          :authority_id => authority.id,
+          :category => nil,
+          :total => authority.applications.count,
+          :delayed => authority.applications.where(:delayed => true).count,
+          :approved => authority.applications.where(:status => "Approved").count,
+          :refused => authority.applications.where(:status => "Refused").count,
+          :in_progress => authority.applications.where(:status => "In Progress").count,
+        }
+
+        stats = AuthorityStatsSummary.where(
+          :authority_id => authority.id,
+          :category => nil
+        ).first_or_initialize(attributes)
+        unless stats.new_record?
+          stats.update_attributes(attributes)
+        end
+        stats.save!
+
+        categories.each do |category|
+          attributes = {
+            :authority_id => authority.id,
+            :category => category,
+            :total => authority.applications.where(:category => category).count,
+            :delayed => authority.applications.where(:category => category, :delayed => true).count,
+            :approved => authority.applications.where(:category => category, :status => "Approved").count,
+            :refused => authority.applications.where(:category => category, :status => "Refused").count,
+            :in_progress => authority.applications.where(:category => category, :status => "In Progress").count,
+          }
+          stats = AuthorityStatsSummary.where(
+            :authority_id => authority.id,
+            :category => category
+          ).first_or_initialize(attributes)
+          unless stats.new_record?
+            stats.update_attributes(attributes)
+          end
+          stats.save!
+        end
+      end
+    end
+  end
+
   namespace :applications do
     desc "Load planning applications from a PublishMyData dataset, index them generate XML sitemap"
     task :load_from_publishmydata_and_index, [:authority_id, :dataset] => [:load_from_publishmydata, 'ts:in', 'planningalerts:sitemap']

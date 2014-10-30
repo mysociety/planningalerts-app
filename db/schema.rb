@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141016163000) do
+ActiveRecord::Schema.define(:version => 20141030172042) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -120,6 +120,18 @@ ActiveRecord::Schema.define(:version => 20141016163000) do
   end
 
   add_index "authorities", ["short_name"], :name => "short_name_unique", :unique => true
+
+  create_table "authority_stats_summaries", :force => true do |t|
+    t.integer  "authority_id"
+    t.string   "category"
+    t.integer  "total"
+    t.integer  "approved"
+    t.integer  "refused"
+    t.integer  "in_progress"
+    t.integer  "delayed"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "comments", :force => true do |t|
     t.text     "text"
