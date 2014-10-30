@@ -12,6 +12,7 @@ body.search-results {
   }
 
   #results {
+    min-height: 500px;
     position: relative; // So we can absolutely position sidebar
   }
 
