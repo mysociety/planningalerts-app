@@ -39,6 +39,11 @@ describe HampshireSearch do
     end
   end
 
+  it "should set the status to nil if 'all' is supplied" do
+    search = HampshireSearch.new(:status => 'all')
+    expect(search.status).to eq(nil)
+  end
+
   it "should report that it's a location search if the lat/lng are set" do
     search = HampshireSearch.new(:lat => 1, :lng => 2)
     expect(search.is_location_search?).to eq(true)

@@ -18,9 +18,9 @@ class PMDApplicationProcessor
         outcome = decision['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']
         case outcome
         when 'http://opendatacommunities.org/def/concept/planning/decision-issued/approve'
-          status = "Approved"
+          status = "approved"
         when 'http://opendatacommunities.org/def/concept/planning/decision-issued/refuse'
-          status = "Refused"
+          status = "refused"
         else
           warn "unknown status - #{outcome}, from #{decision['@id']}"
         end

@@ -10,6 +10,7 @@ class HampshireSearch < ApplicationSearch
     end
     @categories = ::Configuration::THEME_HAMPSHIRE_CATEGORIES
     process_search_and_category
+    process_status
   end
 
   def authorities
@@ -96,6 +97,12 @@ class HampshireSearch < ApplicationSearch
         @search = @search
         @category = nil
       end
+    end
+  end
+
+  def process_status
+    if @status == 'all'
+      @status = nil
     end
   end
 
