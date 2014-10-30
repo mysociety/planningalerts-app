@@ -54,4 +54,20 @@ Rails.configuration.to_prepare do
       (applications.where(:delayed => true).count.to_f / applications.count.to_f * 100).round
     end
   end
+
+  Location.class_eval do
+    def self.geocode(address)
+      # Bias towards a specific bounding box
+      boundsSW = GeoKit::LatLng.new(Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_SW[0],
+                                    Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_SW[1])
+      boundsNE = GeoKit::LatLng.new(Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_NE[0],
+                                    Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_NE[1])
+      bounds = GeoKit::Bounds.new(boundsSW, boundsNE)
+      r = Geokit::Geocoders::GoogleGeocoder3.geocode(address, :bias => bounds)
+      r = r.all.find{|l| Location.new(l).in_correct_country?} || r
+      l = Location.new(r)
+      l.original_address = address
+      l
+    end
+  end
 end
