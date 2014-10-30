@@ -8,20 +8,21 @@ $header-height: 50px;
 #header {
   @extend .container;
 
-  // TODO: Replace textual h1 with OpenPlanning logo image (@1x @2x)
   h1 {
     color: inherit;
     padding-top: 0;
-    font-size: 1em;
-    line-height: $header-height;
-    float: left;
 
     a {
-      text-shadow: none;
-    }
-
-    a, a:link, a:visited, a:hover, a:focus {
-      color: inherit;
+      display: block;
+      width: 160px;
+      position: absolute; // #header.container is the nearest positioned ancestor
+      top: 0;
+      bottom: 0;
+      left: -25px;
+      text-indent: -9000px;
+      background: transparent url(../logo-white.png) 0 50% no-repeat;
+      // IE8 doesn't understand multiple background images, so ignores this line:
+      background-image: url(../logo-white.svg), none;
     }
   }
 }
