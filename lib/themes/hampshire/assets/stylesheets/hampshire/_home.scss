@@ -2,7 +2,18 @@ $color-select2-focus: #5897fb;
 
 body.initial-search {
   #main-wrapper {
-    background-color: #d7dfe2; // light bluegrey
+    background: #ccd5d7 url(../homepage-background.jpg) 50% 50% no-repeat;
+    background-size: cover;
+  }
+
+  #content {
+    // Don't need padding here, we use margin on #home-search instead
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  #footer-wrapper {
+    border-top-color: #B1C3C7; // darker than normal, better contrast with map image
   }
 }
 
@@ -10,7 +21,19 @@ body.initial-search {
   background-color: #fff;
   text-align: center;
   border-radius: 5px;
-  margin: 3em 0;
+  margin: 5em 0;
+
+  @media screen and (min-height: 48em) { // 768px high window
+    margin: 8em 0;
+  }
+
+  @media screen and (min-height: 50em) { // 800px high window
+    margin: 8em 0 10em 0;
+  }
+
+  @media screen and (min-height: 54em) { // 864px high window
+    margin: 8em 0 14em 0;
+  }
 
   header {
     background-color: $color-hampshire-navyblue;
