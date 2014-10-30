@@ -15,4 +15,6 @@
       = label_tag(:location, "Near")
       = text_field_tag(:location, params[:location], placeholder: "postcode")
     %p.submit
-      = submit_tag "Search", :name => nil, :class => "button button-rounded button-large button-action"
+      %button.button.button-rounded.button-large.button-action{:type => "submit"}
+        %i.fa.fa-search
+        Search

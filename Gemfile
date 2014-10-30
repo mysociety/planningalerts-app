@@ -60,6 +60,8 @@ gem "global_convert"
 gem "stuff-classifier", :git => 'https://github.com/alexandru/stuff-classifier.git'
 # For a fancy search box
 gem "select2-rails"
+# Sass font icon library
+gem "font-awesome-sass"
 
 group :test do
   # Apparently capybara 2 only works with Ruby 1.9

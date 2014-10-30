@@ -35,3 +35,10 @@ body a:hover,
 body a:focus {
   color: darken($color-hampshire-royalblue, 15%);
 }
+
+// Better alignment for search icons inside search buttons
+.button .fa-search {
+  font-size: 0.9em;
+  vertical-align: 0.1em;
+  margin-right: 0.3em;
+}
