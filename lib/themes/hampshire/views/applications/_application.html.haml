@@ -1,5 +1,7 @@
 %article.application
-  = link_to application do
+  = link_to council_reference_application_path(:id => application.id,
+                             :authority => application.authority.short_name_encoded,
+                             :reference => application.council_reference) do
     %p.reference= application.council_reference
     %h2.address= application.address
     %p.description

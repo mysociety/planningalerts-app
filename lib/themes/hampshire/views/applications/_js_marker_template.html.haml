@@ -25,6 +25,6 @@
       %dd.decision {{ application.decision_date }}
       {[ } ]}
     %p.submit
-      %a.button.button.button-rounded.button-action{:href => '/applications/{{ application.id }}'}
+      %a.button.button.button-rounded.button-action{:href => '/applications/{{ application.id }}/{{ application.authority.short_name_encoded }}/{{ application.council_reference }}'}
         Show details
         %i.fa.fa-external-link-square

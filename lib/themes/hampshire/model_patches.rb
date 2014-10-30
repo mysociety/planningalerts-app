@@ -31,6 +31,16 @@ Rails.configuration.to_prepare do
       # Override geocode with a noop because we don't need to geocode
       # applications
     end
+
+    def as_json(options={})
+      result = super(options)
+      result['application'].merge!({
+        'authority' => {
+          'short_name_encoded' => authority.short_name_encoded
+        }
+      })
+      result
+    end
   end
 
   Authority.class_eval do
