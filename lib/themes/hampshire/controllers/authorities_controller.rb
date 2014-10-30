@@ -5,6 +5,11 @@ class HampshireTheme
   class AuthoritiesController < ControllerBase
     def index
       @authorities = Authority.enabled
+    end
+
+    def show
+      @authority = Authority.find_by_short_name_encoded!(params[:id])
+      @applications = @authority.applications.paginate(:page => params[:page], :per_page => 30)
       return false
     end
   end
