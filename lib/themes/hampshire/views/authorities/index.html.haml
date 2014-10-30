@@ -7,10 +7,10 @@
       %td.name
         = link_to authority.full_name, authority_url(authority.short_name_encoded)
       %td.total_applications
-        =Application.where(:authority_id => authority.id).count
+        = authority.stats.overview.total
         applications
       %td.percent_approved
-        ="#{authority.percentage_approved}% approved"
+        ="#{authority.stats.overview.percentage_approved}% approved"
       %td.percent_delayed
-        ="#{authority.percentage_delayed}% delayed"
+        ="#{authority.stats.overview.percentage_delayed}% delayed"
 
