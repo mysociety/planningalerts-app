@@ -21,7 +21,7 @@
 #application.container
   #application-primary
     %header
-      %span{:class => "status #{@application.status}"}= @application.status or 'Unkown status'
+      %span{:class => "status #{@application.status}"}= @application.status or 'Unknown status'
       %p.reference= @application.council_reference
       %h2.address= @application.address
 
