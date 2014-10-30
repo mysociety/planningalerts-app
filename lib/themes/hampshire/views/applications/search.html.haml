@@ -57,13 +57,15 @@
             %span.status In progress
             %span.visualisation
               %span.bar{:style => "width: #{@search.stats[:percentage_current]}%"} #{@search.stats[:percentage_current]}%
-        %p
-          See more statistics for
-          = link_to 'Some Lovely Council', '#', :class => 'parent-council-link'
+        - unless @authority.blank?
+          %p
+            See more statistics for
+            = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
       - else
-        %p
-          See statistics for
-          = link_to 'Some Lovely Council', '#', :class => 'parent-council-link'
+        - unless @authority.blank?
+          %p
+            See statistics for
+            = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
 
     #list{:class => 'results-display'}
       - if @applications
