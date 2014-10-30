@@ -7,7 +7,12 @@
 - else
   %script(src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places" type="text/javascript")
 :javascript
-    var PlanningAlerts = window.PlanningAlerts || {};
+  var PlanningAlerts = window.PlanningAlerts || {};
+  PlanningAlerts.configuration = {};
+- if Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_SW && Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_NE
+  :javascript
+    PlanningAlerts.configuration.boundingBoxSW = #{Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_SW};
+    PlanningAlerts.configuration.boundingBoxNE = #{Configuration::THEME_HAMPSHIRE_BOUNDING_BOX_NE};
 = javascript_include_tag "hampshire.application"
 = vanity_js
 
