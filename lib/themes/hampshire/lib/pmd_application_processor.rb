@@ -12,7 +12,7 @@ class PMDApplicationProcessor
   end
 
   def self.extract_status(decision)
-    status = "In progress"
+    status = "in progress"
     if decision
       if decision['http://data.hampshirehub.net/def/planning/decisionIssued']
         outcome = decision['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']
@@ -109,9 +109,9 @@ class PMDApplicationProcessor
           category = classifier.classify(description)
         end
       elsif major_development_categories.include?(council_category)
-        category = 'Major Developments'
+        category = 'major developments'
       elsif tree_and_hedge_categories.include?(council_category)
-        category = 'Trees and Hedges'
+        category = 'trees and hedges'
       end
     end
     return category

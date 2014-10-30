@@ -83,8 +83,8 @@ class HampshireSearch < ApplicationSearch
     # Determine if a search string is actually a category and set an
     # appropriate instance var if so
     if @search
-      # "Anything" is our special keyword meaning don't do a full text search
-      if @search == 'Anything'
+      # "anything" is our special keyword meaning don't do a full text search
+      if @search == 'anything'
         # Essentially don't search or filter by category
         @search = nil
         @category = nil

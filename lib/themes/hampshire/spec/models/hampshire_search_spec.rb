@@ -10,8 +10,8 @@ describe HampshireSearch do
     expect(search.search).to eq(nil)
   end
 
-  it "should set search to nil if 'Anything' is supplied" do
-    search = HampshireSearch.new(:search => 'Anything')
+  it "should set search to nil if 'anything' is supplied" do
+    search = HampshireSearch.new(:search => 'anything')
     expect(search.search).to eq(nil)
   end
 
@@ -20,8 +20,8 @@ describe HampshireSearch do
     expect(search.category).to eq(nil)
   end
 
-  it "should set category to nil is 'Anything' is supplied" do
-    search = HampshireSearch.new(:search => 'Anything')
+  it "should set category to nil is 'anything' is supplied" do
+    search = HampshireSearch.new(:search => 'anything')
     expect(search.category).to eq(nil)
   end
 
@@ -260,12 +260,12 @@ describe HampshireSearch do
     end
 
     it "should add the category facet if given a category" do
-      search = HampshireSearch.new(:search => 'Conservatories')
+      search = HampshireSearch.new(:search => 'conservatories')
       expected_params = {
         :per_page => Application.per_page,
         :order => {:date_scraped => :desc},
         :page => nil,
-        :with => {:category_facet => Zlib.crc32('Conservatories')}
+        :with => {:category_facet => Zlib.crc32('conservatories')}
       }
       Application.should_receive(:search).with(expected_params)
       search.valid?
