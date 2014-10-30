@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(:version => 20141030172042) do
     t.date     "decision_date"
     t.string   "category"
     t.string   "council_category"
+    t.date     "target_date"
   end
 
   add_index "applications", ["authority_id", "date_scraped"], :name => "index_applications_on_authority_id_and_date_scraped"

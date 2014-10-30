@@ -48,14 +48,8 @@ class PMDApplicationProcessor
     return decision_date
   end
 
-  def self.extract_delayed(application, decision, status, decision_date)
-    delayed = nil
-
-    # Use the decision_date if we're given it, otherwise we'll compare
-    # the target date to Now to see if it's late
-    unless decision_date
-      decision_date = Time.now
-    end
+  def self.extract_target_date(application, decision)
+    target_date = nil
 
     # Work out when the application should have been decided by. If there's a
     # decision, we assume that the date given on that as a target is better
@@ -67,8 +61,21 @@ class PMDApplicationProcessor
     elsif application['http://data.hampshirehub.net/def/planning/targetDate']
       target_date = application['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']
       target_date = Time.iso8601(target_date)
-    else
-      target_date = nil
+    end
+    return target_date
+  end
+
+  def self.extract_delayed(application, decision, status, decision_date, target_date=nil)
+    delayed = nil
+
+    # Use the decision_date if we're given it, otherwise we'll compare
+    # the target date to Now to see if it's late
+    unless decision_date
+      decision_date = Time.now
+    end
+
+    unless target_date
+      target_date = extract_target_date(application, decision)
     end
 
     if target_date

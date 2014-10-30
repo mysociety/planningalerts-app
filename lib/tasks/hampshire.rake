@@ -110,7 +110,6 @@ namespace :hampshire do
       # https://www.coffeepowered.net/2009/01/23/mass-inserting-data-in-rails-without-killing-your-performance/
       ActiveRecord::Base.transaction do
         applications.each do |application|
-          target_date = nil
           delayed = nil
 
           # Parse the date received
@@ -121,9 +120,10 @@ namespace :hampshire do
           place = PMDApplicationProcessor.extract_address(application)
           location = PMDApplicationProcessor.extract_location(place)
           decision = PMDApplicationProcessor.extract_decision(application)
+          target_date = PMDApplicationProcessor.extract_target_date(application, decision)
           status = PMDApplicationProcessor.extract_status(decision)
           decision_date = PMDApplicationProcessor.extract_decision_date(decision, status)
-          delayed = PMDApplicationProcessor.extract_delayed(application, decision, status, decision_date)
+          delayed = PMDApplicationProcessor.extract_delayed(application, decision, status, decision_date, target_date)
           council_category = PMDApplicationProcessor.extract_council_category(application)
           category = PMDApplicationProcessor.extract_category(council_category, description, classifier)
 
@@ -138,6 +138,7 @@ namespace :hampshire do
             :date_scraped => Date.today.to_s,
             :status => status,
             :decision_date => decision_date,
+            :target_date => target_date,
             :delayed => delayed,
             :council_category => council_category,
             :category => category

@@ -90,7 +90,6 @@ describe PMDApplicationProcessor do
   end
 
   context 'when extracting the status' do
-
     let :approved_decision do
       {
         'http://data.hampshirehub.net/def/planning/decisionIssued' => [
@@ -246,6 +245,45 @@ describe PMDApplicationProcessor do
     end
   end
 
+  context 'when extracting the target date' do
+    let :decision do
+      {
+        'http://data.hampshirehub.net/def/planning/targetDate' => [
+          {
+            '@value' => '2013-12-23T00:00:00Z',
+            '@type' => 'http://www.w3.org/2001/XMLSchema#dateTime'
+          }
+        ]
+      }
+    end
+
+    let :application do
+      {
+        # This is here so that we can test the processor doesn't prefer this date
+        'http://data.hampshirehub.net/def/planning/targetDate' => [
+          {
+            '@value' => '2014-07-21T01:00:00+01:00'
+          }
+        ]
+      }
+    end
+
+    it 'should prefer the decision target date' do
+      target_date = PMDApplicationProcessor.extract_target_date(application, decision)
+      expect(target_date).to eq(Time.iso8601('2013-12-23T00:00:00Z'))
+    end
+
+    it 'should fallback to the applications target date' do
+      target_date = PMDApplicationProcessor.extract_target_date(application, {})
+      expect(target_date).to eq(Time.iso8601('2014-07-21T01:00:00+01:00'))
+    end
+
+    it 'should return nil if neither date is present' do
+      target_date = PMDApplicationProcessor.extract_target_date({}, {})
+      expect(target_date).to be_nil
+    end
+  end
+
   context 'when extracting the delayed status' do
     let :decision do
       {
@@ -271,47 +309,51 @@ describe PMDApplicationProcessor do
 
     it 'should extract the delayed status' do
       delayed_decision_date = Time.iso8601('2014-07-21T01:00:00+01:00')
+      PMDApplicationProcessor.should_receive(:extract_target_date)
+        .with(application, decision)
+        .and_return(Time.iso8601('2013-12-23T00:00:00Z'))
       delayed = PMDApplicationProcessor.extract_delayed(application, decision, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], delayed_decision_date)
       expect(delayed).to eq(true)
     end
 
     it 'should recognise not-delayed applications' do
       on_time_decision_date = Time.iso8601('2013-12-22T00:00:00Z')
+      PMDApplicationProcessor.should_receive(:extract_target_date)
+        .with(application, decision)
+        .and_return(Time.iso8601('2013-12-23T00:00:00Z'))
       delayed = PMDApplicationProcessor.extract_delayed(application, decision, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], on_time_decision_date)
       expect(delayed).to eq(false)
     end
 
     it 'should allow decisions on the target date' do
       on_time_decision_date = Time.iso8601('2013-12-23T00:00:00Z')
+      PMDApplicationProcessor.should_receive(:extract_target_date)
+        .with(application, decision)
+        .and_return(Time.iso8601('2013-12-23T00:00:00Z'))
       delayed = PMDApplicationProcessor.extract_delayed(application, decision, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], on_time_decision_date)
       expect(delayed).to eq(false)
     end
 
     it 'should fallback to the applications target date' do
       on_time_decision_date = Time.iso8601('2014-07-21T01:00:00+01:00')
+      PMDApplicationProcessor.should_receive(:extract_target_date)
+        .with(application, {})
+        .and_return(on_time_decision_date)
       delayed = PMDApplicationProcessor.extract_delayed(application, {}, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], on_time_decision_date)
       expect(delayed).to eq(false)
     end
 
+    it 'should not recalculate the target date if it is passed in' do
+      on_time_decision_date = Time.iso8601('2014-07-21T01:00:00+01:00')
+      PMDApplicationProcessor.should_not_receive(:extract_target_date)
+      delayed = PMDApplicationProcessor.extract_delayed(application, {}, 'Approved', on_time_decision_date, on_time_decision_date)
+    end
+
     it 'should compare to Now if there is no decision date' do
-      tomorrow_application = {
-        'http://data.hampshirehub.net/def/planning/targetDate' => [
-          {
-            '@value' => (Time.now + 1.days).iso8601
-          }
-        ]
-      }
-      delayed = PMDApplicationProcessor.extract_delayed(tomorrow_application, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil)
+      delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil, Time.now + 1.days)
       expect(delayed).to eq(false)
 
-      yesterday_application = {
-        'http://data.hampshirehub.net/def/planning/targetDate' => [
-          {
-            '@value' => (Time.now - 1.days).iso8601
-          }
-        ]
-      }
-      delayed = PMDApplicationProcessor.extract_delayed(yesterday_application, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil)
+      delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil, Time.now - 1.days)
       expect(delayed).to eq(true)
     end
 
@@ -319,7 +361,6 @@ describe PMDApplicationProcessor do
       delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], nil)
       expect(delayed).to eq(nil)
     end
-
   end
 
   context 'when extracting the council category' do
