@@ -1,4 +1,9 @@
+load 'lib/theme_controller_actions.rb'
+
 class AuthoritiesController < ApplicationController
+  include ThemeControllerActions
+  before_filter :use_theme_controller_actions
+
   def index
     # map from state name to authorities in that state
     states = Authority.enabled.order('state').pluck('DISTINCT state')
