@@ -28,7 +28,10 @@ class ApplicationController < ActionController::Base
     end
     if @theme == "hampshire"
       self.prepend_view_path "lib/themes/hampshire/views"
-      load "lib/themes/hampshire/controllers/applications_controller.rb"
+      controller_path = '/../../lib/themes/hampshire/controllers/*_controller.rb'
+      Dir[File.dirname(__FILE__) + controller_path].each do |file|
+        load file
+      end
     end
   end
 
