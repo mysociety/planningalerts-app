@@ -6,10 +6,11 @@
   %form#switch-authority.container
     %fieldset
       %label{:for => 'full_name'} Showing all applications for
-      %select{:name => 'full_name', :id => 'full_name'}
-        %option{:selected => true}= @authority.full_name
-        %option Trumpton District Council
-        %option Twin Peaks National Park
+      = select_tag(:full_name,
+                   options_from_collection_for_select(@authorities,
+                                                      :short_name_encoded,
+                                                      :full_name,
+                                                      @authority.short_name_encoded))
       %button.button.button-rounded.button-large.button-action{:type => "submit"} Switch authority
 
 #results.container

@@ -8,6 +8,14 @@ class HampshireTheme
     end
 
     def show
+      # Deal with posts to the authority selector
+      if params[:full_name]
+        authority = Authority.find_by_short_name_encoded!(params[:full_name])
+        if authority
+          redirect_to authority_url(authority.short_name_encoded)
+        end
+      end
+      @authorities = Authority.enabled
       @authority = Authority.find_by_short_name_encoded!(params[:id])
       @applications = @authority.applications.paginate(:page => params[:page], :per_page => 30)
       return false
