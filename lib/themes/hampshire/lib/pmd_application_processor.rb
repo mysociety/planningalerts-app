@@ -1,7 +1,7 @@
 class PMDApplicationProcessor
   # A helper class to extract information from a PublishMyData site
 
-  @@resource_url =  'http://hantshub-planning.publishmydata.com/resource.json'
+  @@resource_url =  "#{Configuration::PUBLISHMYDATA_BASE_URL}/resource.json"
 
   def self.extract_description(application)
     description = nil

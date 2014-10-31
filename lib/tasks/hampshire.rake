@@ -73,7 +73,7 @@ namespace :hampshire do
       while !done
         request = RestClient::Request.new(
           :method => :get,
-          :url => 'http://hantshub-planning.publishmydata.com/resources.json',
+          :url => "#{Configuration::PUBLISHMYDATA_BASE_URL}/resources.json",
           :headers => {
             :params => {
               :page => page,
