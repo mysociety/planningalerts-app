@@ -41,7 +41,7 @@
         <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
     %p
       Show
-      = link_to "all authorities in #{@authority.state}", 'authorities'
+      = link_to "all authorities in #{@authority.state}", authorities_path
 
   #list{:class => 'results-display'}
     - if @applications.count == 0
