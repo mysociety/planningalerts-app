@@ -9,18 +9,18 @@ $header-height: 50px;
   @extend .container;
 
   h1 {
-    color: inherit;
     padding-top: 0;
 
     a {
+      float: left;
       display: block;
       width: 160px;
-      position: absolute; // #header.container is the nearest positioned ancestor
-      top: 0;
-      bottom: 0;
-      left: -25px;
+      height: $header-height + 10px + 10px;
+      margin-top: -10px;
+      margin-bottom: -10px; // Reveal the clipped bottom edge of logo when mobile menu is open
+      margin-left: -25px; // Line up the "O" with the edge of .container
       text-indent: -9000px;
-      background: transparent url(../logo-white.png) 0 50% no-repeat;
+      background: transparent url(../logo-white.png) 0 45% no-repeat;
       // IE8 doesn't understand multiple background images, so ignores this line:
       background-image: url(../logo-white.svg), none;
     }
@@ -36,6 +36,14 @@ $header-height: 50px;
     right: 20px;
   }
 
+  li {
+    width: 33.3%; // Down from 49%, to fit all 3 links on one line
+  }
+
+  a {
+    padding-bottom: 1em;
+  }
+
   @include at-breakpoint(30em) {
     // Let menu float to top right of header, rather than extending
     // 100% width below the h1
@@ -45,6 +53,10 @@ $header-height: 50px;
       padding-top: 0;
       padding-bottom: 0;
       line-height: $header-height;
+    }
+
+    li {
+      width: auto;
     }
 
     li:last-child {
