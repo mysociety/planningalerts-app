@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # include authority & reference number in applications page url
   # (keep original route too)
-  match '/applications/:id/:authority/:reference' => 'applications#show', :constraints => {:reference => /.*/}
+  match '/applications/:id/:authority/:reference' => 'applications#show', :constraints => {:reference => /.*/}, :as => :council_reference_application
 
   # override existing applications resources to allow POSTs to :search
   resources :applications, :only => [:index, :show] do

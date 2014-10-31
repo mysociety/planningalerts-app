@@ -284,7 +284,7 @@ describe HampshireSearch do
                            :status=>{
                               "Approved"=>30,
                               "Refused"=>5,
-                              "In Progress"=>15}})
+                              "In progress"=>15}})
       Application.should_receive(:search).and_return(stub_search)
       search.valid?
       search.perform_search
