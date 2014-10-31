@@ -55,6 +55,7 @@ body.search-results {
 
     label {
       margin-right: 0.5em;
+      line-height: 2em;
     }
   }
 
@@ -96,7 +97,7 @@ body.search-results {
     text-transform: lowercase;
   }
 
-  #status, #search, #location {
+  #status, #search, #location, #full_name {
     display: inline-block;
     vertical-align: top;
     padding: 0.4em 0.6em;
@@ -119,6 +120,15 @@ body.search-results {
   #status {
     height: 2em; // rough height, for when javascript select2 is disabled
     width: 6em;
+  }
+
+  #full_name {
+    height: 2em;
+    width: auto;
+  }
+
+  #s2id_full_name {
+    width: 25em !important;
   }
 }
 
@@ -203,6 +213,19 @@ body.search-results {
   .pending .bar {
     background-color: $color-hampshire-gunmetal;
   }
+}
+
+#sidebar-context {
+  background: #fff;
+  border-top: 1px solid $color-sidebar-border;
+  border-bottom: 1px solid $color-sidebar-border;
+  margin: 1em -1em;
+  padding: 1em;
+}
+
+#sidebar-stats + #sidebar-context {
+  margin-top: -1em;
+  border-top: none;
 }
 
 #list {

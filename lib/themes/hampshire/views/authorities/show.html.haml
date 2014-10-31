@@ -1,16 +1,24 @@
 - content_for :page_title, @authority.full_name
 = content_for :extra_body_classes, "search-results"
+= content_for :extra_javascript, javascript_include_tag("hampshire.search_box")
 
 #searchbar
-  %form.container
+  %form#switch-authority.container
     %fieldset
-      Showing all applications for #{@authority.full_name}
+      %label{:for => 'full_name'} Showing all applications for
+      %select{:name => 'full_name', :id => 'full_name'}
+        %option{:selected => true}= @authority.full_name
+        %option Trumpton District Council
+        %option Twin Peaks National Park
+      %button.button.button-rounded.button-large.button-action{:type => "submit"} Switch authority
 
 #results.container
   #sidebar
     %h2
-      Showing all #{@applications.total_entries} planning applications made
-      to #{@authority.full_name}.
+      Showing all
+      %strong= @applications.total_entries
+      planning applications made to
+      %strong= @authority.full_name
     #sidebar-stats
       %p.approved
         %span.status Approved
@@ -25,11 +33,15 @@
         %span.visualisation
           %span.bar{:style => "width: #{@authority.stats.overview.percentage_in_progress}%"} #{@authority.stats.overview.percentage_in_progress}%
 
-    %p
-      #{@authority.full_name} receives on average <strong>#{@authority.median_applications_per_week}</strong> applications per week.
+    #sidebar-context
+      %p
+        #{@authority.full_name} receives on average <strong>#{@authority.median_applications_per_week}</strong> applications per week.
 
+      %p
+        <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
     %p
-      <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
+      Show
+      = link_to "all authorities in #{@authority.state}", 'authorities'
 
   #list{:class => 'results-display'}
     - if @applications.count == 0
