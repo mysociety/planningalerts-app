@@ -176,27 +176,27 @@ describe PMDApplicationProcessor do
 
     it 'should extract the status' do
       status = PMDApplicationProcessor.extract_status(approved_decision)
-      expect(status).to eq('Approved')
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['approved'])
     end
 
     it 'should default to In Progress' do
       status = PMDApplicationProcessor.extract_status(nil)
-      expect(status).to eq('In progress')
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
     end
 
     it 'should find refused applications' do
       status = PMDApplicationProcessor.extract_status(refused_decision)
-      expect(status).to eq('Refused')
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['refused'])
     end
 
     it 'should return In Progress for unrecognised statuses' do
       status = PMDApplicationProcessor.extract_status(unrecognised_decision)
-      expect(status).to eq('In progress')
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
     end
 
     it 'should return In Progress when theres a decision but no decisionIssued' do
       status = PMDApplicationProcessor.extract_status(unknown_decision)
-      expect(status).to eq('In progress')
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
     end
   end
 
@@ -231,17 +231,17 @@ describe PMDApplicationProcessor do
     end
 
     it 'should extract the decision date' do
-      decision_date = PMDApplicationProcessor.extract_decision_date(approved_decision, 'Approved')
+      decision_date = PMDApplicationProcessor.extract_decision_date(approved_decision, Configuration::THEME_HAMPSHIRE_STATUSES['approved'])
       expect(decision_date).to eq(Time.iso8601('2014-07-21T01:00:00+01:00'))
     end
 
     it 'should default to nil' do
-      decision_date = PMDApplicationProcessor.extract_decision_date(nil, 'Approved')
+      decision_date = PMDApplicationProcessor.extract_decision_date(nil, Configuration::THEME_HAMPSHIRE_STATUSES['approved'])
       expect(decision_date).to eq(nil)
     end
 
     it 'should should ignore In Progress applications' do
-      decision_date = PMDApplicationProcessor.extract_decision_date(nil, 'In progress')
+      decision_date = PMDApplicationProcessor.extract_decision_date(nil, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
       expect(decision_date).to eq(nil)
     end
   end
@@ -271,25 +271,25 @@ describe PMDApplicationProcessor do
 
     it 'should extract the delayed status' do
       delayed_decision_date = Time.iso8601('2014-07-21T01:00:00+01:00')
-      delayed = PMDApplicationProcessor.extract_delayed(application, decision, 'Approved', delayed_decision_date)
+      delayed = PMDApplicationProcessor.extract_delayed(application, decision, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], delayed_decision_date)
       expect(delayed).to eq(true)
     end
 
     it 'should recognise not-delayed applications' do
       on_time_decision_date = Time.iso8601('2013-12-22T00:00:00Z')
-      delayed = PMDApplicationProcessor.extract_delayed(application, decision, 'Approved', on_time_decision_date)
+      delayed = PMDApplicationProcessor.extract_delayed(application, decision, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], on_time_decision_date)
       expect(delayed).to eq(false)
     end
 
     it 'should allow decisions on the target date' do
       on_time_decision_date = Time.iso8601('2013-12-23T00:00:00Z')
-      delayed = PMDApplicationProcessor.extract_delayed(application, decision, 'Approved', on_time_decision_date)
+      delayed = PMDApplicationProcessor.extract_delayed(application, decision, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], on_time_decision_date)
       expect(delayed).to eq(false)
     end
 
     it 'should fallback to the applications target date' do
       on_time_decision_date = Time.iso8601('2014-07-21T01:00:00+01:00')
-      delayed = PMDApplicationProcessor.extract_delayed(application, {}, 'Approved', on_time_decision_date)
+      delayed = PMDApplicationProcessor.extract_delayed(application, {}, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], on_time_decision_date)
       expect(delayed).to eq(false)
     end
 
@@ -301,7 +301,7 @@ describe PMDApplicationProcessor do
           }
         ]
       }
-      delayed = PMDApplicationProcessor.extract_delayed(tomorrow_application, {}, 'In progress', nil)
+      delayed = PMDApplicationProcessor.extract_delayed(tomorrow_application, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil)
       expect(delayed).to eq(false)
 
       yesterday_application = {
@@ -311,12 +311,12 @@ describe PMDApplicationProcessor do
           }
         ]
       }
-      delayed = PMDApplicationProcessor.extract_delayed(yesterday_application, {}, 'In progress', nil)
+      delayed = PMDApplicationProcessor.extract_delayed(yesterday_application, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil)
       expect(delayed).to eq(true)
     end
 
     it 'should return nil when there is no target date' do
-      delayed = PMDApplicationProcessor.extract_delayed({}, {}, 'Approved', nil)
+      delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['approved'], nil)
       expect(delayed).to eq(nil)
     end
 

@@ -75,6 +75,12 @@ THEME_HAMPSHIRE_CATEGORIES:
   - 'trees and hedges'
   - 'major developments'
 
+# Status values for Applications
+THEME_HAMPSHIRE_STATUSES:
+  in_progress: 'in progress'
+  approved: 'approved'
+  refused: 'refused'
+
 MAPIT_URL: "http://mapit.mysociety.org"
 
 COUNTRY_NAME: 'the UK'

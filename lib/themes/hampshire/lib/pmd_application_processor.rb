@@ -12,15 +12,15 @@ class PMDApplicationProcessor
   end
 
   def self.extract_status(decision)
-    status = "in progress"
+    status = Configuration::THEME_HAMPSHIRE_STATUSES['in_progress']
     if decision
       if decision['http://data.hampshirehub.net/def/planning/decisionIssued']
         outcome = decision['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']
         case outcome
         when 'http://opendatacommunities.org/def/concept/planning/decision-issued/approve'
-          status = "approved"
+          status = Configuration::THEME_HAMPSHIRE_STATUSES['approved']
         when 'http://opendatacommunities.org/def/concept/planning/decision-issued/refuse'
-          status = "refused"
+          status = Configuration::THEME_HAMPSHIRE_STATUSES['refused']
         else
           warn "unknown status - #{outcome}, from #{decision['@id']}"
         end
@@ -37,7 +37,7 @@ class PMDApplicationProcessor
     decision_date = nil
     # In Progress applications in theory don't have a decision, but some weird
     # ones do, so we have to guard against them
-    if decision and status != "In progress"
+    if decision and status != Configuration::THEME_HAMPSHIRE_STATUSES['in_progress']
       # noticeDate is the official date that notice of the decision is
       # given to the applicant
       if decision['http://data.hampshirehub.net/def/planning/noticeDate']

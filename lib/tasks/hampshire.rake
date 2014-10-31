@@ -6,6 +6,7 @@ namespace :hampshire do
 
     # Wrap this in one big transaction to make it slightly faster
     # https://www.coffeepowered.net/2009/01/23/mass-inserting-data-in-rails-without-killing-your-performance/
+    app_statuses = Configuration::THEME_HAMPSHIRE_STATUSES
     ActiveRecord::Base.transaction do
       Authority.enabled.each do |authority|
         attributes = {
@@ -13,9 +14,9 @@ namespace :hampshire do
           :category => nil,
           :total => authority.applications.count,
           :delayed => authority.applications.where(:delayed => true).count,
-          :approved => authority.applications.where(:status => "Approved").count,
-          :refused => authority.applications.where(:status => "Refused").count,
-          :in_progress => authority.applications.where(:status => "In Progress").count,
+          :approved => authority.applications.where(:status => app_statuses['approved']).count,
+          :refused => authority.applications.where(:status => app_statuses['refused']).count,
+          :in_progress => authority.applications.where(:status => app_statuses['in_progress']).count,
         }
 
         stats = AuthorityStatsSummary.where(
@@ -33,9 +34,9 @@ namespace :hampshire do
             :category => category,
             :total => authority.applications.where(:category => category).count,
             :delayed => authority.applications.where(:category => category, :delayed => true).count,
-            :approved => authority.applications.where(:category => category, :status => "Approved").count,
-            :refused => authority.applications.where(:category => category, :status => "Refused").count,
-            :in_progress => authority.applications.where(:category => category, :status => "In Progress").count,
+            :approved => authority.applications.where(:category => category, :status => app_statuses['approved']).count,
+            :refused => authority.applications.where(:category => category, :status => app_statuses['refused']).count,
+            :in_progress => authority.applications.where(:category => category, :status => app_statuses['in_progress']).count,
           }
           stats = AuthorityStatsSummary.where(
             :authority_id => authority.id,

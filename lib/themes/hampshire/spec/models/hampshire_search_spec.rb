@@ -252,12 +252,12 @@ describe HampshireSearch do
     end
 
     it "should add the status facet if given a status" do
-      search = HampshireSearch.new(:status => 'Refused')
+      search = HampshireSearch.new(:status => Configuration::THEME_HAMPSHIRE_STATUSES['refused'])
       expected_params = {
         :per_page => Application.per_page,
         :order => {:date_scraped => :desc},
         :page => nil,
-        :with => {:status_facet => Zlib.crc32('Refused')}
+        :with => {:status_facet => Zlib.crc32(Configuration::THEME_HAMPSHIRE_STATUSES['refused'])}
       }
       Application.should_receive(:search).with(expected_params)
       search.valid?
@@ -282,9 +282,9 @@ describe HampshireSearch do
       stub_search = stub(:total_entries => 50,
                          :facets => {
                            :status=>{
-                              "Approved"=>30,
-                              "Refused"=>5,
-                              "In progress"=>15}})
+                              Configuration::THEME_HAMPSHIRE_STATUSES['approved']=>30,
+                              Configuration::THEME_HAMPSHIRE_STATUSES['refused']=>5,
+                              Configuration::THEME_HAMPSHIRE_STATUSES['in_progress']=>15}})
       Application.should_receive(:search).and_return(stub_search)
       search.valid?
       search.perform_search

@@ -82,6 +82,12 @@ THEME_HAMPSHIRE_CATEGORIES:
   - 'trees and hedges'
   - 'major developments'
 
+# Status values for Applications
+THEME_HAMPSHIRE_STATUSES:
+  in_progress: 'in progress'
+  approved: 'approved'
+  refused: 'refused'
+
 COUNTRY_NAME: 'the UK'
 COUNTRY_CODE: 'GB'
 THEME_HAMPSHIRE_BOUNDING_BOX_SW:

@@ -145,21 +145,21 @@ class HampshireSearch < ApplicationSearch
     stats = {}
     stats[:total_results] = results.total_entries
 
-    approved_count = results.facets[:status]["Approved"].to_i
+    approved_count = results.facets[:status][Configuration::THEME_HAMPSHIRE_STATUSES['approved']].to_i
     if approved_count > 0
       stats[:percentage_approved] = (approved_count.to_f / results.total_entries * 100).round
     else
       stats[:percentage_approved] = 0
     end
 
-    refused_count = results.facets[:status]["Refused"].to_i
+    refused_count = results.facets[:status][Configuration::THEME_HAMPSHIRE_STATUSES['refused']].to_i
     if refused_count > 0
       stats[:percentage_refused] = (refused_count.to_f / results.total_entries * 100).round
     else
       stats[:percentage_refused] = 0
     end
 
-    current_count = results.facets[:status]["In progress"].to_i
+    current_count = results.facets[:status][Configuration::THEME_HAMPSHIRE_STATUSES['in_progress']].to_i
     if current_count > 0
       stats[:percentage_current] = (current_count.to_f / results.total_entries * 100).round
     else
