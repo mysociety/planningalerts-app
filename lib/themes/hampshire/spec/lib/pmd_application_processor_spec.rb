@@ -377,7 +377,7 @@ describe PMDApplicationProcessor do
           'test description',
           classifier
         )
-        expect(category).to eq('Major Developments')
+        expect(category).to eq('major developments')
       end
     end
 
@@ -391,7 +391,7 @@ describe PMDApplicationProcessor do
           'test description',
           classifier
         )
-        expect(category).to eq('Trees and Hedges')
+        expect(category).to eq('trees and hedges')
       end
     end
 

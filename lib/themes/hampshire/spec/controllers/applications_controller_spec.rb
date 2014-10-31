@@ -4,6 +4,7 @@ require "#{Rails.root.to_s}/lib/themes/hampshire/models/hampshire_search.rb"
 describe ApplicationsController do
   let(:lat) { "51.06254955783433" }
   let(:lng) { "-1.319368478028908" }
+  let(:rushmoor) { {:name => "Rushmoor Borough Council"} }
 
   before(:each) do
     # force the use of the Hampshire theme
@@ -39,7 +40,7 @@ describe ApplicationsController do
           stub_search = stub(:valid? => true,
                              :perform_search => stub(:total_pages => 1,
                                                      :to_json => []),
-                             :is_location_search? => true)
+                             :is_location_search? => true, :authorities => [rushmoor])
           HampshireSearch.should_receive(:new)
                          .with(:location=>"GU14 6AZ", :search=> nil,
                                :authority=> nil, :status=> nil, :page=> nil)
@@ -51,7 +52,7 @@ describe ApplicationsController do
         it "should show the results view if an authority was specified" do
           stub_search = stub(:valid? => true,
                              :perform_search => stub(:total_pages => 1, :to_json => []),
-                             :is_location_search? => false)
+                             :is_location_search? => false, :authorities => [rushmoor])
           HampshireSearch.should_receive(:new)
                          .with(:authority => 'Rushmoor Borough Council',
                                :search=> nil, :location=> nil, :status=> nil,
@@ -112,25 +113,25 @@ describe ApplicationsController do
       end
 
       it "should mark the map display as possible if there's a location" do
-        stub_search.stub(:is_location_search? => true)
+        stub_search.stub(:is_location_search? => true, :authorities => [rushmoor])
         get :search, {:location => 'GU14 6AZ'}
         expect(assigns(:map_display_possible)).to eq true
       end
 
       it "should mark the map display as not possible if there's no location" do
-        stub_search.stub(:is_location_search? => false)
+        stub_search.stub(:is_location_search? => false, :authorities => [rushmoor])
         get :search, {:search => 'test'}
         expect(assigns(:map_display_possible)).to eq false
       end
 
       it "should display the list if asked" do
-        stub_search.stub(:is_location_search? => true)
+        stub_search.stub(:is_location_search? => true, :authorities => [rushmoor])
         get :search, {:location => 'GU14 6AZ', :display => 'list'}
         expect(assigns(:display)).to eq 'list'
       end
 
       it "should display the map if asked" do
-        stub_search.stub(:is_location_search? => true)
+        stub_search.stub(:is_location_search? => true, :authorities => [rushmoor])
         get :search, {:location => 'GU14 6AZ', :display => 'map'}
         expect(assigns(:display)).to eq 'map'
       end
@@ -141,7 +142,8 @@ describe ApplicationsController do
       let(:stub_search) do
         stub(:perform_search => stub_search_results,
              :valid? => true,
-             :is_location_search? => false)
+             :is_location_search? => false,
+             :authorities => [rushmoor])
       end
 
       before do
