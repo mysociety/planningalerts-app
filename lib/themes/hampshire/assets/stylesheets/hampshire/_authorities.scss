@@ -44,4 +44,26 @@
     color: mix($color-hampshire-gunmetal, $color-hampshire-frost, 50%);
   }
 
+  // Progressively disclose stats
+  // as window gets wider
+
+  .total_applications,
+  .percent_approved,
+  .percent_delayed {
+    display: none;
+  }
+
+  @include at-breakpoint(30em) {
+    .total_applications {
+      display: table-cell;
+    }
+  }
+
+  @include at-breakpoint(45em) {
+    .percent_approved,
+    .percent_delayed {
+      display: table-cell;
+    }
+  }
+
 }
