@@ -77,6 +77,8 @@ body.initial-search {
 
     label {
       margin-right: 0.5em;
+      line-height: 1.9em;
+      vertical-align: top;
     }
   }
 
@@ -136,6 +138,10 @@ body.initial-search {
       outline: none;
       border-color: $color-select2-focus;
     }
+  }
+
+  .button-action {
+    font-size: 18px; // rather than the default 1em for .button-action
   }
 
   .error {
