@@ -62,3 +62,8 @@ body a:focus {
     border: 1px solid darken($color-hampshire-green, 15%);
   }
 }
+
+.section-header {
+  border-bottom: 1px solid lighten($color-hampshire-gunmetal, 10%);
+  padding-bottom: 0.5em;
+}

@@ -1,5 +1,5 @@
 - content_for :page_title, "Browse planning applications by authority"
-%h3= yield :page_title
+%h2.section-header= yield :page_title
 
 %table.authorities
   - @authorities.each do |authority|
@@ -7,10 +7,9 @@
       %td.name
         = link_to authority.full_name, authority_url(authority.short_name_encoded)
       %td.total_applications
-        = authority.stats.overview.total
-        applications
+        = link_to pluralize(authority.stats.overview.total, 'application'), authority_url(authority.short_name_encoded)
       %td.percent_approved
-        ="#{authority.stats.overview.percentage_approved}% approved"
+        = link_to "#{authority.stats.overview.percentage_approved}% approved", authority_url(authority.short_name_encoded)
       %td.percent_delayed
-        ="#{authority.stats.overview.percentage_delayed}% delayed"
+        = link_to "#{authority.stats.overview.percentage_delayed}% delayed", authority_url(authority.short_name_encoded)
 

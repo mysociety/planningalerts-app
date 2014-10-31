@@ -1,0 +1,47 @@
+.authorities {
+  td {
+    padding: 0;
+  }
+
+  .name {
+    font-size: 1.2em;
+  }
+
+  a:link {
+    display: block;
+    text-decoration: none;
+    padding: 10px 15px;
+  }
+
+  tr {
+    background-color: mix(#fff, $color-hampshire-skyblue, 50%);
+
+    &:hover {
+      background-color: mix(#fff, $color-hampshire-skyblue, 10%);
+
+      a:link {
+        text-decoration: underline;
+        color: $color-hampshire-royalblue;
+      }
+    }
+  }
+
+  tr:nth-child(even) {
+    background-color: #fff;
+
+    &:hover {
+      background-color: mix(#fff, $color-hampshire-skyblue, 90%);
+    }
+  }
+
+  .name a,
+  .total_applications a {
+    color: $color-hampshire-navyblue;
+  }
+
+  .percent_approved a,
+  .percent_delayed a {
+    color: mix($color-hampshire-gunmetal, $color-hampshire-frost, 50%);
+  }
+
+}
