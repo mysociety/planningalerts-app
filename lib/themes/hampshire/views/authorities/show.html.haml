@@ -15,21 +15,21 @@
       %p.approved
         %span.status Approved
         %span.visualisation
-          %span.bar{:style => "width: 100%"} XX%
+          %span.bar{:style => "width: #{@authority.stats.overview.percentage_approved}%"} #{@authority.stats.overview.percentage_approved}%
       %p.rejected
         %span.status Rejected
         %span.visualisation
-          %span.bar{:style => "width: 100%"} XX%
+          %span.bar{:style => "width: #{@authority.stats.overview.percentage_refused}%"} #{@authority.stats.overview.percentage_refused}%
       %p.pending
         %span.status In progress
         %span.visualisation
-          %span.bar{:style => "width: 100%"} XX%
+          %span.bar{:style => "width: #{@authority.stats.overview.percentage_in_progress}%"} #{@authority.stats.overview.percentage_in_progress}%
 
     %p
-      #{@authority.full_name} receives on average <strong>XX</strong> applications per week.
+      #{@authority.full_name} receives on average <strong>#{@authority.median_applications_per_week}</strong> applications per week.
 
     %p
-      <strong>XX%</strong> of applications were decided on or before their target decision date.
+      <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
 
   #list{:class => 'results-display'}
     - if @applications.count == 0
