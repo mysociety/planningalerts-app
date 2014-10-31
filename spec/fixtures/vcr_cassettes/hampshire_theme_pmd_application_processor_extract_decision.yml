@@ -1,0 +1,84 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://<PUBLISHMYDATA_USER>:<PUBLISHMYDATA_PASSWORD>@data.hampshirehub.net/resource.json?uri=http://data.hampshirehub.net/id/planning-application/district-council/rushmoor/12/00430/REVPP/decision
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*; q=0.5, application/xml'
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: !binary |-
+        T0s=
+    headers:
+      !binary "U2VydmVy":
+      - !binary |-
+        bmdpbngvMS40LjQ=
+      !binary "RGF0ZQ==":
+      - !binary |-
+        RnJpLCAzMSBPY3QgMjAxNCAxODoxNzo1NSBHTVQ=
+      !binary "Q29udGVudC1UeXBl":
+      - !binary |-
+        YXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOA==
+      !binary "VHJhbnNmZXItRW5jb2Rpbmc=":
+      - !binary |-
+        Y2h1bmtlZA==
+      !binary "Q29ubmVjdGlvbg==":
+      - !binary |-
+        a2VlcC1hbGl2ZQ==
+      !binary "VmFyeQ==":
+      - !binary |-
+        QWNjZXB0LUVuY29kaW5n
+      !binary "U3RhdHVz":
+      - !binary |-
+        MjAwIE9L
+      !binary "WC1GcmFtZS1PcHRpb25z":
+      - !binary |-
+        U0FNRU9SSUdJTg==
+      !binary "WC1Yc3MtUHJvdGVjdGlvbg==":
+      - !binary |-
+        MTsgbW9kZT1ibG9jaw==
+      !binary "WC1Db250ZW50LVR5cGUtT3B0aW9ucw==":
+      - !binary |-
+        bm9zbmlmZg==
+      !binary "Q2FjaGUtQ29udHJvbA==":
+      - !binary |-
+        bm8tY2FjaGU=
+      !binary "WC1SZXF1ZXN0LUlk":
+      - !binary |-
+        MTk2Y2ViYjEtM2JhZC00YzNhLTkyZDktOTA4NjlmNDVjOGFm
+      !binary "WC1SdW50aW1l":
+      - !binary |-
+        MC4wMDkzNjc=
+      !binary "RXhwaXJlcw==":
+      - !binary |-
+        RnJpLCAzMSBPY3QgMjAxNCAxODoxNzo1NCBHTVQ=
+      !binary "Q29udGVudC1FbmNvZGluZw==":
+      - !binary |-
+        Z3ppcA==
+      !binary "QWNjZXNzLUNvbnRyb2wtQWxsb3ctT3JpZ2lu":
+      - !binary |-
+        Kg==
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA8WUXUvDMBSG7/0VpV5qmrQdKLuaMC8ExaFDhLGLLD1dDzRJ
+        adMVkf1306/pcE7HUKEfgZJz3qdvzjs7cZxXezuOO8LIHTpuYkw2pDTihnsJ
+        l1mRYA5JufAUGIoRzVKuFKol4VmWouAGtaIRFiZHYYjQpRKY0rwsEql1Tv2A
+        MjYIGX24fppMaAQCC7vDPW+b7u0WQbxpt9l5UxQl1EpnTYVe/g4EnYGqMYSW
+        slRoEApP50tbKaZCKwGZ+VyeYFOfWrpcr8Dtmqyb9/xg1eYlg/t43FP/muq6
+        j4WSEo2B41XzfAlmzA188Z9XPC3rb27A/JD4AQnCKfOHjNnrrFl0Bre21Oo+
+        nK2qqrwqbLwIGPPp893to0hA8lNrF0xRHg2gtEEBPwQYEHZBAn/Kgh6gXvwv
+        QD8nhyD4l3+HsG0ho9bFPIpJ0dqY8gWk3x2dSRckztV7kDj9pDjbubF7DEfd
+        ueqTYH92baXJZiLbubbP9cn8DQQzfmkNBQAA
+    http_version: 
+  recorded_at: Fri, 31 Oct 2014 18:17:55 GMT
+recorded_with: VCR 2.5.0
