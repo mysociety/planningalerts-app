@@ -1,14 +1,30 @@
+-#
+  This template uses HAML to generate a script tag and an embedded HTML structure
+  which is then parsed by underscore.js, which evaluates the mustache-style
+  template tags ({{}} for interpolation, {[]} for evaluation) and fills them
+  with a different marker's data each time the user clicks a marker on the map.
+
+  If you want to do anything conditional, chances are you want to do it in
+  JavaScript (inside a {[]} block) and *not HAML*, so that underscore.js can
+  execute the condition each time it reuses the template.
+
 %script{:id=> 'marker-template', :type => 'text/template'}
-  %small
-    %a{:href => '/applications/{{ application.id }}'}
-      {{ application.council_reference }}
-  %h3 {{ application.address }}
-  %p {{ application.description }}
-  %dl
-    %dt Valid:
-    %dd {{ application.date_received }}
-    %dt Status:
-    %dd {{ application.status }}
-    %dt Decision date:
-    %dd {{ application.decision_date }}
-  %a{:href => '{{ application.info_url }}'} Read more
+  .infowindow
+    %p.reference {{ application.council_reference }}
+    %h3.address {{ application.address }}
+    %p.description {{ application.description }}
+    %dl.metadata
+      %dt.status Status:
+      %dd.status {{ application.status || 'Unkown' }}
+      {[ if(application.date_received){ ]}
+      %dt.received Marked valid:
+      %dd.received {{ application.date_received }}
+      {[ } ]}
+      {[ if(application.decision_date){ ]}
+      %dt.decision Decision date:
+      %dd.decision {{ application.decision_date }}
+      {[ } ]}
+    %p.submit
+      %a.button.button.button-rounded.button-action{:href => '/applications/{{ application.id }}'}
+        Show details
+        %i.fa.fa-external-link-square

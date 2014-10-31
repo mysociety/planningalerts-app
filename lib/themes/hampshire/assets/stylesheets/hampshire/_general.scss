@@ -42,3 +42,23 @@ body a:focus {
   vertical-align: 0.1em;
   margin-right: 0.3em;
 }
+
+// Stupidly specific override for default button styles
+.container .button-action {
+  background: $color-hampshire-green;
+  border: 1px solid darken($color-hampshire-green, 10%);
+  font-weight: bold;
+  font-size: 1em; // 16px
+  line-height: normal;
+  font-family: inherit;
+  padding: 0.4em 1em;
+  box-shadow: none;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+
+  &:hover:not(:disabled),
+  &:focus {
+    box-shadow: none;
+    background: darken($color-hampshire-green, 5%);
+    border: 1px solid darken($color-hampshire-green, 15%);
+  }
+}
