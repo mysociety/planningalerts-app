@@ -39,9 +39,14 @@
           #{@authority.full_name} receives on average <strong>#{@authority.median_applications_received_per_week}</strong> applications per week.
         %p
           <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
-    %p
+
+    %p.change-display
       Show
       = link_to "all authorities in #{@authority.state}", authorities_path
+
+    %p.mobile-shortcuts
+      = link_to "All authorities", authorities_path, :class => 'all-authorities'
+      = link_to 'Modify search', 'search', :class => 'modify-search'
 
   #list{:class => 'results-display'}
     - if @applications.count == 0

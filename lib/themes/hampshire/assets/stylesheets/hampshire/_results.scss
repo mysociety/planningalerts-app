@@ -43,6 +43,15 @@ body.search-results {
   background-color: $color-hampshire-skyblue;
   border-bottom: 1px solid darken($color-sidebar-border, 10%);
 
+  // Hide on narrow screens, then reveal with javascript
+  @media screen and (max-width: 59.99em) {
+    display: none;
+
+    &.shown {
+      display: block;
+    }
+  }
+
   form {
     padding-top: 1em;
     padding-bottom: 1em;
@@ -197,6 +206,58 @@ body.search-results {
 
   .parent-council-link {
     display: block; // break onto new line
+  }
+
+  .change-display {
+    display: none;
+  }
+
+  .mobile-shortcuts {
+    display: block;
+
+    a {
+      margin-left: 1em;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:before {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin-right: 0.4em;
+      }
+
+      &.list-view:before {
+        content: $fa-var-list-ul;
+      }
+
+      &.map-view:before {
+        content: $fa-var-map-marker;
+      }
+
+      &.modify-search:before {
+        content: $fa-var-pencil;
+      }
+
+      &.all-authorities:before {
+        content: $fa-var-arrow-left;
+      }
+    }
+  }
+
+  @media screen and (min-width: 60em) {
+    .change-display {
+      display: block;
+    }
+
+    .mobile-shortcuts {
+      display: none;
+    }
   }
 }
 
