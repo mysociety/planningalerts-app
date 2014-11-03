@@ -71,14 +71,20 @@
     - if @display == "map"
       %noscript
         #list{:class => 'results-display'}
-          - if @applications
+          - if @applications and @applications.total_entries > 0
             = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »", :inner_window => 1 do
               = render "applications", :applications => @applications
+          - else
+            %p.no-results
+              Sorry, no results matched that search, perhaps try again with less specific keywords, or in a different location?
     - else
       #list{:class => 'results-display'}
-        - if @applications
+        - if @applications and @applications.total_entries > 0
           = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »", :inner_window => 1 do
             = render "applications", :applications => @applications
+        - else
+          %p.no-results
+            Sorry, no results matched that search, perhaps try again with less specific keywords, or in a different location?
 
   - if @display == "map"
     #map{:class => 'results-display'}
