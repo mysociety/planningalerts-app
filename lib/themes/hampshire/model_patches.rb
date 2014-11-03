@@ -1,4 +1,9 @@
 Rails.configuration.to_prepare do
+  Application.instance_eval do
+    scope :in_past_week, where("date_received > ?", 7.days.ago)
+    scope :recent, where("date_received >= ?", 14.days.ago)
+  end
+
   Application.class_eval do
     define_index do
       indexes description
@@ -6,10 +11,18 @@ Rails.configuration.to_prepare do
       indexes suburb
       indexes postcode
       indexes authority(:full_name), :as => :authority, :facet => true
-
-      # to be added when available
       indexes category, :facet => true
       indexes status, :facet => true
+
+      # Find applications that are near the current application location
+      # and/or recently received
+      def find_all_nearest_or_recent
+        if location
+          nearbys(nearby_and_recent_max_distance_km, :units => :km).where('date_received > ?', nearby_and_recent_max_age_months.months.ago)
+        else
+          []
+        end
+      end
 
       # enable geosearch - see http://pat.github.io/thinking-sphinx/geosearching.html
       has 'RADIANS("applications"."lat")', :as => :latitude,  :type => :float
@@ -18,7 +31,7 @@ Rails.configuration.to_prepare do
       # Postgres-specific bit:
       group_by '"applications"."lat"', '"applications"."lng"'
 
-      has date_scraped
+      has date_received
     end
 
     validates :category, :inclusion => {
