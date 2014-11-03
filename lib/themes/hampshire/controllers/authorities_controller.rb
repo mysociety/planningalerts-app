@@ -5,6 +5,7 @@ class HampshireTheme
   class AuthoritiesController < ControllerBase
     def index
       @authorities = Authority.enabled
+      return false
     end
 
     def show
