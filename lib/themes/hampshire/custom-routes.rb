@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   match '/applications/:id/:authority/:reference' => 'applications#show', :constraints => {:reference => /.*/}, :as => :council_reference_application
 
   # override existing applications resources to allow POSTs to :search
-  resources :applications, :only => [:index, :show] do
+  resources :applications, :only => [:show] do
     collection do
       get :search
       post :search
@@ -15,6 +15,10 @@ Rails.application.routes.draw do
   root :to => 'applications#search'
 
   # switch off routes not used by the theme
+  match 'applications', :to => 'static#error_404'
+
+  match 'authorities/:id/applications', :to => 'static#error_404'
+
   match 'faq', :to => 'static#error_404'
   match 'getinvolved', :to => 'static#error_404'
   match 'how_to_write_a_scraper', :to => 'static#error_404'

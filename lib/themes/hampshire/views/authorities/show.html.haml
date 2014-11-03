@@ -1,58 +1,53 @@
 - content_for :page_title, @authority.full_name
-%h3= yield :page_title
+= content_for :extra_body_classes, "search-results"
+= content_for :extra_javascript, javascript_include_tag("hampshire.search_box")
 
-- if @authority.population_2011
-  %p
-    Population #{number_with_delimiter @authority.population_2011} (2011 estimate)
+#searchbar
+  %form#switch-authority.container
+    %fieldset
+      %label{:for => 'full_name'} Showing all applications for
+      = select_tag(:full_name,
+                   options_from_collection_for_select(@authorities,
+                                                      :short_name_encoded,
+                                                      :full_name,
+                                                      @authority.short_name_encoded))
+      %button.button.button-rounded.button-large.button-action{:type => "submit"} Switch authority
 
-- if @authority.covered?
-  - if @authority && @authority.broken? && @authority.applications.count != 0
+#results.container
+  #sidebar
+    %h2
+      Showing all
+      %strong= @applications.total_entries
+      planning applications made to
+      %strong= @authority.full_name
+    #sidebar-stats
+      %p.approved
+        %span.status Approved
+        %span.visualisation
+          %span.bar{:style => "width: #{@authority.stats.overview.percentage_approved}%"} #{@authority.stats.overview.percentage_approved}%
+      %p.rejected
+        %span.status Rejected
+        %span.visualisation
+          %span.bar{:style => "width: #{@authority.stats.overview.percentage_refused}%"} #{@authority.stats.overview.percentage_refused}%
+      %p.pending
+        %span.status In progress
+        %span.visualisation
+          %span.bar{:style => "width: #{@authority.stats.overview.percentage_in_progress}%"} #{@authority.stats.overview.percentage_in_progress}%
+
+    #sidebar-context
+      %p
+        #{@authority.full_name} receives on average <strong>#{@authority.median_applications_per_week}</strong> applications per week.
+
+      %p
+        <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
     %p
-      %span.highlight It looks like something might be wrong. The latest application was received #{time_ago_in_words(@authority.latest_application_date)} ago.
-      = link_to "Why?", faq_path(:anchor => "broken_scraper")
+      Show
+      = link_to "all authorities in #{@authority.state}", authorities_path
 
-  - if @authority.applications.count == 0
-    %p
-      No applications for #{@authority.full_name} have yet been collected.
-  - else
-    %p
-      For #{@authority.full_name} #{@authority.applications.where("date_received >= ?", 1.week.ago).count} applications were received in the last week, #{@authority.applications.where("date_received >= ?", 1.month.ago).count} in the last month and #{@authority.applications.count} since #{@authority.earliest_date.strftime("%-d %b %Y")}, when this authority was first added to PlanningAlerts. That's a
-      = link_to "median", "http://en.wikipedia.org/wiki/Median"
-      of #{@authority.median_applications_received_per_week} applications per week (ignoring weeks without any applications at all).
-
-    %p
-      = link_to "Browse all recent applications", authority_applications_path(@authority.short_name_encoded)
-- else
-  %p
-    This authority is
-    %strong
-      not yet covered by PlanningAlerts.
-    This is because either
-    %ul
-      %li a scraper has not yet been written for it or...
-      %li the authority doesn't publish the information in a way that a scraper can read or...
-      %li the authority doesn't publish the information online at all!
-
-  %h3 How you can help
-
-  %p
-    %strong
-      If you're a developer
-    you can help by writing a scraper. It can be in PHP, Python or Ruby. Read the
-    #{link_to "step by step guide to writing a scraper for PlanningAlerts", how_to_write_a_scraper_path}.
-  %p
-    %strong
-      If you're not a developer
-    you can ask your developer friend to help (see above) or
-    = link_to "lobby your authority", how_to_lobby_your_local_council_path
-    to make it easy for us to add their planning data to our system.
-  %p
-    %strong
-      If you work for the authority
-    you can help by publishing the data in a simple machine readable format.
-
-  %h3 Questions?
-
-  %p
-    Get in touch by
-    = link_to "emailing us", "mailto:contact@planningalerts.org.au"
+  #list{:class => 'results-display'}
+    - if @applications.count == 0
+      %p
+        No applications for #{@authority.full_name} have yet been collected.
+    - else
+      = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »", :inner_window => 1 do
+        = render "applications/applications", :applications => @applications
