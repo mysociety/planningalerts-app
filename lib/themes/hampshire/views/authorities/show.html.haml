@@ -20,34 +20,33 @@
       %strong= @applications.total_entries
       planning applications made to
       %strong= @authority.full_name
-    #sidebar-stats
-      %p.approved
-        %span.status Approved
-        %span.visualisation
-          %span.bar{:style => "width: #{@authority.stats.overview.percentage_approved}%"} #{@authority.stats.overview.percentage_approved}%
-      %p.rejected
-        %span.status Rejected
-        %span.visualisation
-          %span.bar{:style => "width: #{@authority.stats.overview.percentage_refused}%"} #{@authority.stats.overview.percentage_refused}%
-      %p.pending
-        %span.status In progress
-        %span.visualisation
-          %span.bar{:style => "width: #{@authority.stats.overview.percentage_in_progress}%"} #{@authority.stats.overview.percentage_in_progress}%
-
-    #sidebar-context
-      %p
-        #{@authority.full_name} receives on average <strong>#{@authority.median_applications_received_per_week}</strong> applications per week.
-
-      %p
-        <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
+    - if @applications.total_entries > 0
+      #sidebar-stats
+        %p.approved
+          %span.status Approved
+          %span.visualisation
+            %span.bar{:style => "width: #{@authority.stats.overview.percentage_approved}%"} #{@authority.stats.overview.percentage_approved}%
+        %p.rejected
+          %span.status Rejected
+          %span.visualisation
+            %span.bar{:style => "width: #{@authority.stats.overview.percentage_refused}%"} #{@authority.stats.overview.percentage_refused}%
+        %p.pending
+          %span.status In progress
+          %span.visualisation
+            %span.bar{:style => "width: #{@authority.stats.overview.percentage_in_progress}%"} #{@authority.stats.overview.percentage_in_progress}%
+      #sidebar-context
+        %p
+          #{@authority.full_name} receives on average <strong>#{@authority.median_applications_received_per_week}</strong> applications per week.
+        %p
+          <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
     %p
       Show
       = link_to "all authorities in #{@authority.state}", authorities_path
 
   #list{:class => 'results-display'}
     - if @applications.count == 0
-      %p
-        No applications for #{@authority.full_name} have yet been collected.
+      %p.no-results
+        Sorry, no applications for #{@authority.full_name} have been collected yet.
     - else
       = paginated_section @applications, :previous_label => "« Newer", :next_label => "Older »", :inner_window => 1 do
         = render "applications/applications", :applications => @applications

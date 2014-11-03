@@ -18,6 +18,10 @@ class AuthorityStatsSummary < ActiveRecord::Base
   protected
 
   def calculate_percentage(attribute)
-    return (eval("self.#{attribute}").to_f / self.total * 100.0).round
+    if self.total == 0
+      return nil
+    else
+      return (eval("self.#{attribute}").to_f / self.total * 100.0).round
+    end
   end
 end

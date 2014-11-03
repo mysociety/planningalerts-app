@@ -7,9 +7,12 @@
       %td.name
         = link_to authority.full_name, authority_url(authority.short_name_encoded)
       %td.total_applications
-        = link_to pluralize(authority.stats.overview.total, 'application'), authority_url(authority.short_name_encoded)
+        - if authority.stats.overview and authority.stats.overview.total
+          = link_to pluralize(authority.stats.overview.total, 'application'), authority_url(authority.short_name_encoded)
       %td.percent_approved
-        = link_to "#{authority.stats.overview.percentage_approved}% approved", authority_url(authority.short_name_encoded)
+        - if authority.stats.overview and authority.stats.overview.percentage_approved
+          = link_to "#{authority.stats.overview.percentage_approved}% approved", authority_url(authority.short_name_encoded)
       %td.percent_delayed
-        = link_to "#{authority.stats.overview.percentage_delayed}% delayed", authority_url(authority.short_name_encoded)
+        - if authority.stats.overview and authority.stats.overview.percentage_delayed
+          = link_to "#{authority.stats.overview.percentage_delayed}% delayed", authority_url(authority.short_name_encoded)
 
