@@ -10,8 +10,9 @@
     %p#t_input
       = label_tag(:status, "Show")
       = select_tag(:status, options_for_select(["all", "approved", "rejected", "pending"], (params[:status] or "all")))
+      = label_tag(:status, "applications")
     %p#s_input
-      = label_tag(:search, "Applications for")
+      = label_tag(:search, "For")
       = text_field_tag(:search, (params[:search] or "anything"), :placeholder => "conservatories")
     %p#q_input{:class => ("error" if @search and @search.invalid?)}
       = label_tag(:location, "Near")

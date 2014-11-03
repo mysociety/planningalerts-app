@@ -11,11 +11,6 @@ body.search-results {
     padding: 0;
   }
 
-  #results {
-    min-height: 500px;
-    position: relative; // So we can absolutely position sidebar
-  }
-
   &.fullscreen-map {
     height: 100%;
 
@@ -35,32 +30,98 @@ body.search-results {
   .no-results {
     padding-top: 2em;
   }
+
+  @media screen and (min-width: 60em) {
+    #results {
+      min-height: 500px;
+      position: relative; // So we can absolutely position sidebar
+    }
+  }
 }
 
 #searchbar {
   background-color: $color-hampshire-skyblue;
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  border-bottom: 1px solid darken($color-sidebar-border, 10%);
 
   form {
     padding-top: 1em;
     padding-bottom: 1em;
     // Don't touch side padding, because .container will sort that out for us
 
-    p {
-      display: inline;
-      margin: 0;
-    }
-
-    p + p {
-      margin-left: 0.5em;
+    p.submit {
+      margin-bottom: 0;
     }
 
     label {
       margin-right: 0.5em;
       line-height: 2em;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
+
+    @media screen and (min-width: 60em) {
+      p {
+        display: inline;
+        margin: 0;
+
+        & + p {
+          margin-left: 0.5em;
+        }
+      }
+
+      // Special case for "applications...for" which spans two paragraphs
+      #s_input {
+        margin-left: 0;
+      }
+
+      #s_input label, #q_input label {
+        text-transform: lowercase;
+      }
+    }
+  }
+
+  #status, #search, #location, #full_name {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0.4em 0.6em;
+    width: 9em;
+    font-size: 1em; // 16px
+    line-height: normal;
+    font-family: inherit;
+    color: inherit;
+    border: 1px solid #bbb;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    background-color: #fff;
+    -wekbit-appearance: none;
+
+    &:focus {
+      outline: none;
+      border-color: $color-select2-focus;
+    }
+  }
+
+  #status,
+  #full_name {
+    height: 2em; // rough height, for when javascript select2 is disabled
+  }
+
+  #status {
+    width: 6em;
+
+    & + label {
+      margin-left: 0.7em;
+    }
+  }
+
+  #full_name,
+  #s2id_full_name {
+    // Council names are long, so
+    // give them as much space as possible...
+    width: 100% !important;
+    // ...Up to a sensible point
+    max-width: 25em;
   }
 
   .select2-container {
@@ -96,58 +157,28 @@ body.search-results {
   .select2-container-active .select2-choice {
     border-color: $color-select2-focus;
   }
-
-  #s_input label, #q_input label {
-    text-transform: lowercase;
-  }
-
-  #status, #search, #location, #full_name {
-    display: inline-block;
-    vertical-align: top;
-    padding: 0.4em 0.6em;
-    width: 9em;
-    font-size: 1em; // 16px
-    line-height: normal;
-    font-family: inherit;
-    color: inherit;
-    border: 1px solid #bbb;
-    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    background-color: #fff;
-    -wekbit-appearance: none;
-
-    &:focus {
-      outline: none;
-      border-color: $color-select2-focus;
-    }
-  }
-
-  #status {
-    height: 2em; // rough height, for when javascript select2 is disabled
-    width: 6em;
-  }
-
-  #full_name {
-    height: 2em;
-    width: auto;
-  }
-
-  #s2id_full_name {
-    width: 25em !important;
-  }
 }
 
 #sidebar {
-  position: absolute;
-  top: 2em;
-  z-index: 2;
   background: $color-hampshire-skyblue;
-  border: 1px solid darken($color-sidebar-border, 10%);
-  padding: 1em;
-  box-sizing: border-box; // so padding doesn't mess up column percentages
+  border-bottom: 1px solid darken($color-sidebar-border, 10%);
+  margin: 0 -1.4em; // overlap parent .container padding
+  padding: 1.4em; // line content back up with parent .container content
 
   display: block; // override default inline-block (!?)
   float: none; // override default float
-  width: 28%; // override default 23% at viewport widths less than 60em
+  width: auto; // override default 23.22635%
+
+  @media screen and (min-width: 60em) {
+    position: absolute;
+    top: 2em;
+    z-index: 2;
+    margin: 0;
+    padding: 1em;
+    box-sizing: border-box; // so padding doesn't mess up column percentages
+    width: 28%;
+    border: 1px solid darken($color-sidebar-border, 10%);
+  }
 
   h2 {
     font-size: 1.3em;
@@ -170,6 +201,14 @@ body.search-results {
 }
 
 #sidebar-stats {
+  // Hide by default
+  display: none;
+
+  @media screen and (min-width: 60em) {
+    // Show on wide screens
+    display: block;
+  }
+
   background: #fff;
   border-top: 1px solid $color-sidebar-border;
   border-bottom: 1px solid $color-sidebar-border;
@@ -220,20 +259,26 @@ body.search-results {
 }
 
 #sidebar-context {
-  background: #fff;
-  border-top: 1px solid $color-sidebar-border;
-  border-bottom: 1px solid $color-sidebar-border;
-  margin: 1em -1em;
-  padding: 1em;
-}
+  margin-bottom: 0.75em;
 
-#sidebar-stats + #sidebar-context {
-  margin-top: -1em;
-  border-top: none;
+  @media screen and (min-width: 60em) {
+    background: #fff;
+    border-top: 1px solid $color-sidebar-border;
+    border-bottom: 1px solid $color-sidebar-border;
+    margin: 1em -1em;
+    padding: 1em;
+
+    #sidebar-stats + & {
+      margin-top: -1em;
+      border-top: none;
+    }
+  }
 }
 
 #list {
-  padding-left: 32%; // 28% for sidebar, plus 4% padding
+  @media screen and (min-width: 60em) {
+    padding-left: 32%; // 28% for sidebar, plus 4% padding
+  }
 
   .pagination:first-child {
     display: none;
@@ -285,6 +330,13 @@ body.search-results {
 
     dt {
       margin: 0 0.2em 0 1.5em;
+    }
+
+    // Hide search result dates on narrow screens
+    @media screen and (max-width: 39.99em) {
+      .received, .decision {
+        display: none;
+      }
     }
   }
 
