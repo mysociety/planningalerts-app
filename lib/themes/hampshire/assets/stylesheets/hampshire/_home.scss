@@ -98,19 +98,43 @@ body.initial-search {
     }
 
     p {
-      display: inline;
-      margin: 0;
       font-size: 1.3em;
+      margin-bottom: 1em;
     }
 
-    p + p {
-      margin-left: 0.5em;
+    p.submit {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+
+      @media screen and (min-width: 38em) {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
     }
 
     label {
-      margin-right: 0.5em;
-      line-height: 1.9em;
-      vertical-align: top;
+      display: block;
+      margin-bottom: 0.5em;
+    }
+
+    @media screen and (min-width: 38em) {
+      label {
+        display: inline;
+        margin-right: 0.5em;
+        line-height: 1.9em;
+        vertical-align: top;
+      }
+    }
+
+    @media screen and (min-width: 60em) {
+      p {
+        display: inline;
+        margin: 0;
+      }
+
+      p + p {
+        margin-left: 0.5em;
+      }
     }
   }
 
