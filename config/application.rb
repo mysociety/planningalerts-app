@@ -77,6 +77,12 @@ module PlanningalertsApp
     config.assets.paths << "#{Rails.root}/lib/themes/hampshire/assets/images"
     config.assets.paths << "#{Rails.root}/lib/themes/hampshire/assets/stylesheets"
 
+    hampshire_path = "/../lib/themes/hampshire/assets"
+    hampshire_files = Dir[File.dirname(__FILE__) + "#{hampshire_path}/javascripts/*"]
+
+    config.assets.precompile += hampshire_files.map{ |x| x.split("/").last }
+    config.assets.precompile << "application.scss"
+
     # Application configuration
     # These are things that are nice to have as configurations but unlikely really
     # in practise to change much
