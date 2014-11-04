@@ -26,8 +26,8 @@
           %span.status Approved
           %span.visualisation
             %span.bar{:style => "width: #{@authority.stats.overview.percentage_approved}%"} #{@authority.stats.overview.percentage_approved}%
-        %p.rejected
-          %span.status Rejected
+        %p.refused
+          %span.status Refused
           %span.visualisation
             %span.bar{:style => "width: #{@authority.stats.overview.percentage_refused}%"} #{@authority.stats.overview.percentage_refused}%
         %p.pending

@@ -9,7 +9,7 @@
       = hidden_field_tag(:display, @display)
     %p#t_input
       = label_tag(:status, "Show")
-      = select_tag(:status, options_for_select(["all", "approved", "rejected", "pending"], (params[:status] or "all")))
+      = select_tag(:status, options_for_select(["all", "approved", "refused", "pending"], (params[:status] or "all")))
       = label_tag(:status, "applications")
     %p#s_input
       = label_tag(:search, "For")
