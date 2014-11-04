@@ -451,18 +451,32 @@ body.search-results {
     @include border-right-radius(0.2em);
   }
 
-  em {
+  a:link {
+    text-decoration: none;
+  }
+
+  .current {
     font-style: normal;
     background-color: $color-hampshire-skyblue;
     color: $color-hampshire-navyblue;
   }
 
-  a:link {
-    text-decoration: none;
-  }
-
   .disabled {
     color: darken($color-hampshire-skyblue, 20%);
+  }
+
+  @media only screen and (max-width: 44.99em){
+    & > * {
+      display: none;
+    }
+
+    .previous_page, .next_page, .current {
+      display: table-cell;
+    }
+
+    .current {
+      background-color: transparent;
+    }
   }
 }
 
