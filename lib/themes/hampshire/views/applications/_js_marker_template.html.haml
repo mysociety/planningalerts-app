@@ -15,7 +15,7 @@
     %p.description {{ application.description }}
     %dl.metadata
       %dt.status Status:
-      %dd.status {{ application.status || 'Unkown' }}
+      %dd.status {{ application.status_display || 'Unknown' }}
       {[ if(application.date_received){ ]}
       %dt.received Marked valid:
       %dd.received {{ application.date_received }}

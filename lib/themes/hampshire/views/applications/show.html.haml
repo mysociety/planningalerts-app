@@ -21,7 +21,7 @@
 #application.container
   #application-primary
     %header
-      %span{:class => "status #{@application.status}"}= @application.status or 'Unknown status'
+      %span{:class => "status #{@application.status}"}= @application.status_display or 'Unknown status'
       %p.reference= @application.council_reference
       %h2.address= @application.address
 
@@ -43,7 +43,7 @@
       %dt.reference Application ID:
       %dd.reference= @application.council_reference
       %dt.status Status:
-      %dd.status= @application.status or 'Unkown'
+      %dd.status= @application.status_display or 'Unknown'
       - if @application.decision_date
         %dt.decision Decision date:
         %dd.decision= @application.decision_date.strftime('%e %b %Y')
