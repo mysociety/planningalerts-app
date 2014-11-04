@@ -296,7 +296,9 @@ body.search-results {
   .bar {
     display: block;
     height: 100%;
-    // width is set inline, as a percentage of parent
+    // Width is set inline, as a percentage of parent.
+    // But we set a minimum, so the bar label is visible.
+    min-width: 3em;
     box-sizing: border-box; // so padding doesn't mess up percentage width
     background-color: #999;
     color: #fff;
