@@ -59,7 +59,7 @@
         #{@application.lat},
         #{@application.lng},
         "#{escape_javascript(@application.address)}",
-        {styles: PlanningAlerts.mapStyles}
+        "#{@application.status}"
       );
     });
 
