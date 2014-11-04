@@ -13,6 +13,9 @@
         Explore planning applications near you
       | Hampshire Planning Applications
 
+    = favicon_link_tag image_path('hampshire/favicon.ico')
+    = favicon_link_tag image_path('hampshire/apple-touch-icon.png'), rel: 'apple-touch-icon', type: 'image/png'
+
     - if @rss
       %link(rel="alternate" type="application/rss+xml" title="RSS" href=@rss)
 
