@@ -64,7 +64,7 @@ describe ApplicationsHelper do
       end
     end
 
-    describe "period is in progress" do
+    describe "period is pending" do
       before :each do
         @application.stub!(:on_notice_from).and_return(Date.today - 2.days)
         @application.stub!(:on_notice_to).and_return(Date.today + 12.days)

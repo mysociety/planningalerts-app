@@ -85,7 +85,7 @@ THEME_HAMPSHIRE_CATEGORIES:
 
 # Status values for Applications
 THEME_HAMPSHIRE_STATUSES:
-  in_progress: 'in progress'
+  pending: 'pending'
   approved: 'approved'
   refused: 'refused'
 

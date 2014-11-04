@@ -284,7 +284,7 @@ describe HampshireSearch do
                            :status=>{
                               Configuration::THEME_HAMPSHIRE_STATUSES['approved']=>30,
                               Configuration::THEME_HAMPSHIRE_STATUSES['refused']=>5,
-                              Configuration::THEME_HAMPSHIRE_STATUSES['in_progress']=>15}})
+                              Configuration::THEME_HAMPSHIRE_STATUSES['pending']=>15}})
       Application.should_receive(:search).and_return(stub_search)
       search.valid?
       search.perform_search
