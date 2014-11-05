@@ -15,18 +15,7 @@
     -# We can only show these stats if we're not already filtering by a
     -# status.
     #sidebar-stats
-      %p.approved
-        %span.status Approved
-        %span.visualisation
-          %span.bar{:style => "width: #{@search.stats[:percentage_approved]}%"} #{@search.stats[:percentage_approved]}%
-      %p.rejected
-        %span.status Rejected
-        %span.visualisation
-          %span.bar{:style => "width: #{@search.stats[:percentage_refused]}%"} #{@search.stats[:percentage_refused]}%
-      %p.pending
-        %span.status In progress
-        %span.visualisation
-          %span.bar{:style => "width: #{@search.stats[:percentage_current]}%"} #{@search.stats[:percentage_current]}%
+      = render "stats", :stats => @search.stats
     - unless @authority.blank?
       %p
         See more statistics for

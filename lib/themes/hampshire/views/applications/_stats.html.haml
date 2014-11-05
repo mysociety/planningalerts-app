@@ -1,0 +1,12 @@
+%p.approved
+  %span.status Approved
+  %span.visualisation
+    %span.bar{:style => "width: #{stats[:percentage_approved]}%"} #{stats[:percentage_approved]}%
+%p.rejected
+  %span.status Rejected
+  %span.visualisation
+    %span.bar{:style => "width: #{stats[:percentage_refused]}%"} #{stats[:percentage_refused]}%
+%p.pending
+  %span.status In progress
+  %span.visualisation
+    %span.bar{:style => "width: #{stats[:percentage_current]}%"} #{stats[:percentage_current]}%
