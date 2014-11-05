@@ -1,0 +1,44 @@
+#sidebar
+  - if @search.stats[:total_results] >= 1000
+    -# The search engine limits results to the top 1,000
+    %h2 Found more than <strong>1,000</strong> matching planning applications
+    %p These are the top 1,000 results
+  - else
+    %h2 Found <strong>#{@search.stats[:total_results]}</strong> matching planning applications
+  %p.change-display
+    Show results
+    - if @display == "map"
+      = link_to 'as a list', params.merge({:display => 'list'}), :class => 'results-display-link'
+    - elsif @map_display_possible
+      = link_to 'on a map', params.merge({:display => 'map'}), :class => 'results-display-link'
+  - if @search.status.blank?
+    -# We can only show these stats if we're not already filtering by a
+    -# status.
+    #sidebar-stats
+      %p.approved
+        %span.status Approved
+        %span.visualisation
+          %span.bar{:style => "width: #{@search.stats[:percentage_approved]}%"} #{@search.stats[:percentage_approved]}%
+      %p.rejected
+        %span.status Rejected
+        %span.visualisation
+          %span.bar{:style => "width: #{@search.stats[:percentage_refused]}%"} #{@search.stats[:percentage_refused]}%
+      %p.pending
+        %span.status In progress
+        %span.visualisation
+          %span.bar{:style => "width: #{@search.stats[:percentage_current]}%"} #{@search.stats[:percentage_current]}%
+    - unless @authority.blank?
+      %p
+        See more statistics for
+        = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
+  - else
+    - unless @authority.blank?
+      %p
+        See statistics for
+        = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
+  %p.mobile-shortcuts
+    - if @display == "map"
+      = link_to 'List view', params.merge({:display => 'list'}), :class => 'list-view'
+    - elsif @map_display_possible
+      = link_to 'Map view', params.merge({:display => 'map'}), :class => 'map-view'
+    = link_to 'Modify search', 'search', :class => 'modify-search'
