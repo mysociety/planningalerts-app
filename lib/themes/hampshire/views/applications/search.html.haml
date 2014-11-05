@@ -50,12 +50,12 @@
             %span.status Approved
             %span.visualisation
               %span.bar{:style => "width: #{@search.stats[:percentage_approved]}%"} #{@search.stats[:percentage_approved]}%
-          %p.rejected
-            %span.status Rejected
+          %p.refused
+            %span.status Refused
             %span.visualisation
               %span.bar{:style => "width: #{@search.stats[:percentage_refused]}%"} #{@search.stats[:percentage_refused]}%
           %p.pending
-            %span.status In progress
+            %span.status Pending
             %span.visualisation
               %span.bar{:style => "width: #{@search.stats[:percentage_current]}%"} #{@search.stats[:percentage_current]}%
         - unless @authority.blank?

@@ -45,12 +45,17 @@ Rails.configuration.to_prepare do
       # applications
     end
 
+    def status_display
+      status.capitalize
+    end
+
     def as_json(options={})
       result = super(options)
       result['application'].merge!({
         'authority' => {
           'short_name_encoded' => authority.short_name_encoded
-        }
+        },
+        'status_display' => status_display
       })
       result
     end

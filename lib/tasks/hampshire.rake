@@ -16,7 +16,7 @@ namespace :hampshire do
           :delayed => authority.applications.where(:delayed => true).count,
           :approved => authority.applications.where(:status => app_statuses['approved']).count,
           :refused => authority.applications.where(:status => app_statuses['refused']).count,
-          :in_progress => authority.applications.where(:status => app_statuses['in_progress']).count,
+          :pending => authority.applications.where(:status => app_statuses['pending']).count,
         }
 
         stats = AuthorityStatsSummary.where(
@@ -36,7 +36,7 @@ namespace :hampshire do
             :delayed => authority.applications.where(:category => category, :delayed => true).count,
             :approved => authority.applications.where(:category => category, :status => app_statuses['approved']).count,
             :refused => authority.applications.where(:category => category, :status => app_statuses['refused']).count,
-            :in_progress => authority.applications.where(:category => category, :status => app_statuses['in_progress']).count,
+            :pending => authority.applications.where(:category => category, :status => app_statuses['pending']).count,
           }
           stats = AuthorityStatsSummary.where(
             :authority_id => authority.id,

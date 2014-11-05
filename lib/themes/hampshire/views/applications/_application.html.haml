@@ -8,7 +8,7 @@
       = application.respond_to?(:excerpts) && application.excerpts ? @applications.excerpt_for(html_escape(application.description)).html_safe : application.description
     %dl.metadata
       %dt.status Status:
-      %dd{:class => "status #{application.status}"}= application.status or 'Unkown status'
+      %dd{:class => "status #{application.status}"}= application.status_display or 'Unknown status'
       - if application.date_received
         %dt.received Marked valid:
         %dd.received= application.date_received.strftime('%e %b %Y')

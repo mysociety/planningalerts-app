@@ -12,7 +12,7 @@ class PMDApplicationProcessor
   end
 
   def self.extract_status(decision)
-    status = Configuration::THEME_HAMPSHIRE_STATUSES['in_progress']
+    status = Configuration::THEME_HAMPSHIRE_STATUSES['pending']
     if decision
       if decision['http://data.hampshirehub.net/def/planning/decisionIssued']
         outcome = decision['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']
@@ -27,7 +27,7 @@ class PMDApplicationProcessor
       else
         # hmm, data glitch? No decisionIssued in the decision data :(
         # or maybe this is when it's been decided but the decision hasn't
-        # been made public yet. Default to In Progress.
+        # been made public yet. Default to 'pending'.
       end
     end
     return status
@@ -35,9 +35,9 @@ class PMDApplicationProcessor
 
   def self.extract_decision_date(decision, status)
     decision_date = nil
-    # In Progress applications in theory don't have a decision, but some weird
+    # Pending applications in theory don't have a decision, but some weird
     # ones do, so we have to guard against them
-    if decision and status != Configuration::THEME_HAMPSHIRE_STATUSES['in_progress']
+    if decision and status != Configuration::THEME_HAMPSHIRE_STATUSES['pending']
       # noticeDate is the official date that notice of the decision is
       # given to the applicant
       if decision['http://data.hampshirehub.net/def/planning/noticeDate']

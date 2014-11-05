@@ -178,9 +178,9 @@ describe PMDApplicationProcessor do
       expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['approved'])
     end
 
-    it 'should default to In Progress' do
+    it 'should default to pending' do
       status = PMDApplicationProcessor.extract_status(nil)
-      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['pending'])
     end
 
     it 'should find refused applications' do
@@ -188,14 +188,14 @@ describe PMDApplicationProcessor do
       expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['refused'])
     end
 
-    it 'should return In Progress for unrecognised statuses' do
+    it 'should return pending for unrecognised statuses' do
       status = PMDApplicationProcessor.extract_status(unrecognised_decision)
-      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['pending'])
     end
 
-    it 'should return In Progress when theres a decision but no decisionIssued' do
+    it 'should return pending when theres a decision but no decisionIssued' do
       status = PMDApplicationProcessor.extract_status(unknown_decision)
-      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
+      expect(status).to eq(Configuration::THEME_HAMPSHIRE_STATUSES['pending'])
     end
   end
 
@@ -239,8 +239,8 @@ describe PMDApplicationProcessor do
       expect(decision_date).to eq(nil)
     end
 
-    it 'should should ignore In Progress applications' do
-      decision_date = PMDApplicationProcessor.extract_decision_date(nil, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'])
+    it 'should should ignore pending applications' do
+      decision_date = PMDApplicationProcessor.extract_decision_date(nil, Configuration::THEME_HAMPSHIRE_STATUSES['pending'])
       expect(decision_date).to eq(nil)
     end
   end
@@ -350,10 +350,10 @@ describe PMDApplicationProcessor do
     end
 
     it 'should compare to Now if there is no decision date' do
-      delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil, Time.now + 1.days)
+      delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['pending'], nil, Time.now + 1.days)
       expect(delayed).to eq(false)
 
-      delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['in_progress'], nil, Time.now - 1.days)
+      delayed = PMDApplicationProcessor.extract_delayed({}, {}, Configuration::THEME_HAMPSHIRE_STATUSES['pending'], nil, Time.now - 1.days)
       expect(delayed).to eq(true)
     end
 
