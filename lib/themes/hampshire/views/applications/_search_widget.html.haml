@@ -20,5 +20,7 @@
 
   - if @search and @search.invalid?
     #errors
+      %p
+        Hmm, it looks like something's wrong.
       - @search.errors.each do |attr, error|
         %p= error
