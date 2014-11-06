@@ -29,10 +29,7 @@
     = render "search_widget"
 
   #results.container
-    - if @search.invalid?
-      %p.no-results
-        Sorry, no results matched that search, perhaps try again with less specific keywords, or in a different location?
-    - else
+    - if @search.valid?
       = render "search_sidebar"
 
       - if @display == "map"
