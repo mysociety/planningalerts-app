@@ -18,11 +18,11 @@
       %dd.status {{ application.status_display || 'Unknown' }}
       {[ if(application.date_received){ ]}
       %dt.received Marked valid:
-      %dd.received {{ application.date_received }}
+      %dd.received {{ application.date_received_display }}
       {[ } ]}
       {[ if(application.decision_date){ ]}
       %dt.decision Decision date:
-      %dd.decision {{ application.decision_date }}
+      %dd.decision {{ application.decision_date_display }}
       {[ } ]}
     %p.submit
       %a.button.button.button-rounded.button-action{:href => '/applications/{{ application.id }}/{{ application.authority.short_name_encoded }}/{{ application.council_reference }}'}

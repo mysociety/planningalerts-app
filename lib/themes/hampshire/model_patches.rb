@@ -55,7 +55,9 @@ Rails.configuration.to_prepare do
         'authority' => {
           'short_name_encoded' => authority.short_name_encoded
         },
-        'status_display' => status_display
+        'status_display' => status_display,
+        'date_received_display' => date_received ? date_received.strftime('%e %b %Y') : nil,
+        'decision_date_display' => decision_date ? decision_date.strftime('%e %b %Y') : nil
       })
       result
     end
