@@ -6,11 +6,12 @@
   - else
     %h2 Found <strong>#{@search.stats[:total_results]}</strong> matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
   %p.change-display
-    Show results
-    - if @display == "map"
-      = link_to 'as a list', params.merge({:display => 'list'}), :class => 'results-display-link'
-    - elsif @map_display_possible
-      = link_to 'on a map', params.merge({:display => 'map'}), :class => 'results-display-link'
+    -if @display == 'map' or @map_display_possible
+      Show results
+      - if @display == "map"
+        = link_to 'as a list', params.merge({:display => 'list'}), :class => 'results-display-link'
+      - elsif @map_display_possible
+        = link_to 'on a map', params.merge({:display => 'map'}), :class => 'results-display-link'
   - if @search.status.blank?
     -# We can only show these stats if we're not already filtering by a
     -# status.
