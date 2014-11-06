@@ -37,6 +37,17 @@ body.search-results {
       position: relative; // So we can absolutely position sidebar
     }
   }
+
+  #errors {
+    margin-top: 1em;
+    font-size: 1.2em;
+    padding: 1em 2em;
+    background: mix(#fff, $color-hampshire-red, 60%);
+    p {
+      display: block;
+      margin-left: 0;
+    }
+  }
 }
 
 #searchbar {

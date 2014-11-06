@@ -28,7 +28,9 @@ class HampshireTheme
           @applications = @search.perform_search
           @applications_json = @applications.to_json
           @authorities = @search.authorities
-          @authority = Authority.find_by_full_name(@authorities.first[:name])
+          if @authorities.count > 0
+            @authority = Authority.find_by_full_name(@authorities.first[:name])
+          end
 
           if @search.is_location_search?
             @map_display_possible = true
