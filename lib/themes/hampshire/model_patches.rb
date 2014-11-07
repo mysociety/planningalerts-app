@@ -49,6 +49,16 @@ Rails.configuration.to_prepare do
       status.capitalize
     end
 
+    def description_display(cutoff=180)
+      return description if description.blank?
+      output = description.dup
+      if output.length > cutoff
+        break_point = output.rindex(" ", cutoff+10)
+        output = "#{output[0..break_point]}&hellip;"
+      end
+      output
+    end
+
     def as_json(options={})
       result = super(options)
       result['application'].merge!({
@@ -57,7 +67,8 @@ Rails.configuration.to_prepare do
         },
         'status_display' => status_display,
         'date_received_display' => date_received ? date_received.strftime('%e %b %Y') : nil,
-        'decision_date_display' => decision_date ? decision_date.strftime('%e %b %Y') : nil
+        'decision_date_display' => decision_date ? decision_date.strftime('%e %b %Y') : nil,
+        'description_display' => description_display
       })
       result
     end

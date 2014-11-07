@@ -12,7 +12,7 @@
   .infowindow
     %p.reference {{ application.council_reference }}
     %h3.address {{ application.address }}
-    %p.description {{ application.description }}
+    %p.description {{ application.description_display }}
     %dl.metadata
       %dt.status Status:
       %dd.status {{ application.status_display || 'Unknown' }}
