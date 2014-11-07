@@ -29,8 +29,11 @@ class HampshireSearch < ApplicationSearch
   end
 
   def perform_search(override_params={})
+    # note - ThinkingSphinx only honours the DESC part of the search order
+    # if it is passed as a string, otherwise it defaults to ASC :o\
+    # http://pat.github.io/thinking-sphinx/searching.html#sorting
     search_params = {:per_page => Application.per_page,
-                     :order => {:date_scraped => :desc},
+                     :order => "date_received DESC",
                      :page => @page}
     search_params.merge!(override_params)
     with_params = {}
