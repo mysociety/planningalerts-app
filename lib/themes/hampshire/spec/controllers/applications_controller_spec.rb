@@ -4,7 +4,7 @@ require "#{Rails.root.to_s}/lib/themes/hampshire/models/hampshire_search.rb"
 describe ApplicationsController do
   let(:lat) { "51.06254955783433" }
   let(:lng) { "-1.319368478028908" }
-  let(:rushmoor) { {:name => "Rushmoor Borough Council"} }
+  let(:rushmoor) { {:name => "Rushmoor Borough Council", :id => 42} }
 
   before(:each) do
     # force the use of the Hampshire theme
@@ -22,7 +22,41 @@ describe ApplicationsController do
       expect(assigns(:categories_json)).to eq Configuration::THEME_HAMPSHIRE_CATEGORIES.as_json
     end
 
+    context 'matching a MapIt authority' do
+      before :each do
+        @stub_search = stub(:valid? => true,
+                           :perform_search => stub(:total_pages => 1,
+                                                   :to_json => []),
+                           :is_location_search? => true, :authorities => [rushmoor])
+        HampshireSearch.should_receive(:new)
+                       .and_return(@stub_search)
+      end
+
+      context "the authority has a valid MapIt id" do
+        it "should find the authority via a MapIt id lookup" do
+          fake_authority = mock_model(Application)
+          Authority.should_receive(:find_by_mapit_id).with(42).and_return(fake_authority)
+          get :search, {:location => 'GU14 6AZ'}
+          expect(assigns(:authority)).to eq fake_authority
+        end
+      end
+
+      context "the authority does not have a valid MapIt id" do
+        it "should find the authority via a full name match" do
+          fake_authority = mock_model(Application)
+          Authority.should_receive(:find_by_mapit_id).with(42).and_return(nil)
+          Authority.should_receive(:find_by_full_name).with('Rushmoor Borough Council').and_return(fake_authority)
+          get :search, {:location => 'GU14 6AZ'}
+          expect(assigns(:authority)).to eq fake_authority
+        end
+      end
+    end
+
     context "deciding whether to show results" do
+      before(:each) do
+
+      end
+
       context "on the initial search page" do
         it "should default to not showing any results" do
           HampshireSearch.should_not_receive(:new)

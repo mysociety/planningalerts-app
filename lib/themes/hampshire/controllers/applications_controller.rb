@@ -29,7 +29,10 @@ class HampshireTheme
           @applications_json = @applications.to_json
           @authorities = @search.authorities
           if @authorities.count > 0
-            @authority = Authority.find_by_full_name(@authorities.first[:name])
+            @authority = Authority.find_by_mapit_id(@authorities.first[:id])
+            unless @authority #hmm, that didn't work - try by name
+              @authority = Authority.find_by_full_name(@authorities.first[:name])
+            end
           end
 
           if @search.is_location_search?

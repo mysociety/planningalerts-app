@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141104143826) do
+ActiveRecord::Schema.define(:version => 20141107151631) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -118,6 +118,7 @@ ActiveRecord::Schema.define(:version => 20141104143826) do
     t.integer "population_2011"
     t.text    "last_scraper_run_log"
     t.string  "morph_name"
+    t.integer "mapit_id"
   end
 
   add_index "authorities", ["short_name"], :name => "short_name_unique", :unique => true
