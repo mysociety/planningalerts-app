@@ -37,10 +37,6 @@ class HampshireSearch < ApplicationSearch
                      :page => @page}
     search_params.merge!(override_params)
     with_params = {}
-    if @authority and !is_location_search?
-      authority_facet = Zlib.crc32(CGI::unescape(@authority))
-      with_params[:authority_facet] = authority_facet
-    end
     if is_location_search?
       search_params[:geo] = [lat_in_radians, lng_in_radians]
       with_params['@geodist'] = 0.0..search_range

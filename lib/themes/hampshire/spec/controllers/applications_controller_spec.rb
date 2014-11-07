@@ -77,22 +77,9 @@ describe ApplicationsController do
                              :is_location_search? => true, :authorities => [rushmoor])
           HampshireSearch.should_receive(:new)
                          .with(:location=>"GU14 6AZ", :search=> nil,
-                               :authority=> nil, :status=> nil, :page=> nil)
+                               :status=> nil, :page=> nil)
                          .and_return(stub_search)
           get :search, {:location => 'GU14 6AZ'}
-          expect(assigns(:show_results)).to eq true
-        end
-
-        it "should show the results view if an authority was specified" do
-          stub_search = stub(:valid? => true,
-                             :perform_search => stub(:total_pages => 1, :to_json => []),
-                             :is_location_search? => false, :authorities => [rushmoor])
-          HampshireSearch.should_receive(:new)
-                         .with(:authority => 'Rushmoor Borough Council',
-                               :search=> nil, :location=> nil, :status=> nil,
-                               :page=> nil)
-                         .and_return(stub_search)
-          get :search, {:authority => 'Rushmoor Borough Council'}
           expect(assigns(:show_results)).to eq true
         end
 
@@ -197,7 +184,7 @@ describe ApplicationsController do
       it 'should pass the page param through to the search' do
         HampshireSearch.should_receive(:new)
                        .with(:location =>"GU14 6AZ", :search => 'test',
-                             :authority => nil, :status => nil, :page => "2")
+                             :status => nil, :page => "2")
                        .and_return(stub_search)
         stub_search.stub(:is_location_search? => true)
         get :search, {:search => 'test', :location => 'GU14 6AZ', :page => 2}

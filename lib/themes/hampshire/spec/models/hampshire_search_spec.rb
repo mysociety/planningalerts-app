@@ -176,35 +176,6 @@ describe HampshireSearch do
       search.perform_search(expected_params)
     end
 
-    it "should add an authority facet if given an authority and no location" do
-      search = HampshireSearch.new(:authority => 'Rushmoor')
-      expected_params = {
-        :per_page => Application.per_page,
-        :order => {:date_received => :asc},
-        :page => nil,
-        :with => {:authority_facet => Zlib.crc32(CGI::unescape('Rushmoor'))}
-      }
-      Application.should_receive(:search).with(expected_params)
-      search.valid?
-      search.perform_search(expected_params)
-    end
-
-    it "should not add an authority facet if given an authority and a location" do
-      search = HampshireSearch.new(:authority => 'Rushmoor', :location => 'GU14 6AZ')
-      authority_params = {
-        :per_page => Application.per_page,
-        :order => "date_received DESC",
-        :page => nil,
-        :with => {:authority_facet => Zlib.crc32('Rushmoor')}
-      }
-      Application.should_not_receive(:search).with(authority_params)
-      MySociety::MaPit.should_receive(:call)
-                      .with('postcode', 'GU146AZ')
-                      .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
-      search.valid?
-      search.perform_search
-    end
-
     it "should do a geosearch if given a location" do
       search = HampshireSearch.new(:location => 'GU14 6AZ')
       expected_params = {
