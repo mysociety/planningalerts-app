@@ -16,7 +16,7 @@
     -# We can only show these stats if we're not already filtering by a
     -# status.
     #sidebar-stats
-      = render "stats", :stats => @search.stats
+      = render "shared/stats", :stats => @search.stats
     - unless @authority.blank?
       %p
         See more statistics for

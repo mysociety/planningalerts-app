@@ -22,7 +22,7 @@
       %strong= @authority.full_name
     - if @applications.total_entries > 0
       #sidebar-stats
-        = render "applications/stats", :stats => @authority.stats.overview_json
+        = render "shared/stats", :stats => @authority.stats.overview_json
       #sidebar-context
         %p
           #{@authority.full_name} receives on average <strong>#{@authority.median_applications_received_per_week}</strong> applications per week.
