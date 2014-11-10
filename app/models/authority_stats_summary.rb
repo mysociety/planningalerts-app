@@ -3,6 +3,14 @@ class AuthorityStatsSummary < ActiveRecord::Base
     AuthorityStatsSummary.where(:category => nil).first
   end
 
+  def self.overview_json
+    {
+      :percentage_approved => overview.percentage_approved,
+      :percentage_refused => overview.percentage_refused,
+      :percentage_current => overview.percentage_pending
+    }
+  end
+
   def self.category(name)
     AuthorityStatsSummary.where(:category => name).first
   end

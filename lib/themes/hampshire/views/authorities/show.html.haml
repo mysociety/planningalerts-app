@@ -22,18 +22,7 @@
       %strong= @authority.full_name
     - if @applications.total_entries > 0
       #sidebar-stats
-        %p.approved
-          %span.status Approved
-          %span.visualisation
-            %span.bar{:style => "width: #{@authority.stats.overview.percentage_approved}%"} #{@authority.stats.overview.percentage_approved}%
-        %p.refused
-          %span.status Refused
-          %span.visualisation
-            %span.bar{:style => "width: #{@authority.stats.overview.percentage_refused}%"} #{@authority.stats.overview.percentage_refused}%
-        %p.pending
-          %span.status Pending
-          %span.visualisation
-            %span.bar{:style => "width: #{@authority.stats.overview.percentage_pending}%"} #{@authority.stats.overview.percentage_pending}%
+        = render "applications/stats", :stats => @authority.stats.overview_json
       #sidebar-context
         %p
           #{@authority.full_name} receives on average <strong>#{@authority.median_applications_received_per_week}</strong> applications per week.
