@@ -7,7 +7,7 @@ class AuthorityStatsSummary < ActiveRecord::Base
     {
       :percentage_approved => overview.percentage_approved,
       :percentage_refused => overview.percentage_refused,
-      :percentage_current => overview.percentage_pending
+      :percentage_pending => overview.percentage_pending
     }
   end
 

@@ -264,7 +264,7 @@ describe HampshireSearch do
       expect(search.stats[:total_results]).to eq(50)
       expect(search.stats[:percentage_approved]).to eq(60)
       expect(search.stats[:percentage_refused]).to eq(10)
-      expect(search.stats[:percentage_current]).to eq(30)
+      expect(search.stats[:percentage_pending]).to eq(30)
     end
   end
 

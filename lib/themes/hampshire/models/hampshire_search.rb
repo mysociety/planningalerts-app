@@ -160,9 +160,9 @@ class HampshireSearch < ApplicationSearch
 
     current_count = results.facets[:status][Configuration::THEME_HAMPSHIRE_STATUSES['pending']].to_i
     if current_count > 0
-      stats[:percentage_current] = (current_count.to_f / results.total_entries * 100).round
+      stats[:percentage_pending] = (current_count.to_f / results.total_entries * 100).round
     else
-      stats[:percentage_current] = 0
+      stats[:percentage_pending] = 0
     end
 
     stats
