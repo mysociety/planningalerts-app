@@ -1,0 +1,22 @@
+#sidebar
+  %h2
+    Showing all
+    %strong= @applications.total_entries
+    planning applications made to
+    %strong= @authority.full_name
+  - if @applications.total_entries > 0
+    #sidebar-stats
+      = render "shared/stats", :stats => @authority.stats.overview_json
+    #sidebar-context
+      %p
+        #{@authority.full_name} receives on average <strong>#{@authority.median_applications_received_per_week}</strong> applications per week.
+      %p
+        <strong>#{@authority.stats.overview.percentage_delayed}%</strong> of applications were delayed.
+
+  %p.change-display
+    Show
+    = link_to "all authorities in #{@authority.state}", authorities_path
+
+  %p.mobile-shortcuts
+    = link_to "All authorities", authorities_path, :class => 'all-authorities'
+    = link_to 'Modify search', 'search', :class => 'modify-search'
