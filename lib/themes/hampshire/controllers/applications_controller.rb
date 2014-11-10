@@ -14,7 +14,7 @@ class HampshireTheme
       # Whether we're showing the "results" view or the initial homepage view
       @show_results = params.has_key?(:results) or false
 
-      if params[:location] or params[:search] or params[:authority]
+      if params[:location] or params[:search]
         @search = HampshireSearch.new(:location => params[:location],
                                       :search => params[:search],
                                       :status => params[:status],
@@ -51,6 +51,41 @@ class HampshireTheme
         end
       end
       return false
+    end
+
+    def search_json
+      if params[:distance] #in miles
+        search_radius = params[:distance].to_f * 1609.344
+      else
+        search_radius = nil
+      end
+
+      if params[:location] or params[:search] or params[:authority]
+        @search = HampshireSearch.new(:location => params[:location],
+                                      :search => params[:search],
+                                      :authority => params[:authority],
+                                      :status => params[:status],
+                                      :page => params[:page])
+
+        if @search.valid?
+          @applications = @search.perform_search({}, search_radius)
+          if @applications.total_pages > 1
+            @applications_json = @search.perform_search({:per_page => 1000, :page => 1}, search_radius).to_json
+          else
+            @applications_json = @applications.to_json()
+          end
+
+          # or should we go ahead and assume this is a map?
+          # leaving this here for now
+          if @search.is_location_search?
+            @map_display_possible = true
+            if params['display'].blank? or params['display'] == 'map'
+              @display = 'map'
+            end
+          end
+        end
+      end
+      return {:json => @applications_json, :render_json => true}
     end
   end
 end

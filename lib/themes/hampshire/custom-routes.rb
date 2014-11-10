@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   # (keep original route too)
   match '/applications/:id/:authority/:reference' => 'applications#show', :constraints => {:reference => /.*/}, :as => :council_reference_application
 
+  # add the applications/search_json route
+  match 'applications/search_json', :to => 'applications#search_json'
+
   # override existing applications resources to allow POSTs to :search
   resources :applications, :only => [:show] do
     collection do

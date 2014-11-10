@@ -35,11 +35,14 @@ class HampshireSearch < ApplicationSearch
     search_params = {:per_page => Application.per_page,
                      :order => "date_received DESC",
                      :page => @page}
-    search_params.merge!(override_params)
     with_params = {}
     if is_location_search?
       search_params[:geo] = [lat_in_radians, lng_in_radians]
-      with_params['@geodist'] = 0.0..search_range
+      if custom_search_range
+        with_params['@geodist'] = 0.0..custom_search_range
+      else
+        with_params['@geodist'] = 0.0..search_range
+      end
     end
     if @category
       with_params[:category_facet] = Zlib.crc32(@category)
@@ -54,6 +57,9 @@ class HampshireSearch < ApplicationSearch
     unless with_params.empty?
       search_params[:with] = with_params
     end
+
+    search_params.merge!(override_params)
+
     if @search.nil?
       results = Application.search search_params
     else
