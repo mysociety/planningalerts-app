@@ -156,7 +156,7 @@ describe HampshireSearch do
       search = HampshireSearch.new()
       expected_params = {
         :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
+        :order => "date_received DESC",
         :page => nil
       }
       Application.should_receive(:search).with(expected_params)
@@ -168,7 +168,7 @@ describe HampshireSearch do
       search = HampshireSearch.new()
       expected_params = {
         :per_page => 1000,
-        :order => {:date_scraped => :asc},
+        :order => {:date_received => :asc},
         :page => 2
       }
       Application.should_receive(:search).with(expected_params)
@@ -176,40 +176,11 @@ describe HampshireSearch do
       search.perform_search(expected_params)
     end
 
-    it "should add an authority facet if given an authority and no location" do
-      search = HampshireSearch.new(:authority => 'Rushmoor')
-      expected_params = {
-        :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
-        :page => nil,
-        :with => {:authority_facet => Zlib.crc32(CGI::unescape('Rushmoor'))}
-      }
-      Application.should_receive(:search).with(expected_params)
-      search.valid?
-      search.perform_search
-    end
-
-    it "should not add an authority facet if given an authority and a location" do
-      search = HampshireSearch.new(:authority => 'Rushmoor', :location => 'GU14 6AZ')
-      authority_params = {
-        :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
-        :page => nil,
-        :with => {:authority_facet => Zlib.crc32('Rushmoor')}
-      }
-      Application.should_not_receive(:search).with(authority_params)
-      MySociety::MaPit.should_receive(:call)
-                      .with('postcode', 'GU146AZ')
-                      .and_return({'wgs84_lat' => 1, 'wgs84_lon' => 2})
-      search.valid?
-      search.perform_search
-    end
-
     it "should do a geosearch if given a location" do
       search = HampshireSearch.new(:location => 'GU14 6AZ')
       expected_params = {
         :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
+        :order => "date_received DESC",
         :page => nil,
         :geo=>[0.017453292519943295, 0.03490658503988659],
         :with=>{"@geodist"=>0.0..3218.688}
@@ -226,7 +197,7 @@ describe HampshireSearch do
       search = HampshireSearch.new(:search => 'Test')
       expected_params = {
         :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
+        :order => "date_received DESC",
         :page => nil
       }
       Application.should_receive(:search).with('Test', expected_params)
@@ -238,7 +209,7 @@ describe HampshireSearch do
       search = HampshireSearch.new(:search => 'Test', :location => 'GU14 6AZ')
       expected_params = {
         :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
+        :order => "date_received DESC",
         :page => nil,
         :geo=>[0.017453292519943295, 0.03490658503988659],
         :with=>{"@geodist"=>0.0..3218.688}
@@ -255,7 +226,7 @@ describe HampshireSearch do
       search = HampshireSearch.new(:status => Configuration::THEME_HAMPSHIRE_STATUSES['refused'])
       expected_params = {
         :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
+        :order => "date_received DESC",
         :page => nil,
         :with => {:status_facet => Zlib.crc32(Configuration::THEME_HAMPSHIRE_STATUSES['refused'])}
       }
@@ -268,7 +239,7 @@ describe HampshireSearch do
       search = HampshireSearch.new(:search => 'conservatories')
       expected_params = {
         :per_page => Application.per_page,
-        :order => {:date_scraped => :desc},
+        :order => "date_received DESC",
         :page => nil,
         :with => {:category_facet => Zlib.crc32('conservatories')}
       }

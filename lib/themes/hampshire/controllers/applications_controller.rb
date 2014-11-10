@@ -17,7 +17,6 @@ class HampshireTheme
       if params[:location] or params[:search] or params[:authority]
         @search = HampshireSearch.new(:location => params[:location],
                                       :search => params[:search],
-                                      :authority => params[:authority],
                                       :status => params[:status],
                                       :page => params[:page])
         if @search.valid?
