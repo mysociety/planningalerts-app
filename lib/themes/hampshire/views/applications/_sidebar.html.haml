@@ -1,10 +1,16 @@
 #sidebar
   - if @search.stats[:total_results] >= 1000
     -# The search engine limits results to the top 1,000
-    %h2 Found more than <strong>1,000</strong> matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
+    %h2
+      Found more than
+      %strong 1,000
+      matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
     %p These are the top 1,000 results
   - else
-    %h2 Found <strong>#{@search.stats[:total_results]}</strong> matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
+    %h2
+      Found
+      %strong= #{@search.stats[:total_results]}
+      matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
   %p.change-display
     -if @display == 'map' or @map_display_possible
       Show results
@@ -16,7 +22,7 @@
     -# We can only show these stats if we're not already filtering by a
     -# status.
     #sidebar-stats
-      = render "stats", :stats => @search.stats
+      = render "shared/stats", :stats => @search.stats
     - unless @authority.blank?
       %p
         See more statistics for
