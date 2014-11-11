@@ -3,7 +3,7 @@ $app_route_extensions = []
 
 # override the Configuration object with the MySociety library
 # if general.yml and test.yml exist in the config folder
-if File.exists?(File.expand_path("../../general.yml", __FILE__)) and File.exists?(File.expand_path("../../test.yml", __FILE__))
+if (ENV["ENABLE_THEME"] or ENV["RAILS_ENV"] != "test") and File.exists?(File.expand_path("../../general.yml", __FILE__)) and File.exists?(File.expand_path("../../test.yml", __FILE__))
   #force load the configuration file and the overrides
   require File.expand_path "../../../app/models/configuration.rb", __FILE__
   require File.expand_path "../../../lib/themes/hampshire/configuration.rb", __FILE__
