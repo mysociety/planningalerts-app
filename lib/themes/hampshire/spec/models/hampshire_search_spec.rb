@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','..','..','..','..','spec','spec_helper.rb'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper.rb'))
 require "#{Rails.root.to_s}/lib/themes/hampshire/models/hampshire_search.rb"
 $:.push(File.join(File.dirname(__FILE__), '../../commonlib/rblib'))
 require "validate.rb"
