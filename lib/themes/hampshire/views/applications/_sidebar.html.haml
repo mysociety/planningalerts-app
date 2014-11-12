@@ -8,9 +8,7 @@
     %p These are the top 1,000 results
   - else
     %h2
-      Found
-      %strong= #{@search.stats[:total_results]}
-      matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
+      Found <strong>#{@search.stats[:total_results]}</strong> matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
   %p.change-display
     -if @display == 'map' or @map_display_possible
       Show results

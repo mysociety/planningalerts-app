@@ -92,6 +92,7 @@ feature "Custom Hampshire pages" do
       visit search_applications_url(:host => "hampshire.127.0.0.1.xip.io:3000", :results => true, :status => "all", :location => "GU14 7ST")
 
       expect(page).to have_content("Sorry, no results matched that search, perhaps try again with less specific keywords, or in a different location?")
+      expect(page).to have_content("Found 0 matching planning applications")
     end
 
     scenario "4 matching results with a matching MapIt authority (as a list)" do
@@ -105,6 +106,7 @@ feature "Custom Hampshire pages" do
       visit search_applications_url(:host => 'hampshire.127.0.0.1.xip.io:3000', :results => true, :status => 'all', :location => 'GU14 7ST', :display => 'list')
       expect(page).to have_content('Show results on a map')
       expect(page).to have_content('See more statistics for Foo')
+      expect(page).to have_content("Found 4 matching planning applications")
       expect(page).to have_no_selector('div.pagination')
     end
 
@@ -118,6 +120,7 @@ feature "Custom Hampshire pages" do
       @mock_search.stub(:perform_search).and_return(mock_results)
 
       visit search_applications_url(:host => 'hampshire.127.0.0.1.xip.io:3000', :results => true, :location => 'GU14 7ST', :display => 'list', :status => 'pending')
+      expect(page).to have_content("Found 4 matching planning applications")
       expect(page).to have_no_selector('div#sidebar-stats')
     end
 
@@ -131,8 +134,20 @@ feature "Custom Hampshire pages" do
 
       visit search_applications_url(:host => 'hampshire.127.0.0.1.xip.io:3000', :results => true, :status => 'all', :location => 'GU14 7ST', :display => 'list')
       expect(page).to have_content('Show results on a map')
+      expect(page).to have_content("Found 102 matching planning applications")
       expect(page).to have_no_content('See more statistics for')
       expect(page).to have_selector('div.pagination')
+    end
+
+    scenario "more than 1000 matching results" do
+      mock_results = mock_search_results(1)
+      @mock_search.stub(:stats).and_return({:total_results => 1002})
+
+      HampshireSearch.should_receive(:new).and_return(@mock_search)
+      @mock_search.stub(:perform_search).and_return(mock_results)
+
+      visit search_applications_url(:host => 'hampshire.127.0.0.1.xip.io:3000', :results => true, :status => 'all', :location => 'GU14 7ST', :display => 'list')
+      expect(page.text).to include("Found more than\n1,000\nmatching planning applications")
     end
   end
 end
