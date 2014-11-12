@@ -19,12 +19,13 @@
   - if @search.status.blank?
     -# We can only show these stats if we're not already filtering by a
     -# status.
-    #sidebar-stats
-      = render "shared/stats", :stats => @search.stats
-    - unless @authority.blank?
-      %p
-        See more statistics for
-        = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
+    - if @search.stats[:total_results] > 0
+      #sidebar-stats
+        = render "shared/stats", :stats => @search.stats
+      - unless @authority.blank?
+        %p
+          See more statistics for
+          = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
   - else
     - unless @authority.blank?
       %p

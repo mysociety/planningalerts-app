@@ -93,6 +93,7 @@ feature "Custom Hampshire pages" do
 
       expect(page).to have_content("Sorry, no results matched that search, perhaps try again with less specific keywords, or in a different location?")
       expect(page).to have_content("Found 0 matching planning applications")
+      expect(page).to have_no_selector('div#sidebar-stats')
     end
 
     scenario "4 matching results with a matching MapIt authority (as a list)" do
@@ -107,6 +108,7 @@ feature "Custom Hampshire pages" do
       expect(page).to have_content('Show results on a map')
       expect(page).to have_content('See more statistics for Foo')
       expect(page).to have_content("Found 4 matching planning applications")
+      expect(page).to have_selector('div#sidebar-stats')
       expect(page).to have_no_selector('div.pagination')
     end
 
@@ -136,6 +138,7 @@ feature "Custom Hampshire pages" do
       expect(page).to have_content('Show results on a map')
       expect(page).to have_content("Found 102 matching planning applications")
       expect(page).to have_no_content('See more statistics for')
+      expect(page).to have_selector('div#sidebar-stats')
       expect(page).to have_selector('div.pagination')
     end
 
