@@ -6,6 +6,7 @@ Rails.configuration.to_prepare do
 
   Application.class_eval do
     define_index do
+      indexes council_reference
       indexes description
       indexes address
       indexes suburb
