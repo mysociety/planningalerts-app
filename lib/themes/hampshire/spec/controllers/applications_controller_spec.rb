@@ -213,6 +213,57 @@ describe ApplicationsController do
                    .and_return(search_results)
         get :search, {:search => "test"}
       end
+
+      context "creating a back to search link" do
+        it 'should assign the search parameters' do
+          stub_search.stub(:is_location_search? => true)
+          get :search, {:search => 'anything', :location => 'GU14 6XX', :results => true, :page => 1, :status => 'all'}
+          expected_params = {
+            "search_search" => 'anything',
+            "search_location" => 'GU14 6XX',
+            "search_results" => true,
+            "search_page" => "1",
+            "search_status" => 'all'
+          }
+          expect(assigns(:return_to_search_params)).to eq expected_params
+        end
+
+        it 'should ignore other parameters' do
+          get :search, {:xss => true, :search => 'anything', :location => 'GU14 6XX', :results => true, :page => 1, :status => 'all'}
+          expected_params = {
+            "search_search" => 'anything',
+            "search_location" => 'GU14 6XX',
+            "search_results" => true,
+            "search_page" => "1",
+            "search_status" => 'all'
+          }
+          expect(assigns(:return_to_search_params)).to eq expected_params
+        end
+      end
+    end
+  end
+
+  describe "decorated show action" do
+    it "should assign the return to search url" do
+      app = mock_model(Application, :address => "Address", :date_scraped => Date.new(2010,1,1),
+        :description => "foo", :location => nil, :find_all_nearest_or_recent => [])
+      Application.should_receive(:find).with("1").and_return(app)
+
+      get :show, {:id => 1, :search_search => 'anything', :search_location => 'GU146XX', :search_results => true, :search_page => 1, :search_status => 'all'}
+
+      expected_url = '/applications/search?location=GU146XX&page=1&results=true&search=anything&status=all'
+      expect(assigns(:return_to_search_url)).to eq expected_url
+    end
+
+    it "should ignore other parameters for return to search url" do
+      app = mock_model(Application, :address => "Address", :date_scraped => Date.new(2010,1,1),
+        :description => "foo", :location => nil, :find_all_nearest_or_recent => [])
+      Application.should_receive(:find).with("1").and_return(app)
+
+      get :show, {:id => 1, :search_xss => true, :search_search => 'anything', :search_location => 'GU146XX', :search_results => true, :search_page => 1, :search_status => 'all'}
+
+      expected_url = '/applications/search?location=GU146XX&page=1&results=true&search=anything&status=all'
+      expect(assigns(:return_to_search_url)).to eq expected_url
     end
   end
 end

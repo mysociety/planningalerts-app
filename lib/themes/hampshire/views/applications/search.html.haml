@@ -18,6 +18,7 @@
     - if @search and @search.is_location_search?
       PlanningAlerts.search['lat'] = #{@search.lat};
       PlanningAlerts.search['lng'] = #{@search.lng};
+      PlanningAlerts.search['return_params'] = #{raw @return_to_search_params.to_json};
     PlanningAlerts.search['categories'] = #{raw @categories_json};
 
 = content_for :extra_javascript, javascript_include_tag("hampshire.search_box")
