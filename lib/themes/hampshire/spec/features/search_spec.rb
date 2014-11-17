@@ -15,7 +15,8 @@ feature "Custom Hampshire search pages" do
   end
 
   def mock_search_results(number)
-    mock_results = ThinkingSphinx::Search.new
+    mock_results = [] # IRL would be ThinkingSphinx::Search
+    mock_results.stub(:current_page).and_return(1)
     if number == 0
       mock_results.stub(:to_json).and_return([])
       mock_results.stub(:total_pages).and_return(0)
