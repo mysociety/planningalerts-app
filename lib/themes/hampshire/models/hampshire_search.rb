@@ -9,6 +9,7 @@ class HampshireSearch < ApplicationSearch
       send("#{name}=", value)
     end
     @categories = ::Configuration::THEME_HAMPSHIRE_CATEGORIES
+    process_location
     process_search_and_category
     process_status
   end
@@ -102,6 +103,14 @@ class HampshireSearch < ApplicationSearch
   def process_status
     if @status == 'all'
       @status = nil
+    end
+  end
+
+  def process_location
+    # strip out stray whitespace
+    unless @location.blank?
+      @location.strip!
+      @location.squeeze!(' ')
     end
   end
 
