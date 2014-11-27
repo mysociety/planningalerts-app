@@ -10,21 +10,21 @@
 
 %script{:id=> 'marker-template', :type => 'text/template'}
   .infowindow
-    %p.reference {{ application.council_reference }}
-    %h3.address {{ application.address }}
-    %p.description {{ application.description_display }}
+    %p.reference {{ data.application.council_reference }}
+    %h3.address {{ data.application.address }}
+    %p.description {{ data.application.description_display }}
     %dl.metadata
       %dt.status Status:
-      %dd.status {{ application.status_display || 'Unknown' }}
-      {[ if(application.date_received){ ]}
+      %dd.status {{ data.application.status_display || 'Unknown' }}
+      {[ if(data.application.date_received){ ]}
       %dt.received Marked valid:
-      %dd.received {{ application.date_received_display }}
+      %dd.received {{ data.application.date_received_display }}
       {[ } ]}
-      {[ if(application.decision_date){ ]}
+      {[ if(data.application.decision_date){ ]}
       %dt.decision Decision date:
-      %dd.decision {{ application.decision_date_display }}
+      %dd.decision {{ data.application.decision_date_display }}
       {[ } ]}
     %p.submit
-      %a.button.button.button-rounded.button-action{:href => '/applications/{{ application.id }}/{{ application.authority.short_name_encoded }}/{{ application.council_reference }}'}
+      %a.button.button.button-rounded.button-action{:href => '/applications/{{ data.application.id }}/{{ data.application.authority.short_name_encoded }}/{{ data.application.council_reference }}?{{ data.queryString }}'}
         Show details
         %i.fa.fa-external-link-square

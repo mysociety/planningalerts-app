@@ -48,9 +48,24 @@ class HampshireTheme
             # from a list view, therefore we force the page param to 1
             @applications_json = @search.perform_search({:per_page => 1000, :page => 1}).to_json
           end
+
+          # Build a url to allow us to return to this search later, so that we
+          # can show return-to links on the application pages
+          valid_params = params.slice(:location, :search, :status, :page, :results)
+          @return_to_search_params = Hash[valid_params.map { |k, v| ["search_#{k}", v] }]
         end
       end
       return false
+    end
+
+    def show
+      valid_params = params.slice(:search_location, :search_search, :search_status, :search_page, :search_results)
+      return_to_search_params = Hash[valid_params.map { |k, v| ["#{k}".gsub('search_', ''), v] }]
+      unless return_to_search_params.empty?
+        url_params = {:controller => 'applications', :action => 'search', :only_path => true}.merge!(return_to_search_params)
+        @return_to_search_url = url_for(url_params)
+      end
+      # Not returning false because we want the normal action to continue too
     end
   end
 end

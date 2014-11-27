@@ -48,6 +48,10 @@
         %dt.decision Decision date:
         %dd.decision= @application.decision_date.strftime('%e %b %Y')
 
+    - if @return_to_search_url
+      = link_to @return_to_search_url do
+        Back to your search
+
   %br.clear
 
 - if @application.location
