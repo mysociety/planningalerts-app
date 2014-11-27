@@ -49,6 +49,11 @@ describe HampshireSearch do
     expect(search.is_location_search?).to eq(true)
   end
 
+  it "should clean up the location parameter" do
+    search = HampshireSearch.new(:location => '  GU14   6AZ   ')
+    expect(search.location).to eq('GU14 6AZ')
+  end
+
   context "when validating" do
     it "should validate the location as a postcode if it looks like one" do
       search = HampshireSearch.new(:location => 'GU14 6AZ')
