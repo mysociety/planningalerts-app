@@ -16,6 +16,7 @@ class HampshireTheme
           redirect_to authority_url(authority.short_name_encoded)
         end
       end
+      @return_to_search_params = {}
       @authorities = Authority.enabled
       @authority = Authority.find_by_short_name_encoded!(params[:id])
       @applications = @authority.applications.paginate(:page => params[:page], :per_page => 30, :order => "date_received DESC")
