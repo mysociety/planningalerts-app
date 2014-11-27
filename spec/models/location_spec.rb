@@ -37,8 +37,8 @@ describe "Location" do
   #end
 
   it "should normalise addresses without the country in them" do
-    loc = Location.new(mock(:full_address => "Eversley Quarry, Fox Lane, Eversley, Hampshire GU46 7RU, UK"))
-    loc.full_address.should == "Eversley Quarry, Fox Lane, Eversley, Hampshire GU46 7RU"
+    loc = Location.new(mock(:full_address => "24 Bruce Road, Glenbrook, NSW 2773, Australia"))
+    loc.full_address.should == "24 Bruce Road, Glenbrook, NSW 2773"
   end
 
   it "should error if the address is empty" do
@@ -71,20 +71,20 @@ describe "Location" do
   end
 
   it "should error if the address is not a full street address but rather a suburb name or similar" do
-    Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:all => [mock(:country_code => Configuration::COUNTRY_CODE, :lat => 1, :lng => 2, :accuracy => 3, :full_address => "Fox Lane, Hampshire, UK")]))
+    Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:all => [mock(:country_code => "AU", :lat => 1, :lng => 2, :accuracy => 4, :full_address => "Glenbrook NSW, Australia")]))
 
-    l = Location.geocode("Fox Lane, Hampshire")
-    l.error.should == "isn't complete. We saw that address as \"Fox Lane, Hampshire\" which we don't recognise as a full street address. Check your spelling and make sure to include suburb and state"
+    l = Location.geocode("Glenbrook, NSW")
+    l.error.should == "isn't complete. We saw that address as \"Glenbrook NSW\" which we don't recognise as a full street address. Check your spelling and make sure to include suburb and state"
   end
 
-  it "should list potential matches and they should be in the UK" do
-    m = mock(:full_address => "Bathurst Rd, Staplehurst, Kent TN12 0, UK", :country_code => "GB")
+  it "should list potential matches and they should be in Australia" do
+    m = mock(:full_address => "Bathurst Rd, Orange NSW 2800, Australia", :country_code => "AU")
     all = [
       m,
       mock(:full_address => "Bathurst Rd, Katoomba NSW 2780, Australia", :country_code => "AU"),
-      mock(:full_address => "Bathurst Rd, Orange NSW 2800, Australia", :country_code => "AU"),
+      mock(:full_address => "Bathurst Rd, Staplehurst, Kent TN12 0, UK", :country_code => "UK"),
       mock(:full_address => "Bathurst Rd, Cape Town 7708, South Africa", :country_code => "ZA"),
-      mock(:full_address => "Bathurst Rd, Winnersh, Wokingham RG41 5, UK", :country_code => "GB"),
+      mock(:full_address => "Bathurst Rd, Winnersh, Wokingham RG41 5, UK", :country_code => "UK"),
       mock(:full_address => "Bathurst Rd, Catonsville, MD 21228, USA", :country_code => "US"),
       mock(:full_address => "Bathurst Rd, Durban South 4004, South Africa", :country_code => "ZA"),
       mock(:full_address => "Bathurst Rd, Port Kennedy WA 6172, Australia", :country_code => "AU"),
@@ -95,26 +95,26 @@ describe "Location" do
     Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:all => all))
     l = Location.geocode("Bathurst Rd")
     all = l.all
-    all.count.should == 2
-    all[0].full_address.should == "Bathurst Rd, Staplehurst, Kent TN12 0"
-    all[1].full_address.should == "Bathurst Rd, Winnersh, Wokingham RG41 5"
+    all.count.should == 3
+    all[0].full_address.should == "Bathurst Rd, Orange NSW 2800"
+    all[1].full_address.should == "Bathurst Rd, Katoomba NSW 2780"
+    all[2].full_address.should == "Bathurst Rd, Port Kennedy WA 6172"
   end
 
-  it "the first match should only return addresses in the UK" do
-    m = mock(:full_address => "Sowerby St, Sowerby, Halifax, Calderdale HX6 3, UK", :country_code => "GB")
+  it "the first match should only return addresses in Australia" do
+    m = mock(:full_address => "Sowerby St, Garfield NSW 2580, Australia", :country_code => "AU")
     all = [
       mock(:full_address => "Sowerby St, Lawrence 9532, New Zealand", :country_code => "NZ"),
       m,
-      mock(:full_address => "Sowerby St, Garfield NSW 2580, Australia", :country_code => "AU"),
-      mock(:full_address => "Sowerby St, Burnley, Lancashire BB12 8, UK", :country_code => "GB")
+      mock(:full_address => "Sowerby St, Sowerby, Halifax, Calderdale HX6 3, UK", :country_code => "UK"),
+      mock(:full_address => "Sowerby St, Burnley, Lancashire BB12 8, UK", :country_code => "UK")
     ]
     m.stub!(:all => all)
     Geokit::Geocoders::GoogleGeocoder3.stub!(:geocode).and_return(mock(:full_address => "Sowerby St, Lawrence 9532, New Zealand", :all => all))
     l = Location.geocode("Sowerby St")
-    l.full_address.should == "Sowerby St, Sowerby, Halifax, Calderdale HX6 3"
+    l.full_address.should == "Sowerby St, Garfield NSW 2580"
     all = l.all
-    all.count.should == 2
-    all[0].full_address.should == "Sowerby St, Sowerby, Halifax, Calderdale HX6 3"
-    all[1].full_address.should == "Sowerby St, Burnley, Lancashire BB12 8"
+    all.count.should == 1
+    all[0].full_address.should == "Sowerby St, Garfield NSW 2580"
   end
 end

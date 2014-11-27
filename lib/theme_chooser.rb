@@ -101,15 +101,27 @@ class HampshireTheme < Theme
 
   # This might have a port number included
   def host
-    Configuration::THEME_HAMPSHIRE_HOST
+    if Configuration.const_defined?('THEME_HAMPSHIRE_HOST')
+      Configuration::THEME_HAMPSHIRE_HOST
+    else
+      "not_in_use"
+    end
   end
 
   def app_name
-    Configuration::THEME_HAMPSHIRE_EMAIL_FROM_NAME
+    if Configuration.const_defined?('THEME_HAMPSHIRE_EMAIL_FROM_NAME')
+      Configuration::THEME_HAMPSHIRE_EMAIL_FROM_NAME
+    else
+      "not_in_use"
+    end
   end
 
   def email_from_address
-    Configuration::THEME_HAMPSHIRE_EMAIL_FROM_ADDRESS
+    if Configuration.const_defined?('THEME_HAMPSHIRE_EMAIL_FROM_ADDRESS')
+      Configuration::THEME_HAMPSHIRE_EMAIL_FROM_ADDRESS
+    else
+      ""
+    end
   end
 
   def cuttlefish_user_name

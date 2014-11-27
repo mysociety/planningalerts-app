@@ -8,9 +8,7 @@
     %p These are the top 1,000 results
   - else
     %h2
-      Found
-      %strong= #{@search.stats[:total_results]}
-      matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
+      Found <strong>#{@search.stats[:total_results]}</strong> matching planning applications within #{Configuration::THEME_HAMPSHIRE_SEARCH_RADIUS} miles of your search
   %p.change-display
     -if @display == 'map' or @map_display_possible
       Show results
@@ -21,12 +19,13 @@
   - if @search.status.blank?
     -# We can only show these stats if we're not already filtering by a
     -# status.
-    #sidebar-stats
-      = render "shared/stats", :stats => @search.stats
-    - unless @authority.blank?
-      %p
-        See more statistics for
-        = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
+    - if @search.stats[:total_results] > 0
+      #sidebar-stats
+        = render "shared/stats", :stats => @search.stats
+      - unless @authority.blank?
+        %p
+          See more statistics for
+          = link_to "#{@authority.full_name}", authority_path(@authority.short_name_encoded), :class => 'parent-council-link'
   - else
     - unless @authority.blank?
       %p

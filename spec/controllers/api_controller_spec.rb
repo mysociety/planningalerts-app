@@ -59,6 +59,13 @@ describe ApiController do
               "date_received" => nil,
               "lat" => nil,
               "lng" => nil,
+              "council_category" => nil,
+              "category" => nil,
+              "status" => nil,
+              "target_date" => nil,
+              "date_received" => nil,
+              "decision_date" => nil,
+              "delayed" => nil,
               "date_scraped" => "2001-01-01T00:00:00Z",
             }
           }]
@@ -102,6 +109,13 @@ describe ApiController do
           "date_received" => nil,
           "lat" => nil,
           "lng" => nil,
+          "council_category" => nil,
+          "category" => nil,
+          "status" => nil,
+          "target_date" => nil,
+          "date_received" => nil,
+          "decision_date" => nil,
+          "delayed" => nil,
           "date_scraped" => "2001-01-01T00:00:00Z",
         }
       }]
@@ -135,6 +149,13 @@ describe ApiController do
             "date_received" => nil,
             "lat" => nil,
             "lng" => nil,
+            "council_category" => nil,
+            "category" => nil,
+            "status" => nil,
+            "target_date" => nil,
+            "date_received" => nil,
+            "decision_date" => nil,
+            "delayed" => nil,
             "date_scraped" => "2001-01-01T00:00:00Z",
           }
         }]

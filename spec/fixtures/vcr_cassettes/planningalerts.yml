@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=gb&sensor=false
+    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=au&sensor=false
     body:
       string: ""
     headers:
@@ -41,12 +41,11 @@ http_interactions:
            "results" : [],
            "status" : "ZERO_RESULTS"
         }
-
     http_version:
   recorded_at: Sun, 22 Sep 2013 19:09:07 GMT
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=Station%20Road,%20Liss&region=gb&sensor=false
+    uri: http://maps.google.com/maps/api/geocode/json?address=24%20Bruce%20Road%20Glenbrook&region=au&sensor=false
     body:
       string: ""
     headers:
@@ -86,75 +85,64 @@ http_interactions:
               {
                  "address_components" : [
                     {
-                       "long_name" : "Station Road",
-                       "short_name" : "Station Rd",
+                       "long_name" : "24",
+                       "short_name" : "24",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Bruce Road",
+                       "short_name" : "Bruce Rd",
                        "types" : [ "route" ]
                     },
                     {
-                       "long_name" : "Liss",
-                       "short_name" : "Liss",
+                       "long_name" : "Glenbrook",
+                       "short_name" : "Glenbrook",
                        "types" : [ "locality", "political" ]
                     },
                     {
-                       "long_name" : "Liss",
-                       "short_name" : "Liss",
-                       "types" : [ "postal_town" ]
+                       "long_name" : "New South Wales",
+                       "short_name" : "NSW",
+                       "types" : [ "administrative_area_level_1", "political" ]
                     },
                     {
-                       "long_name" : "Hampshire",
-                       "short_name" : "Hants",
-                       "types" : [ "administrative_area_level_2", "political" ]
-                    },
-                    {
-                       "long_name" : "United Kingdom",
-                       "short_name" : "GB",
+                       "long_name" : "Australia",
+                       "short_name" : "AU",
                        "types" : [ "country", "political" ]
                     },
                     {
-                       "long_name" : "GU33",
-                       "short_name" : "GU33",
-                       "types" : [ "postal_code_prefix", "postal_code" ]
+                       "long_name" : "2773",
+                       "short_name" : "2773",
+                       "types" : [ "postal_code" ]
                     }
                  ],
-                 "formatted_address" : "Station Road, Liss, Liss, Hampshire GU33, UK",
+                 "formatted_address" : "24 Bruce Road, Glenbrook NSW 2773, Australia",
                  "geometry" : {
-                    "bounds" : {
-                       "northeast" : {
-                          "lat" : 51.0485918,
-                          "lng" : -0.8907345999999999
-                       },
-                       "southwest" : {
-                          "lat" : 51.0427732,
-                          "lng" : -0.8986900999999999
-                       }
-                    },
                     "location" : {
-                       "lat" : 51.0453693,
-                       "lng" : -0.8951038
+                       "lat" : -33.772607,
+                       "lng" : 150.624245
                     },
-                    "location_type" : "GEOMETRIC_CENTER",
+                    "location_type" : "ROOFTOP",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 51.0485918,
-                          "lng" : -0.8907345999999999
+                          "lat" : -33.7712580197085,
+                          "lng" : 150.6255939802915
                        },
                        "southwest" : {
-                          "lat" : 51.0427732,
-                          "lng" : -0.8986900999999999
+                          "lat" : -33.7739559802915,
+                          "lng" : 150.6228960197085
                        }
                     }
                  },
-                 "types" : [ "route" ]
+                 "types" : [ "street_address" ]
               }
            ],
            "status" : "OK"
         }
-
     http_version:
   recorded_at: Sun, 22 Sep 2013 19:29:53 GMT
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=Station%20Road,%20Liss&region=gb&sensor=false
+    uri: http://maps.google.com/maps/api/geocode/json?address=24%20Bruce%20Road,%20Glenbrook&region=au&sensor=false
     body:
       string: ""
     headers:
@@ -194,75 +182,64 @@ http_interactions:
               {
                  "address_components" : [
                     {
-                       "long_name" : "Station Road",
-                       "short_name" : "Station Rd",
+                       "long_name" : "24",
+                       "short_name" : "24",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Bruce Road",
+                       "short_name" : "Bruce Rd",
                        "types" : [ "route" ]
                     },
                     {
-                       "long_name" : "Liss",
-                       "short_name" : "Liss",
+                       "long_name" : "Glenbrook",
+                       "short_name" : "Glenbrook",
                        "types" : [ "locality", "political" ]
                     },
                     {
-                       "long_name" : "Liss",
-                       "short_name" : "Liss",
-                       "types" : [ "postal_town" ]
+                       "long_name" : "New South Wales",
+                       "short_name" : "NSW",
+                       "types" : [ "administrative_area_level_1", "political" ]
                     },
                     {
-                       "long_name" : "Hampshire",
-                       "short_name" : "Hants",
-                       "types" : [ "administrative_area_level_2", "political" ]
-                    },
-                    {
-                       "long_name" : "United Kingdom",
-                       "short_name" : "GB",
+                       "long_name" : "Australia",
+                       "short_name" : "AU",
                        "types" : [ "country", "political" ]
                     },
                     {
-                       "long_name" : "GU33",
-                       "short_name" : "GU33",
-                       "types" : [ "postal_code_prefix", "postal_code" ]
+                       "long_name" : "2773",
+                       "short_name" : "2773",
+                       "types" : [ "postal_code" ]
                     }
                  ],
-                 "formatted_address" : "Station Road, Liss, Liss, Hampshire GU33, UK",
+                 "formatted_address" : "24 Bruce Road, Glenbrook NSW 2773, Australia",
                  "geometry" : {
-                    "bounds" : {
-                       "northeast" : {
-                          "lat" : 51.0485918,
-                          "lng" : -0.8907345999999999
-                       },
-                       "southwest" : {
-                          "lat" : 51.0427732,
-                          "lng" : -0.8986900999999999
-                       }
-                    },
                     "location" : {
-                       "lat" : 51.0453693,
-                       "lng" : -0.8951038
+                       "lat" : -33.772607,
+                       "lng" : 150.624245
                     },
-                    "location_type" : "GEOMETRIC_CENTER",
+                    "location_type" : "ROOFTOP",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 51.0485918,
-                          "lng" : -0.8907345999999999
+                          "lat" : -33.7712580197085,
+                          "lng" : 150.6255939802915
                        },
                        "southwest" : {
-                          "lat" : 51.0427732,
-                          "lng" : -0.8986900999999999
+                          "lat" : -33.7739559802915,
+                          "lng" : 150.6228960197085
                        }
                     }
                  },
-                 "types" : [ "route" ]
+                 "types" : [ "street_address" ]
               }
            ],
            "status" : "OK"
         }
-
     http_version:
   recorded_at: Sun, 22 Sep 2013 19:39:36 GMT
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=gb&sensor=false
+    uri: http://maps.google.com/maps/api/geocode/json?address=A%20test%20address&region=au&sensor=false
     body:
       string: ""
     headers:
@@ -301,7 +278,6 @@ http_interactions:
            "results" : [],
            "status" : "ZERO_RESULTS"
         }
-
     http_version:
   recorded_at: Sun, 22 Sep 2013 19:41:08 GMT
 - request:

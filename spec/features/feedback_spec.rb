@@ -78,6 +78,7 @@ feature "Give feedback to Council" do
 
   scenario "Reporting abuse on a confirmed comment" do
     email_moderator = Configuration::EMAIL_MODERATOR
+    Kernel::silence_warnings { ::Configuration::EMAIL_MODERATOR = "moderator@planningalerts.org.au" }
     VCR.use_cassette('planningalerts') do
       comment = Factory(:comment, :confirmed => true, :text => "I'm saying something abusive", :name => "Jack Rude", :email => "rude@foo.com", :id => "23")
       visit(new_comment_report_path(comment))
@@ -95,5 +96,7 @@ feature "Give feedback to Council" do
     open_email("moderator@planningalerts.org.au")
     current_email.should be_delivered_from("Joe Reporter <reporter@foo.com>")
     current_email.should have_subject("PlanningAlerts: Abuse report")
+
+    Kernel::silence_warnings { ::Configuration::EMAIL_MODERATOR = email_moderator }
   end
 end

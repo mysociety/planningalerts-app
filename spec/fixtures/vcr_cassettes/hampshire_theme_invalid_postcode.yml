@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.google.com/maps/api/geocode/json?address=SO234B&region=gb&sensor=false
+    uri: http://maps.google.com/maps/api/geocode/json?address=SO234B&bounds=50.723101,-2.025858%7C51.428016,-0.609995&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -43,7 +43,7 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
-    http_version: 
+    http_version:
   recorded_at: Mon, 27 Oct 2014 17:14:45 GMT
 - request:
     method: get
@@ -88,7 +88,7 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
-    http_version: 
+    http_version:
   recorded_at: Mon, 27 Oct 2014 17:14:45 GMT
 - request:
     method: get
@@ -133,6 +133,6 @@ http_interactions:
     body:
       encoding: US-ASCII
       string: ! "{\n   \"results\" : [],\n   \"status\" : \"ZERO_RESULTS\"\n}\n"
-    http_version: 
+    http_version:
   recorded_at: Mon, 27 Oct 2014 17:14:46 GMT
 recorded_with: VCR 2.5.0

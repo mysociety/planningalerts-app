@@ -96,3 +96,5 @@ MINIMUM_ACCURACY: 5
 
 HONEYBADGER_API_KEY: 'not used'
 JUST_HERE_FOR_THE_TEST: true
+
+CUSTOM_MODELS_PATH: "lib/themes/hampshire"

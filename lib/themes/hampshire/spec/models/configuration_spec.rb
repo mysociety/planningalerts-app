@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'..','..','..','..','..','spec','spec_helper.rb'))
+require File.expand_path(File.join(File.dirname(__FILE__),'..','spec_helper.rb'))
 
 describe Configuration do
   # assumes that config/general.yml and config/test.yml exist

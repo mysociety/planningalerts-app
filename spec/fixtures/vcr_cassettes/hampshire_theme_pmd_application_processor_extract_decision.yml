@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://<PUBLISHMYDATA_USER>:<PUBLISHMYDATA_PASSWORD>@data.hampshirehub.net/resource.json?uri=http://data.hampshirehub.net/id/planning-application/district-council/rushmoor/12/00430/REVPP/decision
+    uri: http://xxxxxx:xxxxxx@data.hampshirehub.net/resource.json?uri=http://data.hampshirehub.net/id/planning-application/district-council/rushmoor/12/00430/REVPP/decision
     body:
       encoding: US-ASCII
       string: ''
@@ -79,6 +79,6 @@ http_interactions:
         nK2qqrwqbLwIGPPp893to0hA8lNrF0xRHg2gtEEBPwQYEHZBAn/Kgh6gXvwv
         QD8nhyD4l3+HsG0ho9bFPIpJ0dqY8gWk3x2dSRckztV7kDj9pDjbubF7DEfd
         ueqTYH92baXJZiLbubbP9cn8DQQzfmkNBQAA
-    http_version: 
+    http_version:
   recorded_at: Fri, 31 Oct 2014 18:17:55 GMT
 recorded_with: VCR 2.5.0

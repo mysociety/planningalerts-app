@@ -53,6 +53,6 @@ module Configuration
   HONEYBADGER_API_KEY = 'xxxxxxxx'
 
   COUNTRY_NAME = 'Australia'
-  COUNTRY_CODE = 'AUS'
+  COUNTRY_CODE = 'AU'
   MINIMUM_ACCURACY = 5
 end
