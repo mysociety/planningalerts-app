@@ -39,7 +39,7 @@ describe PMDApplicationProcessor do
     end
 
     it 'should extract the address' do
-      VCR.use_cassette('hampshire_theme_pmd_application_processor_extract_address', :record => :new_episodes) do
+      VCR.use_cassette('hampshire_theme_pmd_application_processor_extract_address', :record => :once) do
         address = PMDApplicationProcessor.extract_address(application)
         expect(address['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing'][0]['@value']).to eq(155450)
         expect(address['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'][0]['@value']).to eq(486405)
@@ -75,7 +75,7 @@ describe PMDApplicationProcessor do
     end
 
     it 'should extract the decision' do
-      VCR.use_cassette('hampshire_theme_pmd_application_processor_extract_decision', :record => :new_episodes) do
+      VCR.use_cassette('hampshire_theme_pmd_application_processor_extract_decision', :record => :once) do
         decision = PMDApplicationProcessor.extract_decision(application)
         expect(decision['http://data.hampshirehub.net/def/planning/decisionIssued'][0]['@id']).to eq('http://opendatacommunities.org/def/concept/planning/decision-issued/approve')
         expect(decision['http://data.hampshirehub.net/def/planning/targetDate'][0]['@value']).to eq('2013-12-23T01:00:00+01:00')
