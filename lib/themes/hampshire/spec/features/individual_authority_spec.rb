@@ -47,7 +47,7 @@ feature "Hampshire individual authority page" do
     expect(page).to have_selector("div#sidebar-stats")
     # ...and a summary
     expect(page.text).to include("Foo receives on average 12 applications per week")
-    expect(page.text).to include("5% of applications were delayed.")
+    expect(page.text).not_to include("5% of applications were delayed.")
   end
 
   scenario "should display a message when there are no applications to show" do
@@ -74,6 +74,5 @@ feature "Hampshire individual authority page" do
     expect(page).to have_no_selector("div#sidebar-stats")
     # ...or a summary
     expect(page.text).not_to include("applications per week")
-    expect(page.text).not_to include("% of applications were delayed.")
   end
 end

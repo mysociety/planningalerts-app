@@ -12,7 +12,3 @@
       %td.percent_approved
         - if authority.stats.overview and authority.stats.overview.percentage_approved
           = link_to "#{authority.stats.overview.percentage_approved}% approved", authority_url(authority.short_name_encoded)
-      %td.percent_delayed
-        - if authority.stats.overview and authority.stats.overview.percentage_delayed
-          = link_to "#{authority.stats.overview.percentage_delayed}% delayed", authority_url(authority.short_name_encoded)
-

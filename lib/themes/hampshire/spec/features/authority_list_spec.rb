@@ -18,7 +18,7 @@ feature "Hampshire authority list page" do
     expect(page).to have_content("Test authority")
     expect(page).to have_content("1234 applications")
     expect(page).to have_content("80% approved")
-    expect(page).to have_content("5% delayed")
+    expect(page).to have_no_content("5% delayed")
   end
 
   scenario "authorites without applictions should not have a stats overview" do
@@ -31,6 +31,5 @@ feature "Hampshire authority list page" do
     visit authorities_url(:host => "hampshire.127.0.0.1.xip.io:3000")
     expect(page).to have_content("Test authority")
     expect(page).to have_no_content("% approved")
-    expect(page).to have_no_content("% delayed")
   end
 end
