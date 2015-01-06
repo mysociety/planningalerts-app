@@ -5,8 +5,8 @@ MORPH_API_KEY: "xxxxxxxxxxxxxxxxxxxx"
 
 ALLOW_BATCH_REQUESTS: false
 
-PUBLISHMYDATA_USER: "xxxxxx"
-PUBLISHMYDATA_PASSWORD: "xxxxxx"
+PUBLISHMYDATA_USER: ""
+PUBLISHMYDATA_PASSWORD: ""
 
 # Email setup
 EMAIL_FROM_ADDRESS: 'contact@planningalerts.org.au'

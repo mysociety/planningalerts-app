@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://xxxxxx:xxxxxx@data.hampshirehub.net/resource.json?uri=http://data.hampshirehub.net/id/planning-application/district-council/rushmoor/12/00430/REVPP/location
+    uri: http://data.hampshirehub.net/resource.json?uri=http://data.hampshirehub.net/id/planning-application/district-council/rushmoor/12/00430/REVPP/location
     body:
       encoding: US-ASCII
       string: ''

@@ -3,8 +3,8 @@ MORPH_API_KEY: "xxxxxxxxxxxxxxxxxxxx"
 
 ALLOW_BATCH_REQUESTS: false
 
-PUBLISHMYDATA_USER: "xxxxxx"
-PUBLISHMYDATA_PASSWORD: "xxxxxx"
+PUBLISHMYDATA_USER: ""
+PUBLISHMYDATA_PASSWORD: ""
 PUBLISHMYDATA_BASE_URL: "http://data.hampshirehub.net"
 
 # Email setup
