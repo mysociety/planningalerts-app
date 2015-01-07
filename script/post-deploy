@@ -32,6 +32,9 @@ fi
 
 bundle exec rake db:migrate
 
+# restart Sphinx
+bundle exec rake ts:restart
+
 if [ "$RAILS_ENV" = production ]
 then
     bundle exec rake assets:precompile
