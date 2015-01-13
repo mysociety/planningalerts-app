@@ -2,6 +2,7 @@
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
 require 'rake'
+require 'rake/hooks'
 
 if ARGV.include?("spec")
   ENV["RAILS_ENV"] = "test"

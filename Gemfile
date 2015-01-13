@@ -38,6 +38,7 @@ gem 'activeadmin'
 # Disabling metric_fu because it depends on rcov which doesn't work on Ruby 1.9
 #gem 'metric_fu'
 gem "rake"
+gem 'rake-hooks'
 gem 'rack-throttle'
 gem 'dalli'
 gem 'sanitize'
