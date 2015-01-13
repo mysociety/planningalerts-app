@@ -7,7 +7,9 @@ tmp/sass-cache
 coverage
 log/searchd.development.pid
 config/database.yml
-config/development.sphinx.conf
+config/*.sphinx.conf
+config/*.searchd.conf
+config/*.conf.bak
 config/general.yml
 config/test.yml
 db/sphinx/development/*
