@@ -36,6 +36,30 @@ before "thinking_sphinx:rebuild" do
   end
 end
 
+# replace start task with a custom version to launch searchd
+# using the standard config file rather than the local path
+before "thinking_sphinx:start" do
+  start_process
+  # don't let the original rake task run
+  abort
+end
+
+# replace stop task with a custom version that doesn't have a
+# dependence on the local config file path
+before "thinking_sphinx:stop" do
+  stop_process
+  # don't let the original rake task run
+  abort
+end
+
+# replace restart task with a custom version otherwise
+# the abort statements from the overrides will make a mess
+before "thinking_sphinx:restart" do
+  stop_process
+  start_process
+  abort
+end
+
 
 # split the generated config file into a shared searchd file
 # and a per-app conf file, discarding the indexer portion
@@ -93,4 +117,56 @@ def file_changed?(file_path)
   current_contents = File.open(file_path).read
   old_contents = File.open(backup_file).read
   current_contents != old_contents
+end
+
+def start_process
+  config = ThinkingSphinx::Configuration.instance
+  raise RuntimeError, "searchd is already running." if sphinx_running?
+
+  Dir["#{config.searchd_file_path}/*.spl"].each { |file| File.delete(file) }
+
+  cmd = "#{config.bin_path}#{config.searchd_binary_name} --pidfile"
+  if ENV["NODETACH"] == "true"
+    cmd << " --nodetach" if options[:nodetach]
+  end
+
+  `#{cmd}`
+
+  sleep(1)
+
+  if sphinx_running?
+    puts "Started successfully (pid #{ThinkingSphinx.sphinx_pid})."
+  else
+    puts "Failed to start searchd daemon. Check #{config.searchd_log_file}"
+    puts "Be sure to run thinking_sphinx:index before thinking_sphinx:start"
+  end
+end
+
+def stop_process
+  unless sphinx_running?
+    puts "searchd is not running"
+  else
+    config = ThinkingSphinx::Configuration.instance
+    pid  = ThinkingSphinx.sphinx_pid
+
+    stop_flag = 'stopwait'
+    stop_flag = 'stop' if Riddle.loaded_version.split('.').first == '0'
+    cmd = %(#{config.bin_path}#{config.searchd_binary_name} --pidfile --#{stop_flag})
+
+    `#{cmd}`
+
+    # use abort rather than puts so that the original rake task isn't run
+    if sphinx_running?
+      puts "Failed to stop search daemon (pid #{pid})."
+    else
+      puts "Stopped search daemon (pid #{pid})."
+    end
+  end
+end
+
+def sphinx_running?
+  pid = ThinkingSphinx.sphinx_pid
+  !!pid && !!Process.kill(0, pid.to_i)
+rescue
+  false
 end
