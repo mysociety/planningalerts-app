@@ -26,16 +26,6 @@ after "thinking_sphinx:index" do
   end
 end
 
-before "thinking_sphinx:rebuild" do
-  config = ThinkingSphinx::Configuration.instance
-  config_file = config.config_file
-  searchd_file = config.config_file.gsub("sphinx", "searchd")
-  Rake::Task["thinking_sphinx:configure"].invoke
-  if !file_changed?(config_file) and !file_changed?(searchd_file)
-    abort("Config files haven't changed, searchd not restarted")
-  end
-end
-
 # replace start task with a custom version to launch searchd
 # using the standard config file rather than the local path
 before "thinking_sphinx:start" do
@@ -58,6 +48,22 @@ before "thinking_sphinx:restart" do
   stop_process
   start_process
   abort
+end
+
+# replace the rebuild task with custom logic and filepath stuff
+before "thinking_sphinx:rebuild" do
+  config = ThinkingSphinx::Configuration.instance
+  config_file = config.config_file
+  searchd_file = config.config_file.gsub("sphinx", "searchd")
+  Rake::Task["thinking_sphinx:configure"].invoke
+  if !file_changed?(config_file) and !file_changed?(searchd_file)
+    abort("Config files haven't changed, searchd not restarted")
+  else
+    stop_process if sphinx_running?
+    Rake::Task["thinking_sphinx:index"].invoke
+    start_process
+    abort
+  end
 end
 
 
