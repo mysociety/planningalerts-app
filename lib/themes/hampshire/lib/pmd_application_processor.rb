@@ -150,8 +150,8 @@ class PMDApplicationProcessor
       radians_location = GlobalConvert::Location.new(
         :input => {
           :projection => :osgb36,
-          :lon => place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'][0]['@value'],
-          :lat => place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing'][0]['@value']
+          :lon => place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/easting'][0]['@value'].to_f,
+          :lat => place['http://data.ordnancesurvey.co.uk/ontology/spatialrelations/northing'][0]['@value'].to_f
         },
         :output => {
           :projection => :wgs84
