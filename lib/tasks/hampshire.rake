@@ -113,8 +113,13 @@ namespace :hampshire do
           delayed = nil
 
           # Parse the date received
-          date_received = application['http://data.hampshirehub.net/def/planning/dateReceived'][0]['@value']
-          date_received = Time.iso8601(date_received)
+          begin
+            date_received = application['http://data.hampshirehub.net/def/planning/dateReceived'][0]['@value']
+            date_received = Time.iso8601(date_received)
+          rescue
+            # Ignore applications with bad dates (it's probably empty)
+            next
+          end
           # Extract data from associated records
           description = PMDApplicationProcessor.extract_description(application)
           place = PMDApplicationProcessor.extract_address(application)
