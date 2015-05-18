@@ -1,4 +1,4 @@
-%form.container{'accept-charset' => "UTF-8", 'action' => search_applications_path, 'method' => "get"}
+%form.container.address-search{'accept-charset' => "UTF-8", 'action' => search_applications_path, 'method' => "get"}
   %fieldset
     = hidden_field_tag(:results, true)
     - unless @display.blank?
