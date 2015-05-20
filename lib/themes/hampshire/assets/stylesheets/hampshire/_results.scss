@@ -306,7 +306,7 @@ body.search-results {
 
   .bar {
     display: block;
-    height: 100%;
+    height: 1.6em;
     // Width is set inline, as a percentage of parent.
     // But we set a minimum, so the bar label is visible.
     min-width: 3em;
