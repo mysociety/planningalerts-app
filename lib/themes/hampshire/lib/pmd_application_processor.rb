@@ -105,6 +105,9 @@ class PMDApplicationProcessor
         'http://opendatacommunities.org/def/concept/planning/application/6000/6004',
         'http://opendatacommunities.org/def/concept/planning/application/6000/6005',
         'http://opendatacommunities.org/def/concept/planning/application/6000/6006',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6023',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6024',
+        'http://opendatacommunities.org/def/concept/planning/application/6000/6025',
       ]
       tree_and_hedge_categories = [
         'http://opendatacommunities.org/def/concept/planning/application/6000/6019',
