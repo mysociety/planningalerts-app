@@ -32,7 +32,10 @@ fi
 
 bundle exec rake db:migrate
 
-# restart Sphinx
+# create a Sphinx config file
+bundle exec rake ts:config
+
+# ensure Sphinx is running
 bundle exec rake ts:restart
 
 if [ "$RAILS_ENV" = production ]
