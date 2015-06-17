@@ -11,6 +11,7 @@ config/development.sphinx.conf
 config/production.sphinx.conf
 config/general.yml
 config/test.yml
+config/sphinx.yml
 db/sphinx/development/*
 rerun.txt
 public/about.html
@@ -33,6 +34,7 @@ config/httpd.conf
 config/httpd.conf.deployed
 config/sphinx.conf
 config/sphinx.conf.deployed
+config/sphinx.yml.deployed
 public/down.html
 vendor/bundle
 
