@@ -21,6 +21,7 @@ public/getinvolved.html
 public/index.html
 public/sitemap.xml
 public/sitemaps/sitemap*.xml.gz
+public/assets
 webrat.log
 .DS_Store
 planningalerts-app.sublime-workspace
