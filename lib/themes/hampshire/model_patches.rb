@@ -2,10 +2,18 @@ Rails.configuration.to_prepare do
   Application.instance_eval do
     scope :in_past_week, where("date_received > ?", 7.days.ago)
     scope :recent, where("date_received >= ?", 14.days.ago)
+
+    def search_index_name
+      prefix = ""
+      if defined?(Configuration::THEME_HAMPSHIRE_HOST)
+        prefix = Configuration::THEME_HAMPSHIRE_HOST.gsub(/[\.:]/, '_')
+      end
+      "#{prefix}_application"
+    end
   end
 
   Application.class_eval do
-    define_index do
+    define_index(search_index_name) do
       indexes council_reference
       indexes description
       indexes address

@@ -8,8 +8,10 @@ coverage
 log/searchd.development.pid
 config/database.yml
 config/development.sphinx.conf
+config/production.sphinx.conf
 config/general.yml
 config/test.yml
+config/sphinx.yml
 db/sphinx/development/*
 rerun.txt
 public/about.html
@@ -30,6 +32,9 @@ config/general.tmp.yml
 config/test.yml.deployed
 config/httpd.conf
 config/httpd.conf.deployed
+config/sphinx.conf
+config/sphinx.conf.deployed
+config/sphinx.yml.deployed
 public/down.html
 vendor/bundle
 
