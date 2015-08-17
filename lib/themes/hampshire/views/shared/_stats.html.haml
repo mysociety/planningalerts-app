@@ -9,8 +9,7 @@
 %p.pending
   %span.status
     Pending
-    %br
-    (May include withdrawn applications)
-
   %span.visualisation
     %span.bar{:style => "width: #{stats[:percentage_pending]}%"} #{stats[:percentage_pending]}%
+  %span.notes
+    (May include withdrawn applications)
