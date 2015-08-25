@@ -18,3 +18,12 @@
       %button.button.button-rounded.button-large.button-action{:type => "submit"}
         %i.fa.fa-search
         Search
+    %div#suggested-searches
+      %p
+        Need some inspiration? How about...
+      %div
+        #{link_to "All applications in Fordingbridge", search_applications_path(search: "anything", location: "Provost Street, Fordingbridge")},
+        #{link_to "County council matters in Winchester", search_applications_path(search: "county council matters", location: "Upper High Street, Winchester")},
+      %div
+        #{link_to "Extensions in Aldershot", search_applications_path(search: "extensions", location: "High Street, Aldershot")}, or
+        #{link_to "Refused applications for extensions near SP6 1AP", search_applications_path(search: "extensions", location: "SP6 1AP", status: "refused")}?

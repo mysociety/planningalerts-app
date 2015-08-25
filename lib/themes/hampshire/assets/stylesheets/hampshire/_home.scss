@@ -214,4 +214,12 @@ body.initial-search {
       background-color: mix(#fff, $color-hampshire-red, 90%);
     }
   }
+
+  #suggested-searches {
+      margin-top: 2em;
+
+      a:link {
+          text-decoration: none;
+      }
+  }
 }
