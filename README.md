@@ -50,7 +50,9 @@ Please note - customisations which are specific to mySociety's Hampshire theme h
 
 **Step 1 - Seed authorities table**
  * Start the rails server - `rails s`
- * Create an admin user - TODO: Explain how to do this
+ * Create an admin user:
+   * Run the following in `rails console`:
+   * `User.create(email: 'admin@example.com', password: 'password')`
  * Go to the admin console - http://localhost:3000/admin
  * Create the authority Marrickville with the following data
    * FULL NAME	`Marrickville Council`
